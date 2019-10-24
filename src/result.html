@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="author" content="Jerry Lin">
+  <meta name="description" content="Sick Shopping Aggregator">
+  <meta name="keywords" content="HTML, CSS, JavaScript">
+  <title>Results</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <script src="https://use.fontawesome.com/3cc1bc6b58.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- favIcon -->
+  <link rel="icon" type="image/png" href="img/favIcon.png">
+  <!-- normalize.css for cross-browser stuff -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
+</head>
+
+<body>
+  <main>
+    <div class="page">
+      <div class="bg-image-source">
+        <picture class="hidden">
+          <source media="(min-width: 768px)" srcset="img/fruit-3408683_3200.jpg">
+          <source media="(min-width: 376px)" srcset="img/fruit-3408683_1536.jpg">
+          <source media="(min-width: 0px)" srcset="img/fruit-3408683_640.jpg">
+          <img alt="picture of fruit" aria-label="background image of fruit" class="hidden">
+        </picture>
+      </div>
+      <div class="bg-image"></div>
+
+      <div class="headerContainer">
+        <h1>Here Are Your Potential Savings!</h1>
+      </div>
+
+      <div class="tableContainer">
+        <table>
+          <thead>
+            <th scope="col">Store</th>
+            <th scope="col">Total Price</th>
+            <th scope="col">Savings</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td><img class='logo' src='img/safeway.png' alt='safeway logo'>Safeway</td>
+              <td>$7.99</td>
+              <td>+$1.51</td>
+            </tr>
+            <tr>
+              <td><img class='logo' src='img/qfc.svg' alt='qfc logo'>QFC</td>
+              <td>$8.24</td>
+              <td>+$1.26</td>
+            </tr>
+            <tr>
+              <td><img class='logo' src='img/walmart.png' alt='walmart logo'>Walmart</td>
+              <td>$8.50</td>
+              <td>+$1.00</td>
+            </tr>
+            <tr>
+              <td><img class='logo' src='img/target.png' alt='target logo'>Target</td>
+              <td>$9.00</td>
+              <td>$.50</td>
+            </tr>
+            <tr>
+              <td><img class='logo' src='img/albertsons.png' alt='albertsons logo'>Albertsons</td>
+              <td>$9.50</td>
+              <td>$0.00</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="note">*Savings are relative to the store with the highest total price.</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Shop Saver Inc. 2019&copy;</p>
+      <address>
+        <p>For any questions or concerns, contact us at <a href="mailto:alexst@uw.edu">alexst@uw.edu</a>, or at <a
+            href="tel:360-123-4567">(360)
+            123-4567</a>.</p>
+      </address>
+    </div>
+
+  </main>
+</body>
+
+</html>

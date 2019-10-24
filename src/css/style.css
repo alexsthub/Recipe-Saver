@@ -1,0 +1,463 @@
+html {
+    box-sizing: border-box;
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.search-page {
+    height: 100vh;
+    display: flex;
+}
+
+.search-col {
+    display: flex;
+    padding-top: 5%;
+    padding-left: 20px;
+    justify-content: center;
+}
+
+.search-content {
+    display: inherit;
+    flex-direction: column;
+    align-items: center;
+    width: 95%;
+}
+
+.search-bar {
+    display: inherit;
+    margin-top: 1.5em;
+    width: 100%;
+    justify-content: center;
+}
+
+form input.search {
+    padding: 10px 18px;
+    background: rgba(50, 50, 50, 0.2);
+    border: none;
+    width: 80%;
+}
+
+form button.search-button {
+    padding: 8px 18px;
+    background-color: darkgreen;
+    color: #fafafa;
+    border: 2px solid darkgreen;
+}
+
+form button.search-button:hover {
+    background-color: #fafafa;
+    color: darkgreen;
+    border: 2px solid darkgreen;
+}
+
+.search-list {
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.search-list-border {
+    background-color: lightgray;
+    outline: 3px solid black;
+    padding: 10px;
+    height: 100%;
+}
+
+.shopping-list-heading {
+    font-size: 42px;
+    font-weight: 100;
+    text-align: center;
+}
+
+.list-item-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.list-item {
+    font-size: 18px;
+    margin: 6px;
+    margin-left: .5em;
+}
+
+.list-quantity-wrapper {
+    display: flex;
+    align-items: center;
+    margin-left: 1em;
+}
+
+.quantity {
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+}
+
+.remove {
+    margin: 4px;
+    margin-right: 1em;
+    color: darkblue;
+}
+
+.remove:hover {
+    color: black;
+}
+
+.plus {
+    margin: 4px;
+    color: darkgreen;
+}
+
+.plus:hover {
+    color: black;
+}
+
+.minus {
+    margin: 4px;
+    color: darkred;
+}
+
+.minus:hover {
+    color: black;
+}
+
+
+.nameplate {
+    min-height: 660px;
+    text-align: center;
+}
+
+/* TODO: Media query to reduce padding-top */
+.nameplate-container {
+    color: white;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+    width: 100%;
+    line-height: 1.5;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (min-width:0px) {
+    .nameplate-headline {
+        display: none;
+    }
+    
+    .search-page {
+        flex-direction: column;
+    }
+    
+    .search-col {
+        flex: 1;
+    }
+    
+    .search-list {
+        flex: 2;
+    }
+
+    .shopping-list-heading {
+	margin: 5px 0;
+    }
+    
+    table {
+        width: 20%;
+        height: 20%;
+    }
+}
+
+@media (min-width:420px) {
+    .nameplate-container {
+        padding-top: 5px;
+    }
+
+    .nameplate-title {
+        font-size: 48px;
+    }
+
+    table {
+        width: 30%;
+    }
+}
+
+@media (min-width:607px) {
+    .nameplate-container {
+        padding-top: 1em;
+    }
+
+    .nameplate-headline {
+        display: inline-block;
+    }
+
+    table {
+        width: 30%;
+    }
+}
+
+@media (min-width:812px) {
+    .nameplate-container {
+        padding-top: 2em;
+    }
+
+    .search-page {
+        flex-direction: row;
+    }
+
+    .search-col {
+        flex: 2;
+    }
+
+    .search-list {
+        flex: 1;
+    }
+
+    .shopping-list-header {
+	margin: 1em 0;
+    }
+    
+    table {
+        width: 40%;
+    }
+}
+
+@media (min-width:1115px) {
+    .nameplate-container {
+        padding-top: 3em;
+    }
+
+    table {
+        width: 50%;
+    }
+}
+
+.nameplate-title {
+    font-size: 80px;
+    line-height: 56px;
+    font-weight: 100;
+    margin-bottom: 10px;
+}
+
+.nameplate-headline {
+    font-size: 52px;
+    line-height: 56px;
+    font-weight: 100;
+    margin-bottom: 0;
+}
+
+.nameplate-message {
+    margin-top: 25px;
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+}
+
+.nameplate-button {
+    margin-top: 2.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+.nameplate-button p {
+    color: black;
+    height: 46px;
+    min-width: 136px;
+    padding: 10px 32px;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 14px;
+    letter-spacing: 1px;
+    margin: 0;
+    border-radius: 0;
+
+}
+
+.search-heading {
+    letter-spacing: 0.8px;
+    font-size: 72px;
+    font-weight: 100;
+    margin-bottom: 0.35em;
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+.bg-image {
+    background-image: linear-gradient(to top left, rgba(54, 62, 40, 0.7), rgba(20, 74, 17, 0.6)), url("../img/fruit-3408683_3200.jpg");
+    background-size: cover;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.footer {
+    clear: both;
+    border: 1px solid black;
+    line-height: normal;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, .7);
+    padding: 0px 10px;
+}
+
+.footer-container {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 23%;
+    width: 100%;
+    justify-content: center;
+    z-index: -1;
+}
+
+.footer-image {
+    background-image: url("../img/fruit_banner.png");
+    background-repeat: repeat-x;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+}
+
+.buttonWrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.buttonInner {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    background-color: white;
+    border: 2px solid black;
+}
+
+.buttonInner:hover {
+    opacity: .8;
+}
+
+.buttonText {
+    color: black;
+    padding: 0px 50px;
+    font-size: 20px;
+    letter-spacing: 1.1px;
+}
+
+.listButtonWrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: auto;
+}
+
+.listButtonInner {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    border: 2px solid black;
+}
+
+.listButtonText {
+    color: black;
+    padding: 0px 40px;
+    font-size: 18px;
+    letter-spacing: 1.1px;
+}
+
+/* Results CSS */
+.headerContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.headerContainer h1 {
+    text-align: center;
+    font-size: 40px;
+    color: white;
+}
+
+.tableContainer {
+    margin-top: 30px;
+}
+
+.logo {
+    height: 1em;
+    width: 1em;
+    margin-right: 5px;
+}
+
+.note {
+    color: white;
+    text-align: center;
+}
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    border-collapse: collapse;
+    outline: 1px solid black;
+    outline-offset: -1px;
+    background-color: white;
+}
+
+th {
+    height: 2rem;
+    text-align: left;
+    color: black;
+    font-size: 28px;
+    padding: 10px;
+    padding-left: 10px;
+    background-color: gray;
+    border-bottom: 1px solid black;
+}
+
+td {
+    font-size: 24px;
+    padding: 25px;
+    padding-left: 10px;
+    border-bottom: 1px solid #d3d3d3;
+}
+
+tr:last-child td {
+    border-bottom: 1px solid black;
+}
+
+tr:nth-child(even) {
+    background-color: #d3d3d3;
+}
+
+tr.selected {
+    outline: 2px solid black;
+    outline-offset: -2px;
+}
+
+tbody tr:hover {
+    outline: 2px solid gray;
+    outline-offset: -2px;
+}
+
+.temp-button {
+    text-decoration: none;
+}
