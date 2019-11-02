@@ -444,6 +444,7 @@ form button.search-button:hover {
 div.recipe {
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 div.recipe img.foodimage {
@@ -460,6 +461,11 @@ div.recipe-info {
     display: flex;
     flex-direction: column;
     padding-left: 15px;
+}
+
+div.recipe-info p {
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 div.title-container {
