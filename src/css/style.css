@@ -47,7 +47,7 @@ form input.search {
     padding: 10px 18px;
     background: rgba(50, 50, 50, 0.2);
     border: none;
-    width: 80%;
+    width: 60%;
 }
 
 form button.search-button {
@@ -415,4 +415,43 @@ form button.search-button:hover {
 
 .selected {
     text-decoration: underline;
+}
+
+.list-container {
+    margin-top: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+    background-color: lightblue;
+}
+
+.letter-container {
+    padding: 0px 30px;
+    margin: 0px 0px;
+}
+
+.alphabet-letter {
+    font-size: 40px;
+    margin: 0px 0px;
+}
+
+.recipe-letter-container {
+    background-color: lightgreen;
+    padding: 20px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+div.recipe {
+    display: flex;
+    flex-direction: row;
+}
+
+div.recipe img {
+    height: 100px;
+    width: 100px;
+}
+
+div.recipe-info {
+    display: flex;
+    flex-direction: column;
 }
