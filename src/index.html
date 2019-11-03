@@ -7,8 +7,12 @@
   <meta name="description" content="Recipe Saver">
   <meta name="keywords" content="HTML, CSS, JavaScript">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" class="next-git">
-  <title>Recipe Saver</title>
-  <link rel="stylesheet" href="css/style.css">
+  <title>Recipe Saver</title> 
+
+  <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="js/index.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
 
   <!-- favIcon -->
   <link rel="icon" type="image/png" href="img/favIcon.png">
@@ -20,6 +24,10 @@
 </head>
 
 <body>
+  <header>
+    <h1>Recipe Saver</h1>
+  </header>
+  
   <main>
     <div class="search-page">
 
@@ -83,7 +91,6 @@
                 </div>
               </div>
             </div>
-
           </div>
 
           <div class="letter-container">
@@ -121,36 +128,15 @@
                 </div>
               </div>
             </div>
-
           </div>
-
         </div>
-
         <a class="fab">
           <i class="fa fa-plus my-float"></i>
         </a>
-
-      </div>
-
-
-      <div class="hidden footer-img-src">
-        <picture class="hidden">
-          <source srcset="../img/fruit_banner.png">
-          <img alt="banner of fruit" aria-hidden="true" class="hidden">
-        </picture>
-      </div>
-      <div class="footer-container">
-        <div class="footer-image"></div>
       </div>
     </div>
 
   </main>
-
-
-  <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <script src="js/index.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
 </body>
 
 </html>

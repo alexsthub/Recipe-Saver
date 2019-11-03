@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="author" content="Alex Tan, Jerry Lin">
+    <meta name="description" content="Recipe Saver">
+    <meta name="keywords" content="HTML, CSS, JavaScript">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" class="next-git">
+    <title>Recipe Saver</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- favIcon -->
+    <link rel="icon" type="image/png" href="img/favIcon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- normalize.css for cross-browser stuff -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+  </head>
+
+  <body>
+    <main>
+      <div class="search-page">
+
+	<!-- Use class 'hidden' to hide  -->
+	<div class="recipe-container">
+          <div class="list-header">
+            <div class="filter-container">
+              <p class="selected">All</p>
+              <p>Categories</p>
+              <p>Favorites</p>
+            </div>
+          </div>
+
+          <!-- 
+               Dictionary of Letters to sorted list objects (key = title)
+               If list.length == 0, do not render-->
+
+          <!-- TODO: Set a limit on how much of the description is display -->
+          <div class="recipe-content">
+            <div class="recipe">
+              <img class="foodimage" alt="baked crab rangoon" src="./recipeImages/Baked Crab Rangoon.jpg" />
+              <div class="recipe-info">
+                <div class="title-container">
+                  <p class="recipe-title">Baked Crab Rangoon</p>
+                  <img class="favoriteIcon" alt="favorite star icon" src="img/star-false.png" />
+                </div>
+		<p class="count">You've made this X times</p>
+                <p class="recipe-description">Learn how to make these crispy Baked Crab Rangoons filled with creamy
+                  crabmeat! Watch the video to
+                  find out more about this Healthy Living appetizer recipe.</p>
+                <p>Category: Dinner</p>
+                <p>Subcategory: Dinner Recipes</p>
+              </div>
+            </div>
+          </div>
+	  <div class="ingredients">
+	    <h2>Ingredients</h2>
+	    <ul>
+	      <li>Ingredient 1</li>
+	      <li>Ingredient 2</li>
+	      <li>Ingredient 3</li>
+	    </ul>
+	    
+	  </div>
+	  <div class="directions-container">
+	    <h2>Directions</h2>
+	    <div class="time">
+	      <i class="fa fa-clock-o" aria-hidden="true"></i> 10 min
+	    </div>
+	    <div class="directions">
+	      <ol>
+		<li>Direction 1</li>
+		<li>Direction 2</li>
+		<li>Direction 3</li>
+		<li>Direction 4</li>
+	      </ol>
+	    </div>
+	  </div>
+	</div>
+    </main>
+  </body>
+</html>
