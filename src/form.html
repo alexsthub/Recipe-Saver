@@ -13,11 +13,14 @@
   <!-- favIcon -->
   <link rel="icon" type="image/png" href="img/favIcon.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
   <!-- Bootstrap -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+    integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
   <!-- normalize.css for cross-browser stuff -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
   <link rel="stylesheet" href="css/style.css">
+
 
 </head>
 
@@ -124,6 +127,96 @@
               </div>
             </div>
 
+          </div>
+
+          <!-- Try to overlay a div here as a form-->
+          <div class="form-overlay">
+            <form>
+              <div class="form-container">
+                <div class="form-elements-container">
+                  <span class="close">&times;</span>
+
+
+                  <h1>Enter A New Recipe!</h1>
+
+                  <div class="input-container">
+                    <p>Recipe Name *</p>
+                    <div class="line"></div>
+                    <input placeholder="Recipe Title..." aria-label="Enter Recipe Name" type="text" required>
+                  </div>
+
+                  <!-- Drag and drop file input -->
+                  <div class="input-container">
+                    <p>Upload an Image</p>
+                    <div class="line"></div>
+                    <div class="box">
+                      <form method="post" action="" enctype="multipart/form-data">
+                        <div class="box-input">
+                          <img class="box-image" src="./img/upload.svg" />
+                          <span><strong>Choose a file </strong>or drag it here.</span>
+                        </div>
+                        <div class="box__uploading">Uploading&hellip;</div>
+                        <div class="box__success">Done!</div>
+                        <div class="box__error">Error! <span></span>.</div>
+                      </form>
+                    </div>
+                  </div>
+
+                  <!-- <p>Add an Image</p>
+                  <div class="form-group">
+                    <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                  </div> -->
+
+                  <div class="input-container">
+                    <p>Ingredients *</p>
+                    <div class="line"></div>
+                  </div>
+
+                  <div class="input-container">
+                    <p>Procedure *</p>
+                    <div class="line"></div>
+                    <input placeholder="Recipe Ingredients..." aria-label="Enter Recipe Ingredients" type="text"
+                      required>
+                  </div>
+
+                  <div class="input-container">
+                    <p>Recipe Description (Optional)</p>
+                    <div class="line"></div>
+                    <input placeholder="Recipe Description..." aria-label="Enter Recipe Description" type="text">
+                  </div>
+
+                  <div class="input-container">
+                    <p>Category (Optional)</p>
+                    <div class="line"></div>
+                    <input placeholder="Recipe Category..." aria-label="Enter Recipe Category" type="text">
+                  </div>
+
+                  <div class="input-container">
+                    <p>Subcategory (Optional)</p>
+                    <div class="line"></div>
+                    <input placeholder="Recipe Subcategory..." aria-label="Enter Recipe Subcategory" type="text">
+                  </div>
+
+                  <div class="input-container">
+                    <p>Estimated Time (Optional)</p>
+                    <div class="line"></div>
+                    <input placeholder="Recipe Estimated Time..." aria-label="Enter Recipe Estimated Time" type="text">
+                  </div>
+
+
+                  <div class="submit-container">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+
+
+
+
+
+
+
+                </div>
+              </div>
+            </form>
           </div>
 
         </div>
