@@ -1,142 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="author" content="Alex Tan, Jerry Lin">
-  <meta name="description" content="Recipe Saver">
-  <meta name="keywords" content="HTML, CSS, JavaScript">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" class="next-git">
-  <title>Recipe Saver</title> 
+  <head>
+    <meta charset="utf-8">
+    <meta name="author" content="Alex Tan, Jerry Lin">
+    <meta name="description" content="Recipe Saver">
+    <meta name="keywords" content="HTML, CSS, JavaScript">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" class="next-git">
+    <title>Recipe Saver</title> 
 
-  <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <script src="js/index.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
+    <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="js/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
 
-  <!-- favIcon -->
-  <link rel="icon" type="image/png" href="img/favIcon.png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <!-- normalize.css for cross-browser stuff -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
-  <link rel="stylesheet" href="css/style.css">
+    <!-- favIcon -->
+    <link rel="icon" type="image/png" href="img/favIcon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- normalize.css for cross-browser stuff -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
+    <link rel="stylesheet" href="css/style.css">
 
-</head>
+  </head>
 
-<body>
-  <header>
-    <h1>Recipe Saver</h1>
-  </header>
-  
-  <main>
-    <div class="search-page">
-
-      <!-- Use class 'hidden' to hide  -->
-      <div class="recipe-container">
-        <div class="list-header">
-          <div class="filter-container">
-            <p class="selected">All</p>
-            <p>Categories</p>
-            <p>Favorites</p>
-          </div>
-        </div>
-        <form class="search-bar">
-          <input class="search" placeholder="Search for a recipe..." aria-label="Search for items" type="search"
-            required>
-          <button class="search-button" aria-label="search button">
-            <i class="fa fa-search-plus"></i>
-          </button>
-        </form>
-
-        <!-- 
-          Dictionary of Letters to sorted list objects (key = title)
-          If list.length == 0, do not render-->
-
-        <!-- TODO: Set a limit on how much of the description is display -->
-        <div class="list-container">
-
-          <div class="letter-container">
-            <p class="alphabet-letter">B.</p>
-
-            <div class="recipe-letter-container">
-              <div class="recipe">
-                <img class="foodimage" alt="baked crab rangoon" src="./recipeImages/Baked Crab Rangoon.jpg" />
-                <div class="recipe-info">
-                  <div class="title-container">
-                    <p class="recipe-title">Baked Crab Rangoon</p>
-                    <img class="favoriteIcon" alt="favorite star icon" src="img/star-false.png" />
-                  </div>
-                  <p class="recipe-description">Learn how to make these crispy Baked Crab Rangoons filled with creamy
-                    crabmeat! Watch the video to
-                    find out more about this Healthy Living appetizer recipe.</p>
-                  <p>Category: Dinner</p>
-                  <p>Subcategory: Dinner Recipes</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="recipe-letter-container">
-              <div class="recipe">
-                <img class="foodimage" alt="BBQ Grilled Ribs Recipe" src="./recipeImages/BBQ Grilled Ribs Recipe.jpg" />
-                <div class="recipe-info">
-                  <div class="title-container">
-                    <p class="recipe-title">BBQ Grilled Ribs Recipe</p>
-                    <img class="favoriteIcon" alt="favorite star icon" src="img/star-false.png" />
-                  </div>
-                  <p class="recipe-description">Enjoy tender perfection with our BBQ Grilled Ribs Recipe. Our BBQ
-                    Grilled Ribs Recipe is perfected with a chipotle and orange barbecue sauce. Your next barbecue is
-                    sure to be a super success with this handy recipe at the ready.</p>
-                  <p>Category: Dinner</p>
-                  <p>Subcategory: Dinner Recipes</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="letter-container">
-            <p class="alphabet-letter">D.</p>
-
-            <div class="recipe-letter-container">
-              <div class="recipe">
-                <img class="foodimage" alt="Dark Chocolate Ganache Cheesecake"
-                  src="./recipeImages/Dark Chocolate Ganache Cheesecake.jpg" />
-                <div class="recipe-info">
-                  <div class="title-container">
-                    <p class="recipe-title">Dark Chocolate Ganache Cheesecake</p>
-                    <img class="favoriteIcon" alt="favorite star icon" src="img/star-false.png" />
-                  </div>
-                  <p class="recipe-description">Discover your new go-to dessert with our Dark Chocolate Ganache
-                    Cheesecake! Top your chocolate ganache cheesecake with raspberries for a gorgeous treat.</p>
-                  <p>Category: Dinner</p>
-                  <p>Subcategory: Desserts Recipes</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="recipe-letter-container">
-              <div class="recipe">
-                <img class="foodimage" alt="Dilled Shrimp Salad" src="./recipeImages/Dilled Shrimp Salad.jpg" />
-                <div class="recipe-info">
-                  <div class="title-container">
-                    <p class="recipe-title">Dilled Shrimp Salad</p>
-                    <img class="favoriteIcon" alt="favorite star icon" src="img/star-false.png" />
-                  </div>
-                  <p class="recipe-description">Serve this Dill Shrimp Salad recipe on top of Boston lettuce leaves and
-                    a lemon wedge. Dill Shrimp Salad is a Healthy Living recipe everyone will enjoy.</p>
-                  <p>Category: Lunch</p>
-                  <p>Subcategory: Lunch Ideas</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <a class="fab">
-          <i class="fa fa-plus my-float"></i>
-        </a>
+  <body>
+    <header>
+      <div class="topbar">
+	<h1 class="title"><i class="fa fa-shopping-basket" aria-hidden="true"></i></h1>
+	<div class="nav">
+	  <a class="selected">All</a>
+	  <a>Categories</a>
+	  <a>Favorites</a>
+	</div>
+	<div class="user-container">
+	  <p>User123456</p>
+	</div>
+	
       </div>
-    </div>
+    </header>
+    
+    <main>
+      <div class="search-page">
+	<div class="logo-container">
+	  <img class="logo" alt="logo" src="img/logo.png">
+	</div>
 
-  </main>
-</body>
+	<!-- Use class 'hidden' to hide  -->
+	<div class="recipe-container">
+
+          <form class="search-bar">
+            <input class="search" placeholder="Search for a recipe..." aria-label="Search for items" type="search"
+		   required>
+            <button class="search-button" aria-label="search button">
+              <i class="fa fa-search-plus"></i>
+            </button>
+          </form>
+
+          <!-- 
+               Dictionary of Letters to sorted list objects (key = title)
+               If list.length == 0, do not render-->
+
+          <!-- TODO: Set a limit on how much of the description is display -->
+          <div class="list-container">
+
+            <div class="letter-container">
+              <p class="alphabet-letter">B.</p>
+
+              <div class="recipe-letter-container">
+		<div class="recipe">
+                  <img class="foodimage" alt="baked crab rangoon" src="./recipeImages/Baked Crab Rangoon.jpg" />
+                  <div class="recipe-info">
+                    <div class="title-container">
+                      <p class="recipe-title">Baked Crab Rangoon</p>
+                      <img class="favoriteIcon" alt="favorite star icon" src="img/star-false.png" />
+                    </div>
+                    <p class="recipe-description">Learn how to make these crispy Baked Crab Rangoons filled with creamy
+                      crabmeat! Watch the video to
+                      find out more about this Healthy Living appetizer recipe.</p>
+                    <p>Category: Dinner</p>
+                    <p>Subcategory: Dinner Recipes</p>
+                  </div>
+		</div>
+              </div>
+
+              <div class="recipe-letter-container">
+		<div class="recipe">
+                  <img class="foodimage" alt="BBQ Grilled Ribs Recipe" src="./recipeImages/BBQ Grilled Ribs Recipe.jpg" />
+                  <div class="recipe-info">
+                    <div class="title-container">
+                      <p class="recipe-title">BBQ Grilled Ribs Recipe</p>
+                      <img class="favoriteIcon" alt="favorite star icon" src="img/star-false.png" />
+                    </div>
+                    <p class="recipe-description">Enjoy tender perfection with our BBQ Grilled Ribs Recipe. Our BBQ
+                      Grilled Ribs Recipe is perfected with a chipotle and orange barbecue sauce. Your next barbecue is
+                      sure to be a super success with this handy recipe at the ready.</p>
+                    <p>Category: Dinner</p>
+                    <p>Subcategory: Dinner Recipes</p>
+                  </div>
+		</div>
+              </div>
+            </div>
+
+            <div class="letter-container">
+              <p class="alphabet-letter">D.</p>
+
+              <div class="recipe-letter-container">
+		<div class="recipe">
+                  <img class="foodimage" alt="Dark Chocolate Ganache Cheesecake"
+                       src="./recipeImages/Dark Chocolate Ganache Cheesecake.jpg" />
+                  <div class="recipe-info">
+                    <div class="title-container">
+                      <p class="recipe-title">Dark Chocolate Ganache Cheesecake</p>
+                      <img class="favoriteIcon" alt="favorite star icon" src="img/star-false.png" />
+                    </div>
+                    <p class="recipe-description">Discover your new go-to dessert with our Dark Chocolate Ganache
+                      Cheesecake! Top your chocolate ganache cheesecake with raspberries for a gorgeous treat.</p>
+                    <p>Category: Dinner</p>
+                    <p>Subcategory: Desserts Recipes</p>
+                  </div>
+		</div>
+              </div>
+
+              <div class="recipe-letter-container">
+		<div class="recipe">
+                  <img class="foodimage" alt="Dilled Shrimp Salad" src="./recipeImages/Dilled Shrimp Salad.jpg" />
+                  <div class="recipe-info">
+                    <div class="title-container">
+                      <p class="recipe-title">Dilled Shrimp Salad</p>
+                      <img class="favoriteIcon" alt="favorite star icon" src="img/star-false.png" />
+                    </div>
+                    <p class="recipe-description">Serve this Dill Shrimp Salad recipe on top of Boston lettuce leaves and
+                      a lemon wedge. Dill Shrimp Salad is a Healthy Living recipe everyone will enjoy.</p>
+                    <p>Category: Lunch</p>
+                    <p>Subcategory: Lunch Ideas</p>
+                  </div>
+		</div>
+              </div>
+            </div>
+          </div>
+          <a class="fab">
+            <i class="fa fa-plus my-float"></i>
+          </a>
+	</div>
+      </div>
+
+    </main>
+
+    <footer>
+      <div class="footer-text">
+      <p>Made by Alex Tan and Jerry Lin</p>
+      <p>Contact: linj66@uw.edu</p>
+      </div>
+      <img class="footer-img" alt="fruits image" src="img/fruit_banner.png">
+    </footer>
+  </body>
 
 </html>
