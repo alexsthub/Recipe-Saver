@@ -388,6 +388,10 @@ form button.search-button:hover {
     cursor: pointer;
 }
 
+.recipe-group {
+    background-color: pink;
+}
+
 div.recipe {
     display: flex;
     flex-direction: row;
@@ -457,4 +461,27 @@ p.recipe-title {
 
 footer {
     padding: 1em;
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+h2 {
+    text-decoration: underline;
+}
+
+.recipe-details {
+    display: flex;
+    border: 2px solid black;
+    padding: 1em;
+}
+
+.ingredients {
+    flex: 0.5;
+}
+
+.clicked {
+    transform: scale(1.02);
 }
