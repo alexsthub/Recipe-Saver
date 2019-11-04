@@ -19,6 +19,7 @@ body {
     height: 100%;
     display: flex;
     background-color: rgba(0,0,0,0.4);
+    flex-direction: column;
 }
 
 header {
