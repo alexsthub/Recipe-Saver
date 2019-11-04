@@ -15,6 +15,12 @@ body {
     display: block;
 }
 
+.search-page {
+    height: 100%;
+    display: flex;
+    background-color: rgba(0,0,0,0.4);
+}
+
 header {
     text-align: center;
     line-height: 25px;
@@ -305,6 +311,12 @@ form button.search-button:hover {
 }
 
 /* For main page */
+.list-container {
+    margin-top: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
 .recipe-container {
     display: flex;
     flex-direction: column;
@@ -436,6 +448,95 @@ p.recipe-title {
     margin-top: 0px;
 }
 
+.line {
+    width: 100%;
+    height: 1px;
+    background-color: #646666;
+    margin-bottom: 5px;
+}
+
+/* Form  */
+.noscroll { 
+    overflow: hidden;
+}
+/* TODO: When the popup is clicked, put the noscroll class on the body   */
+
+.form-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+}
+
+.form-container {
+    position: fixed;
+    top: 10%;
+    bottom: 10%;
+    left: 25%;
+    right: 25%;
+    margin-left: auto;
+    margin-right: auto;
+    overflow-y: auto;
+    background-color: white;
+}
+
+.form-container h1 {
+    font-style: italic;
+}
+
+.form-elements-container {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.form-elements-container p {
+    margin-bottom: 0;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.input-container {
+    margin-bottom: 15px;
+    padding: 5px 10px;
+    background-color: #E9EEEE;
+}
+
+.form-elements-container input {
+    padding-top: 15px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 1px solid lightgray;
+    width: 100%;
+
+}
+
+.form-elements-container .submit-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display:flex;
+    justify-content: center;
+}
+
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 35px;
+    font-weight: bold;
+  }
+  
+.close:hover, .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
 /* Floating Action Button */
 .fab {
     position:fixed;
@@ -456,6 +557,57 @@ p.recipe-title {
 }
 
 .my-float{
+	margin-top:22px;
+}
+
+.horizontal {
+    display: flex;
+    flex-direction: row;
+}
+
+.vertical {
+    display: flex;
+    flex-direction: column;
+}
+
+/* File input */
+.box {
+    outline: 2px dashed #92b0b3;
+    outline-offset: -10px;
+    font-size: 1.25rem;
+    background-color: #c8dadf;
+    position: relative;
+    padding: 100px 20px;
+    width: 350px;
+    height: 250px;
+}
+
+.box-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.box span {
+    margin-top: 10px;
+}
+
+.box strong:hover {
+    color: #50DFEB;
+}
+
+.box img {
+    margin-top: 0px;
+    height: 100px;
+    width: 100px;
+}
+
+.box__uploading,
+.box__success,
+.box__error {
+  display: none;
     margin-top: 40%;
 }
 
