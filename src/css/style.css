@@ -18,7 +18,7 @@ body {
 .search-page {
     height: 100%;
     display: flex;
-    background-color: rgba(0,0,0,0.4);
+    /* background-color: rgba(0,0,0,0.4); */
 }
 
 header {
@@ -479,6 +479,8 @@ p.recipe-title {
     margin-right: auto;
     overflow-y: auto;
     background-color: white;
+
+    border: 2px solid black;
 }
 
 .form-container h1 {
@@ -519,6 +521,10 @@ p.recipe-title {
     justify-content: center;
 }
 
+.recipe-description {
+    width: 100%;
+}
+
 .close {
     color: #aaaaaa;
     float: right;
@@ -532,6 +538,64 @@ p.recipe-title {
     cursor: pointer;
 }
 
+.list-input {
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    align-items: center;
+    padding-left: 15px;
+}
+
+.list-input img {
+    height: 30px;
+    width: 30px;
+}
+
+.list-input input {
+    border: none;
+    padding-left: 10px;
+}
+
+.list-input input:focus {
+    outline-width: 0;
+}
+
+.list-input p {
+    font-size: 14px;
+    padding-right: 15px;
+    color: blue;
+    height: 100%;
+}
+
+.list-input p:hover {
+    cursor: pointer;
+}
+
+
+.list-item p {
+    font-size: 20px;
+    font-weight: normal;
+    word-break: break-word;
+}
+
+.list-item img {
+    margin-left: 10px;
+    height: 12px;
+    width: 12px;
+}
+
+.list-item img:hover {
+    cursor:pointer;
+    opacity: 0.5;
+}
+
+.list-item-contents {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-right: 16px;
+}
+/* End of form */
 
 /* Floating Action Button */
 .fab {
@@ -566,6 +630,12 @@ p.recipe-title {
     flex-direction: column;
 }
 
+.center {
+    align-items: center;
+}
+
+/* End of FAB */
+
 /* File input */
 .box {
     outline: 2px dashed #92b0b3;
@@ -574,7 +644,7 @@ p.recipe-title {
     background-color: #c8dadf;
     position: relative;
     padding: 100px 20px;
-    width: 350px;
+    width: 100%;
     height: 250px;
 }
 
@@ -590,14 +660,29 @@ p.recipe-title {
     margin-top: 10px;
 }
 
+.box .input-clickable {
+    cursor: pointer;
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+}
+
 .box strong:hover {
     color: #50DFEB;
 }
 
-.box img {
-    margin-top: 0px;
-    height: 100px;
-    width: 100px;
+.box-image {
+    height: 120px;
+    width: 120px;
+}
+
+.input-file {
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
 }
 
 .box__uploading,
@@ -606,6 +691,8 @@ p.recipe-title {
   display: none;
     margin-top: 40%;
 }
+
+/* End of File Input */
 
 footer {
     padding: 1em;

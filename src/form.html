@@ -147,13 +147,18 @@
 
                   <!-- Drag and drop file input -->
                   <div class="input-container">
-                    <p>Upload an Image</p>
+                    <p>Upload an Image (Optional)</p>
                     <div class="line"></div>
                     <div class="box">
                       <form method="post" action="" enctype="multipart/form-data">
                         <div class="box-input">
-                          <img class="box-image" src="./img/upload.svg" />
-                          <span><strong>Choose a file </strong>or drag it here.</span>
+                          <input type="file" name="file" id="file" class="input-file" />
+                          <label for="file">
+                            <div class="input-clickable">
+                              <img class="box-image" src="./img/upload.png" />
+                              <span><strong>Choose a file </strong>or drag it here.</span>
+                            </div>
+                          </label>
                         </div>
                         <div class="box__uploading">Uploading&hellip;</div>
                         <div class="box__success">Done!</div>
@@ -162,27 +167,33 @@
                     </div>
                   </div>
 
-                  <!-- <p>Add an Image</p>
-                  <div class="form-group">
-                    <input type="file" class="form-control-file" id="exampleFormControlFile1">
-                  </div> -->
-
+                  <!-- TODO: Wrap text if the li is too long -->
                   <div class="input-container">
                     <p>Ingredients *</p>
                     <div class="line"></div>
+                    <ul id="ingredient-list"></ul>
+                    <div class="list-input">
+                      <img src="./img/shoppingCart.png" />
+                      <input id="ingredient-input" placeholder="Enter an Ingredient..." aria-label="Enter Recipe Ingredient" type="text">
+                      <p id="ingredient-add">Add</p>
+                    </div>
                   </div>
 
                   <div class="input-container">
                     <p>Procedure *</p>
                     <div class="line"></div>
-                    <input placeholder="Recipe Ingredients..." aria-label="Enter Recipe Ingredients" type="text"
-                      required>
+                    <ol id="procedure-list"></ol>
+                    <div class="list-input">
+                      <img src="./img/paperclip.png" />
+                      <input id="procedure-input" placeholder="Enter a Step..." aria-label="Enter Steps" type="text">
+                      <p id="procedure-add">Add</p>
+                    </div>
                   </div>
 
                   <div class="input-container">
                     <p>Recipe Description (Optional)</p>
                     <div class="line"></div>
-                    <input placeholder="Recipe Description..." aria-label="Enter Recipe Description" type="text">
+                    <textarea placeholder="Recipe Description..." rows="5" class="recipe-description"></textarea>
                   </div>
 
                   <div class="input-container">
@@ -230,7 +241,7 @@
 
       <div class="hidden footer-img-src">
         <picture class="hidden">
-          <source srcset="../img/fruit_banner.png">
+          <source srcset="./img/fruit_banner.png">
           <img alt="banner of fruit" aria-hidden="true" class="hidden">
         </picture>
       </div>
