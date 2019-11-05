@@ -68,19 +68,18 @@ function addIngredient(input, parent) {
 
 // Returns True if string ends with any of the given endings
 function endsWithAny(string, endings) {
-  return endings.some(function(ending) {
+  return endings.some(function (ending) {
     return string.endsWith(ending);
   })
 }
 
-// TODO: Implement correct file handling. (jpg, png, svg, tif)
 // Visually handle file input. Modified code from source.
 /*
 	By Osvaldas Valutis, www.osvaldas.info
 	Available for use under the MIT License
 */
-let droppedFile;
-;
+
+let droppedFile;;
 (function ($) {
   $('.input-file').each(function () {
     var $input = $(this),
@@ -88,17 +87,21 @@ let droppedFile;
       labelVal = $label.html();
 
     $input.on('change', function () {
-      var fileName = '';
-      droppedFile = this.files[0];
-      fileName = droppedFile.name;
-        
-      if (endsWithAny(fileName, ['jpg', 'png', 'tif', 'svg'])) {
-        span.html(fileName);
-        span.removeClass('error-message');
-      } else {
-        span.html('Invalid File Type. Try again with an image.')
-        span.addClass('error-message');
-        droppedFile = null;
+      console.log(this.files.length);
+      if (this.files.length > 0) {
+        var fileName = '';
+        droppedFile = this.files[0];
+        fileName = droppedFile.name;
+
+        var span = $label.find('span');
+        if (endsWithAny(fileName, ['jpg', 'png', 'tif', 'svg'])) {
+          span.html(fileName);
+          span.removeClass('error-message');
+        } else {
+          span.html('Invalid File Type. Try again with an image.')
+          span.addClass('error-message');
+          droppedFile = null;
+        }
       }
     });
   });
@@ -107,32 +110,27 @@ let droppedFile;
 // Handle drag input
 var droppedFiles = false;
 let form = $('div.box');
-form.on('drag dragstart dragend dragover dragenter dragleave drop', function(e) {
-  e.preventDefault();
-  e.stopPropagation();
-})
-.on('dragover dragenter', function() {
-  form.addClass('is-dragover');
-})
-.on('dragleave dragend drop', function() {
-  form.removeClass('is-dragover');
-})
-.on('drop', function(e) {
-  droppedFile = e.originalEvent.dataTransfer.files[0];
-  var fileName = droppedFile.name;
-  let span = $('.input-clickable span');
-  if (endsWithAny(fileName, ['jpg', 'png', 'tif', 'svg'])) {
-    span.html(fileName);
-    span.removeClass('error-message');
-  } else {
-    span.html('Invalid File Type. Try again with an image.')
-    span.addClass('error-message');
-    droppedFile = null;
-  }
-  
-});
+form.on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  })
+  .on('dragover dragenter', function () {
+    form.addClass('is-dragover');
+  })
+  .on('dragleave dragend drop', function () {
+    form.removeClass('is-dragover');
+  })
+  .on('drop', function (e) {
+    droppedFile = e.originalEvent.dataTransfer.files[0];
+    var fileName = droppedFile.name;
+    let span = $('.input-clickable span');
+    if (endsWithAny(fileName, ['jpg', 'png', 'tif', 'svg'])) {
+      span.html(fileName);
+      span.removeClass('error-message');
+    } else {
+      span.html('Invalid File Type. Try again with an image.')
+      span.addClass('error-message');
+      droppedFile = null;
+    }
 
-
-
-
-
+  });
