@@ -129,107 +129,97 @@
 
           </div>
 
-          <!-- Try to overlay a div here as a form-->
-          <div class="form-overlay">
-            <form id="recipe-submit" method="POST" action="" enctype="multipart/form-data">
-              <div class="form-container">
-                <div class="form-elements-container">
-                  <span class="close">&times;</span>
+        </div>
+
+        <!-- Try to overlay a div here as a form-->
+        <div class="form-overlay">
+          <form id="recipe-submit" method="POST" action="" enctype="multipart/form-data">
+            <div class="form-container">
+              <div class="form-elements-container">
+                <span class="close">&times;</span>
 
 
-                  <h1>Enter A New Recipe!</h1>
+                <h1>Enter A New Recipe!</h1>
 
+                <div class="input-container">
+                  <p>Recipe Name *</p>
+                  <div class="line"></div>
+                  <input placeholder="Recipe Title..." aria-label="Enter Recipe Name" type="text" required>
+                </div>
+
+                <!-- Drag and drop file input -->
+                <form>
                   <div class="input-container">
-                    <p>Recipe Name *</p>
+                    <p>Upload an Image (Optional)</p>
                     <div class="line"></div>
-                    <input placeholder="Recipe Title..." aria-label="Enter Recipe Name" type="text" required>
+                    <div class="box">
+                      <div class="box-input">
+                        <input type="file" name="file" id="file" class="input-file" />
+                        <label for="file">
+                          <div class="input-clickable">
+                            <img class="box-image" src="./img/upload.png" />
+                            <span><strong>Choose a file </strong>or drag it here.</span>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
                   </div>
 
-                  <!-- Drag and drop file input -->
-                  <form>
-                    <div class="input-container">
-                      <p>Upload an Image (Optional)</p>
-                      <div class="line"></div>
-                      <div class="box">
-                        <div class="box-input">
-                          <input type="file" name="file" id="file" class="input-file" />
-                          <label for="file">
-                            <div class="input-clickable">
-                              <img class="box-image" src="./img/upload.png" />
-                              <span><strong>Choose a file </strong>or drag it here.</span>
-                            </div>
-                          </label>
-                        </div>
-                      </div>
+                  <!-- TODO: Add the favorite button as well-->
+                  <div class="input-container">
+                    <p>Ingredients *</p>
+                    <div class="line"></div>
+                    <ul id="ingredient-list"></ul>
+                    <div class="list-input">
+                      <img src="./img/shoppingCart.png" />
+                      <input id="ingredient-input" placeholder="Enter an Ingredient..."
+                        aria-label="Enter Recipe Ingredient" type="text">
+                      <p id="ingredient-add">Add</p>
                     </div>
+                  </div>
 
-                    <!-- TODO: Have the minus button show up at the end of the text -->
-                    <!-- TODO: Add the favorite button as well-->
-                    <!-- TODO: Put into index and stop the scrolling/make background opaque with form-overlay-->
-                    <div class="input-container">
-                      <p>Ingredients *</p>
-                      <div class="line"></div>
-                      <ul id="ingredient-list"></ul>
-                      <div class="list-input">
-                        <img src="./img/shoppingCart.png" />
-                        <input id="ingredient-input" placeholder="Enter an Ingredient..."
-                          aria-label="Enter Recipe Ingredient" type="text">
-                        <p id="ingredient-add">Add</p>
-                      </div>
+                  <div class="input-container">
+                    <p>Procedure *</p>
+                    <div class="line"></div>
+                    <ol id="procedure-list"></ol>
+                    <div class="list-input">
+                      <img src="./img/paperclip.png" />
+                      <input id="procedure-input" placeholder="Enter a Step..." aria-label="Enter Steps" type="text">
+                      <p id="procedure-add">Add</p>
                     </div>
+                  </div>
 
-                    <div class="input-container">
-                      <p>Procedure *</p>
-                      <div class="line"></div>
-                      <ol id="procedure-list"></ol>
-                      <div class="list-input">
-                        <img src="./img/paperclip.png" />
-                        <input id="procedure-input" placeholder="Enter a Step..." aria-label="Enter Steps" type="text">
-                        <p id="procedure-add">Add</p>
-                      </div>
-                    </div>
+                  <div class="input-container">
+                    <p>Recipe Description (Optional)</p>
+                    <div class="line"></div>
+                    <textarea placeholder="Recipe Description..." rows="5" class="recipe-description"></textarea>
+                  </div>
 
-                    <div class="input-container">
-                      <p>Recipe Description (Optional)</p>
-                      <div class="line"></div>
-                      <textarea placeholder="Recipe Description..." rows="5" class="recipe-description"></textarea>
-                    </div>
+                  <div class="input-container">
+                    <p>Category (Optional)</p>
+                    <div class="line"></div>
+                    <input placeholder="Recipe Category..." aria-label="Enter Recipe Category" type="text">
+                  </div>
 
-                    <div class="input-container">
-                      <p>Category (Optional)</p>
-                      <div class="line"></div>
-                      <input placeholder="Recipe Category..." aria-label="Enter Recipe Category" type="text">
-                    </div>
+                  <div class="input-container">
+                    <p>Subcategory (Optional)</p>
+                    <div class="line"></div>
+                    <input placeholder="Recipe Subcategory..." aria-label="Enter Recipe Subcategory" type="text">
+                  </div>
 
-                    <div class="input-container">
-                      <p>Subcategory (Optional)</p>
-                      <div class="line"></div>
-                      <input placeholder="Recipe Subcategory..." aria-label="Enter Recipe Subcategory" type="text">
-                    </div>
+                  <div class="input-container">
+                    <p>Estimated Time (Optional)</p>
+                    <div class="line"></div>
+                    <input placeholder="Recipe Estimated Time..." aria-label="Enter Recipe Estimated Time" type="text">
+                  </div>
 
-                    <div class="input-container">
-                      <p>Estimated Time (Optional)</p>
-                      <div class="line"></div>
-                      <input placeholder="Recipe Estimated Time..." aria-label="Enter Recipe Estimated Time"
-                        type="text">
-                    </div>
+                  <div class="submit-container">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
 
-
-                    <div class="submit-container">
-                      <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-
-
-
-
-
-
-
-                </div>
               </div>
-            </form>
-          </div>
-
+            </div>
+          </form>
         </div>
 
         <a class="fab">

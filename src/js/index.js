@@ -2,7 +2,7 @@
 
 // Fetch data
 let recipes;
-fetch('./jsonData.json')
+fetch('./jsonData_small.json')
   .then((response) => {
     return response.json();
   })
@@ -13,6 +13,22 @@ fetch('./jsonData.json')
     recipes = data;
     console.log(recipes);
   })
+
+
+let formOverlay = $('div.form-overlay');
+let body = $('body');
+// Handle Add recipe button
+$('div.fab').click(() => {
+  console.log(formOverlay);
+  formOverlay.removeClass('hidden');
+  body.addClass('noscroll')
+})
+
+// Handle form close
+$('span.close').click(() => {
+  formOverlay.addClass('hidden');
+  body.removeClass('noscroll');
+})
 
 // Add items to ingredients list
 let ingredientList = $('#ingredient-list');
@@ -53,8 +69,7 @@ function addIngredient(input, parent) {
   // Create new <li> with text and remove button
   let listItem = $(`<li class="list-item">
   <div class="list-item-contents">
-    <p>${inputValue}</p>
-    <img src="./img/minus.png"/>
+    <p>${inputValue}<img src="./img/minus.png"/></p>
     </div>
     </li>`);
   let minusIcon = listItem.find('img');
