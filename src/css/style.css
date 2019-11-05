@@ -696,11 +696,8 @@ p.recipe-title {
 	z-index: -1;
 }
 
-.box__uploading,
-.box__success,
-.box__error {
-  display: none;
-    margin-top: 40%;
+.error-message {
+    color: red;
 }
 
 /* End of File Input */

@@ -66,10 +66,14 @@ function addIngredient(input, parent) {
   listItem.appendTo(parent);
 }
 
+// Returns True if string ends with any of the given endings
+function endsWithAny(string, endings) {
+  return endings.some(function(ending) {
+    return string.endsWith(ending);
+  })
+}
 
-
-
-
+// TODO: Implement correct file handling. (jpg, png, svg, tif)
 // Visually handle file input. Modified code from source.
 /*
 	By Osvaldas Valutis, www.osvaldas.info
@@ -88,10 +92,14 @@ let droppedFile;
       droppedFile = this.files[0];
       fileName = droppedFile.name;
         
-      if (fileName)
-        $label.find('span').html(fileName);
-      else
-        $label.html(labelVal);
+      if (endsWithAny(fileName, ['jpg', 'png', 'tif', 'svg'])) {
+        span.html(fileName);
+        span.removeClass('error-message');
+      } else {
+        span.html('Invalid File Type. Try again with an image.')
+        span.addClass('error-message');
+        droppedFile = null;
+      }
     });
   });
 })(jQuery, window, document);
@@ -112,7 +120,16 @@ form.on('drag dragstart dragend dragover dragenter dragleave drop', function(e) 
 .on('drop', function(e) {
   droppedFile = e.originalEvent.dataTransfer.files[0];
   var fileName = droppedFile.name;
-  $('.input-clickable span').html(fileName);
+  let span = $('.input-clickable span');
+  if (endsWithAny(fileName, ['jpg', 'png', 'tif', 'svg'])) {
+    span.html(fileName);
+    span.removeClass('error-message');
+  } else {
+    span.html('Invalid File Type. Try again with an image.')
+    span.addClass('error-message');
+    droppedFile = null;
+  }
+  
 });
 
 
