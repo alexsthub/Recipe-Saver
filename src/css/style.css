@@ -724,8 +724,19 @@ h2 {
 
 .directions-container {
     margin-left: 4em;
+    width: 100%;
 }
 
 .clicked {
     transform: scale(1.02);
+}
+
+@media (max-width: 768px) {
+    .recipe-details {
+	flex-direction: column;
+    }
+
+    .directions-container {
+	margin-left: 0;
+    }
 }
