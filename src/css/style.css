@@ -534,8 +534,8 @@ p.recipe-title {
     float: right;
     font-size: 35px;
     font-weight: bold;
-  }
-  
+}
+
 .close:hover, .close:focus {
     color: #000;
     text-decoration: none;
@@ -621,7 +621,7 @@ p.recipe-title {
 }
 
 .my-float{
-	margin-top:22px;
+    margin-top:22px;
 }
 
 .horizontal {
@@ -689,11 +689,11 @@ p.recipe-title {
 
 .input-file {
     width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
 }
 
 .error-message {
