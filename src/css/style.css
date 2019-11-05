@@ -460,7 +460,7 @@ p.recipe-title {
 .noscroll { 
     overflow: hidden;
 }
-/* TODO: When the popup is clicked, put the noscroll class on the body   */
+/* TODO: When the popup is clicked, put the noscroll class on the body. When popup is gone. Remove it   */
 
 .form-overlay {
     position: fixed;
@@ -484,7 +484,6 @@ p.recipe-title {
     margin-right: auto;
     overflow-y: auto;
     background-color: white;
-
     border: 2px solid black;
 }
 
@@ -568,7 +567,7 @@ p.recipe-title {
 .list-input p {
     font-size: 14px;
     padding-right: 15px;
-    color: blue;
+    color: #5CA7DA;
     height: 100%;
 }
 
@@ -651,6 +650,13 @@ p.recipe-title {
     padding: 100px 20px;
     width: 100%;
     height: 250px;
+
+    display: flex;
+    justify-content: center;
+}
+
+.is-dragover {
+    background-color: grey;
 }
 
 .box-input {

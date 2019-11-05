@@ -70,14 +70,12 @@ function addIngredient(input, parent) {
 
 
 
-
-
-
-// Visually handle file input (I did not write this code)
+// Visually handle file input. Modified code from source.
 /*
 	By Osvaldas Valutis, www.osvaldas.info
 	Available for use under the MIT License
 */
+let droppedFile;
 ;
 (function ($) {
   $('.input-file').each(function () {
@@ -85,14 +83,11 @@ function addIngredient(input, parent) {
       $label = $input.next('label'),
       labelVal = $label.html();
 
-    $input.on('change', function (e) {
+    $input.on('change', function () {
       var fileName = '';
-
-      if (this.files && this.files.length > 1)
-        fileName = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files.length);
-      else if (e.target.value)
-        fileName = e.target.value.split('\\').pop();
-
+      droppedFile = this.files[0];
+      fileName = droppedFile.name;
+        
       if (fileName)
         $label.find('span').html(fileName);
       else
@@ -100,3 +95,27 @@ function addIngredient(input, parent) {
     });
   });
 })(jQuery, window, document);
+
+// Handle drag input
+var droppedFiles = false;
+let form = $('div.box');
+form.on('drag dragstart dragend dragover dragenter dragleave drop', function(e) {
+  e.preventDefault();
+  e.stopPropagation();
+})
+.on('dragover dragenter', function() {
+  form.addClass('is-dragover');
+})
+.on('dragleave dragend drop', function() {
+  form.removeClass('is-dragover');
+})
+.on('drop', function(e) {
+  droppedFile = e.originalEvent.dataTransfer.files[0];
+  var fileName = droppedFile.name;
+  $('.input-clickable span').html(fileName);
+});
+
+
+
+
+
