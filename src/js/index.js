@@ -3,7 +3,6 @@
 // Fetch data
 let recipes;
 fetch('./jsonData_small.json')
-<<<<<<< HEAD
     .then((response) => {
 	return response.json();
     })
@@ -11,86 +10,74 @@ fetch('./jsonData_small.json')
 	console.log(error.message);
     })
     .then((data) => {
-	recipes = data;
-	console.log(recipes);
-    })
-=======
-  .then((response) => {
-    return response.json();
-  })
-  .catch((error) => {
-    console.log(error.message);
-  })
-  .then((data) => {
-    let recipes = data.response;
-    // Sort by title
-    recipes.sort((a, b) => {
-      var textA = a.title.toUpperCase();
-      var textB = b.title.toUpperCase();
-      return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-    })
-    renderRecipes(recipes);
-  })
->>>>>>> 3d1caa6b55019f9ea0609a9e03c3696ae6e6bca6
+	let recipes = data.response;
+	// Sort by title
+	recipes.sort((a, b) => {
+	    var textA = a.title.toUpperCase();
+	    var textB = b.title.toUpperCase();
+	    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+	});
+	renderRecipes(recipes);
+    });
 
 function renderRecipes(recipes) {
-  // Delete all children
-  let recipeContainer = $('div.list-container');
-  recipeContainer.empty();
+    // Delete all children
+    let recipeContainer = $('div.list-container');
+    recipeContainer.empty();
 
-  recipes.forEach((recipe) => {
-    var firstLetter = recipe.title.charAt(0).toUpperCase();
-    let letterContainer = $(`div#${firstLetter}.letter-container`);
-    if (letterContainer.length > 0) {
-      // Append recipe to the list
-      addRecipeToList(letterContainer, recipe);
-    } else {
-      // Create new container and add recipe to container
-      createContainerWithRecipe(recipe, firstLetter);
-    }
-  })
+    recipes.forEach((recipe) => {
+	var firstLetter = recipe.title.charAt(0).toUpperCase();
+	let letterContainer = $(`div#${firstLetter}.letter-container`);
+	if (letterContainer.length > 0) {
+	    // Append recipe to the list
+	    addRecipeToList(letterContainer, recipe);
+	} else {
+	    // Create new container and add recipe to container
+	    createContainerWithRecipe(recipe, firstLetter);
+	}
+    })
 }
 
 function createContainerWithRecipe(recipe, letter) {
-  let newContainer = $(`
+    let newContainer = $(`
     <div id="${letter}" class="letter-container">
       <p class="alphabet-letter">${letter}.</p>      
     </div>`)
-  addRecipeToList(newContainer, recipe)
-  // find the correct parent that is right above 
-  addToCorrectParent(letter, newContainer)
+    addRecipeToList(newContainer, recipe)
+    // find the correct parent that is right above 
+    addToCorrectParent(letter, newContainer)
 }
 
 function addToCorrectParent(letter, newContainer) {
-  let allLetterContainers = $('div.letter-container');
-  if (allLetterContainers.length === 0) {
-    newContainer.appendTo($('div.list-container'));
-  } else if (allLetterContainers.length === 1) {
-    let container = allLetterContainers[0];
-    if (letter > container.id) {
-      newContainer.insertBefore(container);
+    let allLetterContainers = $('div.letter-container');
+    if (allLetterContainers.length === 0) {
+	newContainer.appendTo($('div.list-container'));
+    } else if (allLetterContainers.length === 1) {
+	let container = allLetterContainers[0];
+	if (letter < container.id) {
+	    newContainer.insertBefore(container);
+	} else {
+	    newContainer.insertAfter(container);
+	}
     } else {
-      newContainer.insertAfter(container);
-    }
-  } else {
-    for (var i = 0; i < allLetterContainers.length; i++) {
+	for (var i = 0; i < allLetterContainers.length; i++) {
 
-      let current = allLetterContainers[i]
-      let next = allLetterContainers[i + 1]
-      if (letter < current.id) {
-        newContainer.insertBefore(current);
-      } else if (!next && letter > current.id) {
-        newContainer.insertAfter(current);
-      } else if (letter > current.id && letter < next.id) {
-        newContainer.insertAfter(current)
-      }
+	    let current = allLetterContainers[i]
+	    let next = allLetterContainers[i + 1]
+	    if (letter < current.id) {
+		newContainer.insertBefore(current);
+	    } else if (!next && letter > current.id) {
+		newContainer.insertAfter(current);
+	    } else if (letter > current.id && letter < next.id) {
+		newContainer.insertAfter(current)
+	    }
+	}
     }
-  }
 }
 
 
 function addRecipeToList(parent, recipe) {
-  let newRecipe = $(`
+    let newRecipe = $(`
   <div class="recipe-group">
     <div class="recipe-letter-container">
       <div class="recipe">
@@ -107,7 +94,7 @@ function addRecipeToList(parent, recipe) {
       </div>
     </div>
   </div>`)
-  newRecipe.appendTo(parent);
+    newRecipe.appendTo(parent);
 }
 
 
@@ -118,14 +105,8 @@ let formOverlay = $('div.form-overlay');
 let body = $('body');
 // Handle Add recipe button
 $('div.fab').click(() => {
-<<<<<<< HEAD
-    console.log(formOverlay);
     formOverlay.removeClass('hidden');
     body.addClass('noscroll')
-=======
-  formOverlay.removeClass('hidden');
-  body.addClass('noscroll')
->>>>>>> 3d1caa6b55019f9ea0609a9e03c3696ae6e6bca6
 })
 
 // Handle form close
@@ -247,7 +228,7 @@ form.on('drag dragstart dragend dragover dragenter dragleave drop', function (e)
 	    span.html(fileName);
 	    span.removeClass('error-message');
 	} else {
-	    span.html('Invalid File Type. Try again with an image.');
+	    span.html('Invalid File Type. Try again with an image.')
 	    span.addClass('error-message');
 	    droppedFile = null;
 	}
@@ -256,15 +237,16 @@ form.on('drag dragstart dragend dragover dragenter dragleave drop', function (e)
 
 // function searches for recipes given target string
 function searchRecipes(target) {
-    return recipes.response.filter(x => x.title.toLowerCase().includes(target.toLowerCase()));
-    
+    return recipes.response.filter(x => x.title.toLowerCase().includes(target.toLowerCase()));    
 }
 
 // perform search 
-$(".search-button")[0].click(function() {
-    let str = $(".search")[0].val();
+$(".search-button").on("input", function() {
+    //console.log("searche!");
+    let str = $(".search").val();
+    //console.log(str);
     if (val.length == 0) {
-
+	renderRecipes(recipes);
     } else {
 	renderRecipes(searchRecipes(str));
     }
