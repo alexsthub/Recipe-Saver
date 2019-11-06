@@ -232,6 +232,7 @@ p.recipe-title {
 }
 
 .form-container h1 {
+    text-align: center;
     font-style: italic;
 }
 
@@ -318,7 +319,6 @@ p.recipe-title {
 .list-input p:hover {
     cursor: pointer;
 }
-
 
 .list-item p {
     font-size: 20px;
@@ -418,6 +418,7 @@ p.recipe-title {
 
 .box span {
     margin-top: 10px;
+    text-align: center;
 }
 
 .box .input-clickable {
