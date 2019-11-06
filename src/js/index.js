@@ -10,7 +10,7 @@ fetch('./jsonData_small.json')
     console.log(error.message);
   })
   .then((data) => {
-    let recipes = data.response;
+    recipes = data.response;
     renderRecipes(recipes);
   })
 
@@ -90,10 +90,6 @@ function addRecipeToList(parent, recipe) {
   </div>`)
   newRecipe.appendTo(parent);
 }
-
-
-
-
 
 let formOverlay = $('div.form-overlay');
 let body = $('body');
@@ -235,7 +231,8 @@ function searchRecipes(target) {
 
 // perform search
 
-$(".search-button").click(() => {
+$(".search-button").click((event) => {
+    event.preventDefault();
     console.log("entered");
     let str = $(".search").val();
     if (str.length == 0) {
@@ -246,8 +243,12 @@ $(".search-button").click(() => {
     }
 });
 
+/*
 // render favorites and render all
-$(".topbar > .nav > a")[1].click(() => renderRecipes(recipes.filter(x => x.isFavorite)));
+$(".topbar > .nav > a")[1].click((event) => {
+    event.preventDefault();
+    renderRecipes(recipes.filter(x => x.isFavorite));
+});
 $(".topbar > .nav > a")[0].click(() => renderRecipes(recipes));
 
 // toggle favorite
@@ -261,3 +262,4 @@ $(".favoriteIcon").click(function() {
 	recipes[index].isFavorite = true;
     }
 });
+*/
