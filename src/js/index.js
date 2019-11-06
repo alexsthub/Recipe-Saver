@@ -1,6 +1,7 @@
 'use strict';
 
 // Fetch data
+
 let recipes;
 fetch('./jsonData_small.json')
     .then((response) => {
@@ -10,42 +11,40 @@ fetch('./jsonData_small.json')
 	console.log(error.message);
     })
     .then((data) => {
-	let recipes = data.response;
-	// Sort by title
-	recipes.sort((a, b) => {
-	    var textA = a.title.toUpperCase();
-	    var textB = b.title.toUpperCase();
-	    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-	});
+	recipes = data.response;
 	renderRecipes(recipes);
-    });
+});
 
-function renderRecipes(recipes) {
+
+renderRecipes(recipes);
+
+function renderRecipes(list) {
     // Delete all children
     let recipeContainer = $('div.list-container');
     recipeContainer.empty();
-
-    recipes.forEach((recipe) => {
+    let count = 1;
+    list.forEach((recipe) => {
 	var firstLetter = recipe.title.charAt(0).toUpperCase();
 	let letterContainer = $(`div#${firstLetter}.letter-container`);
 	if (letterContainer.length > 0) {
 	    // Append recipe to the list
-	    addRecipeToList(letterContainer, recipe);
+	    addRecipeToList(letterContainer, recipe, count);
 	} else {
 	    // Create new container and add recipe to container
-	    createContainerWithRecipe(recipe, firstLetter);
+	    createContainerWithRecipe(recipe, firstLetter, count);
 	}
-    })
+	count++;
+    });
 }
 
-function createContainerWithRecipe(recipe, letter) {
+function createContainerWithRecipe(recipe, letter, count) {
     let newContainer = $(`
     <div id="${letter}" class="letter-container">
       <p class="alphabet-letter">${letter}.</p>      
-    </div>`)
-    addRecipeToList(newContainer, recipe)
+    </div>`);
+    addRecipeToList(newContainer, recipe, count);
     // find the correct parent that is right above 
-    addToCorrectParent(letter, newContainer)
+    addToCorrectParent(letter, newContainer);
 }
 
 function addToCorrectParent(letter, newContainer) {
@@ -62,23 +61,23 @@ function addToCorrectParent(letter, newContainer) {
     } else {
 	for (var i = 0; i < allLetterContainers.length; i++) {
 
-	    let current = allLetterContainers[i]
-	    let next = allLetterContainers[i + 1]
+	    let current = allLetterContainers[i];
+	    let next = allLetterContainers[i + 1];
 	    if (letter < current.id) {
 		newContainer.insertBefore(current);
 	    } else if (!next && letter > current.id) {
 		newContainer.insertAfter(current);
 	    } else if (letter > current.id && letter < next.id) {
-		newContainer.insertAfter(current)
+		newContainer.insertAfter(current);
 	    }
 	}
     }
 }
 
 
-function addRecipeToList(parent, recipe) {
+function addRecipeToList(parent, recipe, count) {
     let newRecipe = $(`
-  <div class="recipe-group">
+  <div class="recipe-group" id="recipe${count}">
     <div class="recipe-letter-container">
       <div class="recipe">
         <img class="foodimage" alt="${recipe.title}" src="./recipeImages/${recipe.title}.jpg" />
@@ -93,7 +92,7 @@ function addRecipeToList(parent, recipe) {
         </div>
       </div>
     </div>
-  </div>`)
+  </div>`);
     newRecipe.appendTo(parent);
 }
 
@@ -106,14 +105,14 @@ let body = $('body');
 // Handle Add recipe button
 $('div.fab').click(() => {
     formOverlay.removeClass('hidden');
-    body.addClass('noscroll')
-})
+    body.addClass('noscroll');
+});
 
 // Handle form close
 $('span.close').click(() => {
     formOverlay.addClass('hidden');
     body.removeClass('noscroll');
-})
+});
 
 // Add items to ingredients list
 let ingredientList = $('#ingredient-list');
@@ -122,14 +121,14 @@ let ingredientAdd = $('#ingredient-add');
 // On Add Click
 ingredientAdd.click(() => {
     addIngredient(ingredientInput, ingredientList);
-})
+});
 // On Enter Press
 ingredientInput.keypress((event) => {
     if (event.which == 13) {
 	addIngredient(ingredientInput, ingredientList);
 	event.preventDefault();
     }
-})
+});
 
 // Add items to procedure list
 let procedureList = $('#procedure-list');
@@ -138,13 +137,13 @@ let procedureAdd = $('#procedure-add');
 // On Add Click
 procedureAdd.click(() => {
     addIngredient(procedureInput, procedureList);
-})
+});
 procedureInput.keypress((event) => {
     if (event.which == 13) {
 	addIngredient(procedureInput, procedureList);
 	event.preventDefault();
     }
-})
+});
 
 // Function to add item to parent list
 function addIngredient(input, parent) {
@@ -162,7 +161,7 @@ function addIngredient(input, parent) {
 	var target = $(event.target);
 	let parentDiv = target.parents('.list-item');
 	parentDiv.remove();
-    })
+    });
     listItem.appendTo(parent);
 }
 
@@ -170,7 +169,7 @@ function addIngredient(input, parent) {
 function endsWithAny(string, endings) {
     return endings.some(function (ending) {
 	return string.endsWith(ending);
-    })
+    });
 }
 
 // Visually handle file input. Modified code from source.
@@ -198,7 +197,7 @@ let droppedFile;;
 		    span.html(fileName);
 		    span.removeClass('error-message');
 		} else {
-		    span.html('Invalid File Type. Try again with an image.')
+		    span.html('Invalid File Type. Try again with an image.');
 		    span.addClass('error-message');
 		    droppedFile = null;
 		}
@@ -228,7 +227,7 @@ form.on('drag dragstart dragend dragover dragenter dragleave drop', function (e)
 	    span.html(fileName);
 	    span.removeClass('error-message');
 	} else {
-	    span.html('Invalid File Type. Try again with an image.')
+	    span.html('Invalid File Type. Try again with an image.');
 	    span.addClass('error-message');
 	    droppedFile = null;
 	}
@@ -237,17 +236,42 @@ form.on('drag dragstart dragend dragover dragenter dragleave drop', function (e)
 
 // function searches for recipes given target string
 function searchRecipes(target) {
-    return recipes.response.filter(x => x.title.toLowerCase().includes(target.toLowerCase()));    
+    return recipes.filter(x => x.title.toLowerCase().includes(target.toLowerCase()));
 }
 
-// perform search 
-$(".search-button").on("input", function() {
-    //console.log("searche!");
+// perform search
+
+$(".search-button").on("input", () => {
     let str = $(".search").val();
-    //console.log(str);
     if (val.length == 0) {
 	renderRecipes(recipes);
     } else {
 	renderRecipes(searchRecipes(str));
+    }
+});
+
+function getNameFromRecipeId(id) {
+    return $(`#${id} > .recipe-letter-container > .recipe > .recipe-info > .title-container > .recipe-title`).text();
+}
+/*
+$(".recipe-group").click(function() {
+    let current = this.id;
+    let name;
+});
+*/
+
+// render favorites and render all
+$(".topbar > .nav > a")[1].click(renderRecipes(recipes.filter(x => x.isFavorite)));
+$(".topbar > .nav > a")[0].click(renderRecipes(recipes));
+
+// toggle favorite
+$(".favoriteIcon").click(function() {
+    let index = $(".favoriteIcon").index(this);
+    if ($("favoriteIcon")[index].attr("src") == "img/star-true.png") {
+	$("favoriteIcon")[index].attr("src") = "img/star-false.png";
+	recipes[index].isFavorite = false;
+    } else {
+	$("favoriteIcon")[index].attr("src") = "img/star-true.png";
+	recipes[index].isFavorite = true;
     }
 });
