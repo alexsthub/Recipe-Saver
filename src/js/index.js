@@ -10,9 +10,7 @@ fetch('./jsonData_small.json')
     console.log(error.message);
   })
   .then((data) => {
-    console.log(data);
     recipes = data.response;
-    console.log(recipes);
     renderRecipes(recipes);
   })
 
@@ -349,6 +347,26 @@ function renderModal() {
       times: null,
       isFavorite: isFavorite,
     }
+
+    // Download file
+    let fr = new FileReader()
+    fr.readAsDataURL(droppedFile);
+
+    var blob = new Blob([file]);
+    var objectUrl = window.URL.createObjectURL(blob);
+    console.log(objectUrl);
+    if (navigator.appVersion.toString().indexOf('.NET') > 0) {
+      window.navigator.msSaveOrOpenBlob(blob, droppedFile.name);
+    } else {
+      var link = $('<a></a>');
+      link.attr("href", objectUrl);
+      link.attr("download", droppedFile.name);
+      console.log(link);  
+      link.appendTo($('body'));
+      link.click();
+      link.remove();
+    }
+
     console.log(newRecipe);
   })
 
@@ -409,7 +427,6 @@ let droppedFile;;
       labelVal = $label.html();
 
     $input.on('change', function () {
-      console.log(this.files.length);
       if (this.files.length > 0) {
         var fileName = '';
         droppedFile = this.files[0];
@@ -485,4 +502,3 @@ $(".topbar > .nav > .all").click(() => {
   $(".all").addClass("selected");
   renderRecipes(recipes);
 });
-
