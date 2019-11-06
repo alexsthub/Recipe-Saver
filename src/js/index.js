@@ -10,7 +10,9 @@ fetch('./jsonData_small.json')
     console.log(error.message);
   })
   .then((data) => {
+    console.log(data);
     recipes = data.response;
+    console.log(recipes);
     renderRecipes(recipes);
   })
 
