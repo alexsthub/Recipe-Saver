@@ -149,10 +149,6 @@ form button.search-button:hover {
     cursor: pointer;
 }
 
-.recipe-group {
-    background-color: pink;
-}
-
 div.recipe {
     display: flex;
     flex-direction: row;
@@ -164,7 +160,7 @@ div.recipe img.foodimage {
     width: 100px;
 }
 
-div.recipe img.favoriteIcon {
+img.favoriteIcon {
     height: 20px;
     width: 20px;
 }
@@ -193,8 +189,8 @@ p.recipe-title {
     font-size: 24px;
 }
 
-.favorite-icon {
-    margin-top: 0px;
+.favoriteIcon:hover {
+    cursor: pointer;
 }
 
 .line {
@@ -347,6 +343,11 @@ p.recipe-title {
     align-items: center;
     padding-right: 16px;
 }
+
+#favorite-text {
+    margin-left: 15px;
+}
+
 /* End of form */
 
 /* Floating Action Button */
