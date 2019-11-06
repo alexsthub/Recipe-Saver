@@ -143,6 +143,12 @@ form button.search-button:hover {
     border-radius: 10px;
 }
 
+.recipe-details {
+    border-radius: 10px;
+    border: 1px solid black;
+    padding: 1em;
+}
+
 .recipe-letter-container:hover {
     box-shadow: 0 12px 24px 0 rgba(0,0,0,0.2);
     transform: scale(1.02);

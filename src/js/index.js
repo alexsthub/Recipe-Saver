@@ -78,34 +78,33 @@ function addToCorrectParent(letter, newContainer) {
 
 // build recipe details
 function addRecipeDetails(parent, recipe) {
-    let ingredients = recipe.ingredients.split("|");
-    let procedure = recipe.procedure.split("|");
-    let recipeDetails = $(`
-<div class="recipe-details">
-                <div class="ingredients">
-                  <h2>Ingredients:</h2>
-                  <ul>
-                    ${ingredients.reduce((acc, curr) => acc + "<li>" + curr + "</li>", "")}
-                  </ul>
-                </div>
-                <div class="directions-container">
-                  <h2>Directions:</h2>
-                  <div class="time">
-                    <i class="fa fa-clock-o" aria-hidden="true"></i> ${recipe.estimatedTime} min
-                  </div>
-                  <div class="directions">
-                    <ol>
-                      ${procedure.reduce((acc, curr) => acc + "<li>" + curr + "</li>", "")}
-                    </ol>
-                  </div>
-                </div>
-              </div>
-`)
-    recipeDetails.appendTo(parent);
+  let ingredients = recipe.ingredients.split("|");
+  let procedure = recipe.procedure.split("|");
+  let recipeDetails = $(`
+    <div class="recipe-details">
+      <div class="ingredients">
+        <h2>Ingredients:</h2>
+          <ul>
+            ${ingredients.reduce((acc, curr) => acc + "<li>" + curr + "</li>", "")}
+          </ul>
+      </div>
+      <div class="directions-container">
+        <h2>Directions:</h2>
+        <div class="time">
+          <i class="fa fa-clock-o" aria-hidden="true"></i> ${recipe.estimatedTime} min
+        </div>
+        <div class="directions">
+          <ol>
+            ${procedure.reduce((acc, curr) => acc + "<li>" + curr + "</li>", "")}
+          </ol>
+        </div>
+      </div>
+    </div>`)
+  recipeDetails.appendTo(parent);
 }
 
 function addRecipeToList(parent, recipe) {
-    let newRecipe = $(`
+  let newRecipe = $(`
   <div class="recipe-group">
     <div class="recipe-letter-container">
       <div class="recipe">
@@ -123,33 +122,28 @@ function addRecipeToList(parent, recipe) {
     </div>
   </div>`);
 
-    // toggle favorite
-    let favoriteIcon = newRecipe.find('img.favoriteIcon');
-    favoriteIcon.click(event => {
-	event.stopPropagation();
-	if (recipe.isFavorite) {
-	    favoriteIcon.attr("src", "img/star-false.png");
-	    recipe.isFavorite = false;
-	} else {
-	    favoriteIcon.attr("src", "img/star-true.png");
-	    recipe.isFavorite = true;
-	}
-    });
+  // toggle favorite
+  let favoriteIcon = newRecipe.find('img.favoriteIcon');
+  favoriteIcon.click(event => {
+    event.stopPropagation();
+    if (recipe.isFavorite) {
+      favoriteIcon.attr("src", "img/star-false.png");
+      recipe.isFavorite = false;
+    } else {
+      favoriteIcon.attr("src", "img/star-true.png");
+      recipe.isFavorite = true;
+    }
+  });
 
-    // toggle recipe details
-    newRecipe.click(() => {
-	console.log("registered click");
-	if (newRecipe.children(".recipe-details").length > 0) {
-	    console.log("remove details");
-	    newRecipe.children(".recipe-details").remove();
-	} else {
-	    console.log("add details");
-	    addRecipeDetails(newRecipe, recipe);
-	}
-    });
-
-    newRecipe.appendTo(parent);
-    
+  // toggle recipe details
+  newRecipe.find('div.recipe-letter-container').click(() => {
+    if (newRecipe.children(".recipe-details").length > 0) {
+      newRecipe.children(".recipe-details").remove();
+    } else {
+      addRecipeDetails(newRecipe, recipe);
+    }
+  });
+  newRecipe.appendTo(parent);
 }
 
 $('div.fab').click(() => {
@@ -404,7 +398,7 @@ function renderModal() {
       var link = $('<a></a>');
       link.attr("href", objectUrl);
       link.attr("download", droppedFile.name);
-      console.log(link);  
+      console.log(link);
       link.appendTo($('body'));
       link.click();
       link.remove();
