@@ -1,5 +1,7 @@
 'use strict';
 
+// TODO: If image DNE, then it should display default
+
 // Fetch data
 let recipes;
 fetch('./jsonData_small.json')
@@ -108,7 +110,7 @@ function addRecipeToList(parent, recipe) {
   <div class="recipe-group">
     <div class="recipe-letter-container">
       <div class="recipe">
-        <img class="foodimage" alt="${recipe.title}" src="./recipeImages/${recipe.title}.jpg" />
+        <img class="foodimage" alt="${recipe.imageName ? recipe.imageName : 'recipe saver logo'}" src="./recipeImages/${recipe.imageName ? recipe.imageName : 'default.jpg'}" />
         <div class="recipe-info">
           <div class="title-container">
             <p class="recipe-title">${recipe.title}</p>
