@@ -352,45 +352,6 @@ function retrieveListItems(list) {
   })
   return string.slice(0, -1);
 }
-formOverlay.removeClass('hidden');
-body.addClass('noscroll')
-
-// Handle form close
-$('span.close').click(() => {
-  formOverlay.addClass('hidden');
-  body.removeClass('noscroll');
-})
-
-// Add items to ingredients list
-let ingredientList = $('#ingredient-list');
-let ingredientInput = $('#ingredient-input');
-let ingredientAdd = $('#ingredient-add');
-// On Add Click
-ingredientAdd.click(() => {
-  addIngredient(ingredientInput, ingredientList);
-})
-// On Enter Press
-ingredientInput.keypress((event) => {
-  if (event.which == 13) {
-    addIngredient(ingredientInput, ingredientList);
-    event.preventDefault();
-  }
-})
-
-// Add items to procedure list
-let procedureList = $('#procedure-list');
-let procedureInput = $('#procedure-input');
-let procedureAdd = $('#procedure-add');
-// On Add Click
-procedureAdd.click(() => {
-  addIngredient(procedureInput, procedureList);
-})
-procedureInput.keypress((event) => {
-  if (event.which == 13) {
-    addIngredient(procedureInput, procedureList);
-    event.preventDefault();
-  }
-})
 
 // Function to add item to parent list
 function addIngredient(input, parent) {
@@ -513,7 +474,6 @@ $(".topbar > .nav > .all").click(() => {
 
 // toggle favorite
 $("main").on("click", ".favoriteIcon", function () {
-  console.log("favorite clicked");
   if ($(this).attr("src").includes("true")) {
     $(this).attr("src", "img/star-false.png");
   } else {
@@ -523,7 +483,6 @@ $("main").on("click", ".favoriteIcon", function () {
   for (let i = 0; i < recipes.length; i++) {
     if (recipes[i].title == name) {
       recipes[i].isFavorite = !recipes[i].isFavorite;
-      console.log(name + ": " + recipes[i].isFavorite);
       break;
     }
   }
