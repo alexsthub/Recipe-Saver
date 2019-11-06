@@ -243,23 +243,16 @@ $(".search-button").click((event) => {
     }
 });
 
-/*
+
 // render favorites and render all
-$(".topbar > .nav > a")[1].click((event) => {
-    event.preventDefault();
+$(".topbar > .nav > .favorite").click(() => {
+    console.log("favorite");
     renderRecipes(recipes.filter(x => x.isFavorite));
 });
-$(".topbar > .nav > a")[0].click(() => renderRecipes(recipes));
+$(".topbar > .nav > .all").click(() => renderRecipes(recipes));
 
 // toggle favorite
 $(".favoriteIcon").click(function() {
-    let index = $(".favoriteIcon").index(this);
-    if ($("favoriteIcon")[index].attr("src") == "img/star-true.png") {
-	$("favoriteIcon")[index].attr("src") = "img/star-false.png";
-	recipes[index].isFavorite = false;
-    } else {
-	$("favoriteIcon")[index].attr("src") = "img/star-true.png";
-	recipes[index].isFavorite = true;
-    }
+    console.log("clicked star");
 });
-*/
+
