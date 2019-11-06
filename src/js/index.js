@@ -3,75 +3,80 @@
 // Fetch data
 let recipes;
 fetch('./jsonData_small.json')
-  .then((response) => {
-    return response.json();
-  })
-  .catch((error) => {
-    console.log(error.message);
-  })
-  .then((data) => {
-    recipes = data.response;
-    renderRecipes(recipes);
-  })
+    .then((response) => {
+	return response.json();
+    })
+    .catch((error) => {
+	console.log(error.message);
+    })
+    .then((data) => {
+	recipes = data.response;
+	recipes.sort((a, b) => {
+	    var textA = a.title.toUpperCase();
+	    var textB = b.title.toUpperCase();
+	    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+	})
+	renderRecipes(recipes);
+    })
 
 function renderRecipes(recipes) {
-  // Delete all children
-  let recipeContainer = $('div.list-container');
-  recipeContainer.empty();
+    // Delete all children
+    let recipeContainer = $('div.list-container');
+    recipeContainer.empty();
 
-  recipes.forEach((recipe) => {
-    var firstLetter = recipe.title.charAt(0).toUpperCase();
-    let letterContainer = $(`div#${firstLetter}.letter-container`);
-    if (letterContainer.length > 0) {
-      // Append recipe to the list
-      addRecipeToList(letterContainer, recipe);
-    } else {
-      // Create new container and add recipe to container
-      createContainerWithRecipe(recipe, firstLetter);
-    }
-  })
+    recipes.forEach((recipe) => {
+	var firstLetter = recipe.title.charAt(0).toUpperCase();
+	let letterContainer = $(`div#${firstLetter}.letter-container`);
+	if (letterContainer.length > 0) {
+	    // Append recipe to the list
+	    addRecipeToList(letterContainer, recipe);
+	} else {
+	    // Create new container and add recipe to container
+	    createContainerWithRecipe(recipe, firstLetter);
+	}
+    })
 }
 
 function createContainerWithRecipe(recipe, letter) {
-  let newContainer = $(`
+    let newContainer = $(`
     <div id="${letter}" class="letter-container">
       <p class="alphabet-letter">${letter}.</p>      
     </div>`)
-  addRecipeToList(newContainer, recipe)
-  // find the correct parent that is right above 
-  addToCorrectParent(letter, newContainer)
+    addRecipeToList(newContainer, recipe)
+    // find the correct parent that is right above 
+    addToCorrectParent(letter, newContainer)
 }
 
 function addToCorrectParent(letter, newContainer) {
-  let allLetterContainers = $('div.letter-container');
-  if (allLetterContainers.length === 0) {
-    newContainer.appendTo($('div.list-container'));
-  } else if (allLetterContainers.length === 1) {
-    let container = allLetterContainers[0];
-    if (letter < container.id) {
-      newContainer.insertBefore(container);
+    let allLetterContainers = $('div.letter-container');
+    if (allLetterContainers.length === 0) {
+	newContainer.appendTo($('div.list-container'));
+    } else if (allLetterContainers.length === 1) {
+	let container = allLetterContainers[0];
+	if (letter < container.id) {
+	    newContainer.insertBefore(container);
+	} else {
+	    newContainer.insertAfter(container);
+	}
     } else {
-      newContainer.insertAfter(container);
-    }
-  } else {
-    for (var i = 0; i < allLetterContainers.length; i++) {
+	for (var i = 0; i < allLetterContainers.length; i++) {
 
-      let current = allLetterContainers[i]
-      let next = allLetterContainers[i + 1]
-      if (letter < current.id) {
-        newContainer.insertBefore(current);
-      } else if (!next && letter > current.id) {
-        newContainer.insertAfter(current);
-      } else if (letter > current.id && letter < next.id) {
-        newContainer.insertAfter(current)
-      }
+	    let current = allLetterContainers[i]
+	    let next = allLetterContainers[i + 1]
+	    if (letter < current.id) {
+		newContainer.insertBefore(current);
+	    } else if (!next && letter > current.id) {
+		newContainer.insertAfter(current);
+	    } else if (letter > current.id && letter < next.id) {
+		newContainer.insertAfter(current)
+	    }
+	}
     }
-  }
 }
 
 
 function addRecipeToList(parent, recipe) {
-  let newRecipe = $(`
+    let newRecipe = $(`
   <div class="recipe-group">
     <div class="recipe-letter-container">
       <div class="recipe">
@@ -88,21 +93,21 @@ function addRecipeToList(parent, recipe) {
       </div>
     </div>
   </div>`)
-  newRecipe.appendTo(parent);
+    newRecipe.appendTo(parent);
 }
 
 let formOverlay = $('div.form-overlay');
 let body = $('body');
 // Handle Add recipe button
 $('div.fab').click(() => {
-  formOverlay.removeClass('hidden');
-  body.addClass('noscroll')
+    formOverlay.removeClass('hidden');
+    body.addClass('noscroll')
 })
 
 // Handle form close
 $('span.close').click(() => {
-  formOverlay.addClass('hidden');
-  body.removeClass('noscroll');
+    formOverlay.addClass('hidden');
+    body.removeClass('noscroll');
 })
 
 // Add items to ingredients list
@@ -111,14 +116,14 @@ let ingredientInput = $('#ingredient-input');
 let ingredientAdd = $('#ingredient-add');
 // On Add Click
 ingredientAdd.click(() => {
-  addIngredient(ingredientInput, ingredientList);
+    addIngredient(ingredientInput, ingredientList);
 })
 // On Enter Press
 ingredientInput.keypress((event) => {
-  if (event.which == 13) {
-    addIngredient(ingredientInput, ingredientList);
-    event.preventDefault();
-  }
+    if (event.which == 13) {
+	addIngredient(ingredientInput, ingredientList);
+	event.preventDefault();
+    }
 })
 
 // Add items to procedure list
@@ -127,74 +132,74 @@ let procedureInput = $('#procedure-input');
 let procedureAdd = $('#procedure-add');
 // On Add Click
 procedureAdd.click(() => {
-  addIngredient(procedureInput, procedureList);
+    addIngredient(procedureInput, procedureList);
 })
 procedureInput.keypress((event) => {
-  if (event.which == 13) {
-    addIngredient(procedureInput, procedureList);
-    event.preventDefault();
-  }
+    if (event.which == 13) {
+	addIngredient(procedureInput, procedureList);
+	event.preventDefault();
+    }
 })
 
 // Function to add item to parent list
 function addIngredient(input, parent) {
-  var inputValue = input.val();
-  input.val('');
+    var inputValue = input.val();
+    input.val('');
 
-  // Create new <li> with text and remove button
-  let listItem = $(`<li class="list-item">
+    // Create new <li> with text and remove button
+    let listItem = $(`<li class="list-item">
   <div class="list-item-contents">
     <p>${inputValue}<img src="./img/minus.png"/></p>
     </div>
     </li>`);
-  let minusIcon = listItem.find('img');
-  minusIcon.click((event) => {
-    var target = $(event.target);
-    let parentDiv = target.parents('.list-item');
-    parentDiv.remove();
-  })
-  listItem.appendTo(parent);
+    let minusIcon = listItem.find('img');
+    minusIcon.click((event) => {
+	var target = $(event.target);
+	let parentDiv = target.parents('.list-item');
+	parentDiv.remove();
+    })
+    listItem.appendTo(parent);
 }
 
 // Returns True if string ends with any of the given endings
 function endsWithAny(string, endings) {
-  return endings.some(function (ending) {
-    return string.endsWith(ending);
-  })
+    return endings.some(function (ending) {
+	return string.endsWith(ending);
+    })
 }
 
 // Visually handle file input. Modified code from source.
 /*
-	By Osvaldas Valutis, www.osvaldas.info
-	Available for use under the MIT License
+  By Osvaldas Valutis, www.osvaldas.info
+  Available for use under the MIT License
 */
 
 let droppedFile;;
 (function ($) {
-  $('.input-file').each(function () {
-    var $input = $(this),
-      $label = $input.next('label'),
-      labelVal = $label.html();
+    $('.input-file').each(function () {
+	var $input = $(this),
+	    $label = $input.next('label'),
+	    labelVal = $label.html();
 
-    $input.on('change', function () {
-      console.log(this.files.length);
-      if (this.files.length > 0) {
-        var fileName = '';
-        droppedFile = this.files[0];
-        fileName = droppedFile.name;
+	$input.on('change', function () {
+	    console.log(this.files.length);
+	    if (this.files.length > 0) {
+		var fileName = '';
+		droppedFile = this.files[0];
+		fileName = droppedFile.name;
 
-        var span = $label.find('span');
-        if (endsWithAny(fileName, ['jpg', 'png', 'tif', 'svg'])) {
-          span.html(fileName);
-          span.removeClass('error-message');
-        } else {
-          span.html('Invalid File Type. Try again with an image.')
-          span.addClass('error-message');
-          droppedFile = null;
-        }
-      }
+		var span = $label.find('span');
+		if (endsWithAny(fileName, ['jpg', 'png', 'tif', 'svg'])) {
+		    span.html(fileName);
+		    span.removeClass('error-message');
+		} else {
+		    span.html('Invalid File Type. Try again with an image.')
+		    span.addClass('error-message');
+		    droppedFile = null;
+		}
+	    }
+	});
     });
-  });
 })(jQuery, window, document);
 
 // Handle drag input
@@ -203,27 +208,27 @@ let form = $('div.box');
 form.on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
     e.preventDefault();
     e.stopPropagation();
-  })
-  .on('dragover dragenter', function () {
-    form.addClass('is-dragover');
-  })
-  .on('dragleave dragend drop', function () {
-    form.removeClass('is-dragover');
-  })
-  .on('drop', function (e) {
-    droppedFile = e.originalEvent.dataTransfer.files[0];
-    var fileName = droppedFile.name;
-    let span = $('.input-clickable span');
-    if (endsWithAny(fileName, ['jpg', 'png', 'tif', 'svg'])) {
-      span.html(fileName);
-      span.removeClass('error-message');
-    } else {
-      span.html('Invalid File Type. Try again with an image.')
-      span.addClass('error-message');
-      droppedFile = null;
-    }
+})
+    .on('dragover dragenter', function () {
+	form.addClass('is-dragover');
+    })
+    .on('dragleave dragend drop', function () {
+	form.removeClass('is-dragover');
+    })
+    .on('drop', function (e) {
+	droppedFile = e.originalEvent.dataTransfer.files[0];
+	var fileName = droppedFile.name;
+	let span = $('.input-clickable span');
+	if (endsWithAny(fileName, ['jpg', 'png', 'tif', 'svg'])) {
+	    span.html(fileName);
+	    span.removeClass('error-message');
+	} else {
+	    span.html('Invalid File Type. Try again with an image.')
+	    span.addClass('error-message');
+	    droppedFile = null;
+	}
 
-  });
+    });
 // function searches for recipes given target string
 function searchRecipes(target) {
     return recipes.filter(x => x.title.toLowerCase().includes(target.toLowerCase()));
@@ -247,12 +252,31 @@ $(".search-button").click((event) => {
 // render favorites and render all
 $(".topbar > .nav > .favorite").click(() => {
     console.log("favorite");
+    $(".favorite").addClass("selected");
+    $(".all").removeClass("selected");
     renderRecipes(recipes.filter(x => x.isFavorite));
 });
-$(".topbar > .nav > .all").click(() => renderRecipes(recipes));
+$(".topbar > .nav > .all").click(() => {
+    $(".favorite").removeClass("selected");
+    $(".all").addClass("selected");
+    renderRecipes(recipes);
+});
 
 // toggle favorite
-$(".favoriteIcon").click(function() {
-    console.log("clicked star");
+$("main").on("click", ".favoriteIcon", function() {
+    console.log("favorite clicked");
+    if ($(this).attr("src").includes("true")) {
+	$(this).attr("src", "img/star-false.png");
+    } else {
+	$(this).attr("src", "img/star-true.png");
+    }
+    let name = $(this).siblings()[0].innerHTML;
+    for (let i = 0; i < recipes.length; i++) {
+	if (recipes[i].title == name) {
+	    recipes[i].isFavorite = !recipes[i].isFavorite;
+	    console.log(name + ": " + recipes[i].isFavorite);
+	    break;
+	}
+    }
 });
 
