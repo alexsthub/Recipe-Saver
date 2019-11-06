@@ -125,7 +125,8 @@ function addRecipeToList(parent, recipe) {
 
     // toggle favorite
     let favoriteIcon = newRecipe.find('img.favoriteIcon');
-    favoriteIcon.click(() => {
+    favoriteIcon.click(event => {
+	event.stopPropagation();
 	if (recipe.isFavorite) {
 	    favoriteIcon.attr("src", "img/star-false.png");
 	    recipe.isFavorite = false;
