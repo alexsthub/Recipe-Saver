@@ -1,10 +1,7 @@
 'use strict';
-
-// TODO: If image DNE, then it should display default
-
 // Fetch data
 let recipes;
-fetch('./jsonData_small.json')
+fetch('./jsonData.json')
   .then((response) => {
     return response.json();
   })
@@ -116,7 +113,7 @@ function addRecipeToList(parent, recipe) {
             <p class="recipe-title">${recipe.title}</p>
             <img class="favoriteIcon" alt="favorite star icon" src="img/${recipe.isFavorite ? 'star-true' : 'star-false'}.png" />
           </div>
-          <p class="recipe-description">${recipe.description}</p>
+          <p class="recipe-description">${recipe.description ? recipe.description : 'Add a description!'}</p>
           <p>Category: ${recipe.category ? recipe.category : 'none'}</p>
           <p>Subcategory: ${recipe.subcategory ? recipe.subcategory : 'none'}</p>
         </div>
@@ -528,7 +525,6 @@ $(".search-button").click((event) => {
     renderRecipes(searchRecipes(str));
   }
 });
-
 
 // render favorites and render all
 $(".topbar > .nav > .favorite").click(() => {
