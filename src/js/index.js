@@ -94,6 +94,18 @@ function addRecipeToList(parent, recipe) {
       </div>
     </div>
   </div>`)
+
+  // toggle favorite
+  let favoriteIcon = newRecipe.find('img.favoriteIcon');
+  favoriteIcon.click(() => {
+    if (recipe.isFavorite) {
+      favoriteIcon.attr("src", "img/star-false.png");
+      recipe.isFavorite = false;
+    } else {
+      favoriteIcon.attr("src", "img/star-true.png");
+      recipe.isFavorite = true;
+    }
+  })
   newRecipe.appendTo(parent);
 }
 
@@ -464,7 +476,7 @@ $(".search-button").click((event) => {
 $(".topbar > .nav > .favorite").click(() => {
   $(".favorite").addClass("selected");
   $(".all").removeClass("selected");
-  renderRecipes(recipes.filter(x => x.isFavorite)); 
+  renderRecipes(recipes.filter(x => x.isFavorite));
 });
 $(".topbar > .nav > .all").click(() => {
   $(".favorite").removeClass("selected");
@@ -472,18 +484,3 @@ $(".topbar > .nav > .all").click(() => {
   renderRecipes(recipes);
 });
 
-// toggle favorite
-$("main").on("click", ".favoriteIcon", function () {
-  if ($(this).attr("src").includes("true")) {
-    $(this).attr("src", "img/star-false.png");
-  } else {
-    $(this).attr("src", "img/star-true.png");
-  }
-  let name = $(this).siblings()[0].innerHTML;
-  for (let i = 0; i < recipes.length; i++) {
-    if (recipes[i].title == name) {
-      recipes[i].isFavorite = !recipes[i].isFavorite;
-      break;
-    }
-  }
-});
