@@ -48,7 +48,7 @@ function addToCorrectParent(letter, newContainer) {
     newContainer.appendTo($('div.list-container'));
   } else if (allLetterContainers.length === 1) {
     let container = allLetterContainers[0];
-    if (letter > container.id) {
+    if (letter < container.id) {
       newContainer.insertBefore(container);
     } else {
       newContainer.insertAfter(container);
