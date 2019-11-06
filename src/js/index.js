@@ -352,7 +352,45 @@ function retrieveListItems(list) {
   })
   return string.slice(0, -1);
 }
+formOverlay.removeClass('hidden');
+body.addClass('noscroll')
 
+// Handle form close
+$('span.close').click(() => {
+  formOverlay.addClass('hidden');
+  body.removeClass('noscroll');
+})
+
+// Add items to ingredients list
+let ingredientList = $('#ingredient-list');
+let ingredientInput = $('#ingredient-input');
+let ingredientAdd = $('#ingredient-add');
+// On Add Click
+ingredientAdd.click(() => {
+  addIngredient(ingredientInput, ingredientList);
+})
+// On Enter Press
+ingredientInput.keypress((event) => {
+  if (event.which == 13) {
+    addIngredient(ingredientInput, ingredientList);
+    event.preventDefault();
+  }
+})
+
+// Add items to procedure list
+let procedureList = $('#procedure-list');
+let procedureInput = $('#procedure-input');
+let procedureAdd = $('#procedure-add');
+// On Add Click
+procedureAdd.click(() => {
+  addIngredient(procedureInput, procedureList);
+})
+procedureInput.keypress((event) => {
+  if (event.which == 13) {
+    addIngredient(procedureInput, procedureList);
+    event.preventDefault();
+  }
+})
 
 // Function to add item to parent list
 function addIngredient(input, parent) {
@@ -381,6 +419,69 @@ function endsWithAny(string, endings) {
   })
 }
 
+
+// Visually handle file input. Modified code from source.
+/*
+  By Osvaldas Valutis, www.osvaldas.info
+  Available for use under the MIT License
+*/
+
+let droppedFile;;
+(function ($) {
+  $('.input-file').each(function () {
+    var $input = $(this),
+      $label = $input.next('label'),
+      labelVal = $label.html();
+
+    $input.on('change', function () {
+      console.log(this.files.length);
+      if (this.files.length > 0) {
+        var fileName = '';
+        droppedFile = this.files[0];
+        fileName = droppedFile.name;
+
+        var span = $label.find('span');
+        if (endsWithAny(fileName, ['jpg', 'png', 'tif', 'svg'])) {
+          span.html(fileName);
+          span.removeClass('error-message');
+        } else {
+          span.html('Invalid File Type. Try again with an image.')
+          span.addClass('error-message');
+          droppedFile = null;
+        }
+      }
+    });
+  });
+})(jQuery, window, document);
+
+// Handle drag input
+var droppedFiles = false;
+let form = $('div.box');
+form.on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  })
+  .on('dragover dragenter', function () {
+    form.addClass('is-dragover');
+  })
+  .on('dragleave dragend drop', function () {
+    form.removeClass('is-dragover');
+  })
+  .on('drop', function (e) {
+    droppedFile = e.originalEvent.dataTransfer.files[0];
+    var fileName = droppedFile.name;
+    let span = $('.input-clickable span');
+    if (endsWithAny(fileName, ['jpg', 'png', 'tif', 'svg'])) {
+      span.html(fileName);
+      span.removeClass('error-message');
+    } else {
+      span.html('Invalid File Type. Try again with an image.')
+      span.addClass('error-message');
+      droppedFile = null;
+    }
+
+  });
+
 // function searches for recipes given target string
 function searchRecipes(target) {
   return recipes.filter(x => x.title.toLowerCase().includes(target.toLowerCase()));
@@ -400,11 +501,30 @@ $(".search-button").click((event) => {
 
 // render favorites and render all
 $(".topbar > .nav > .favorite").click(() => {
-  renderRecipes(recipes.filter(x => x.isFavorite));
+  $(".favorite").addClass("selected");
+  $(".all").removeClass("selected");
+  renderRecipes(recipes.filter(x => x.isFavorite)); 
 });
-$(".topbar > .nav > .all").click(() => renderRecipes(recipes));
+$(".topbar > .nav > .all").click(() => {
+  $(".favorite").removeClass("selected");
+  $(".all").addClass("selected");
+  renderRecipes(recipes);
+});
 
 // toggle favorite
-$(".favoriteIcon").click(function () {
-  console.log("clicked star");
+$("main").on("click", ".favoriteIcon", function () {
+  console.log("favorite clicked");
+  if ($(this).attr("src").includes("true")) {
+    $(this).attr("src", "img/star-false.png");
+  } else {
+    $(this).attr("src", "img/star-true.png");
+  }
+  let name = $(this).siblings()[0].innerHTML;
+  for (let i = 0; i < recipes.length; i++) {
+    if (recipes[i].title == name) {
+      recipes[i].isFavorite = !recipes[i].isFavorite;
+      console.log(name + ": " + recipes[i].isFavorite);
+      break;
+    }
+  }
 });
