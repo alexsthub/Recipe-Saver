@@ -73,6 +73,16 @@ function addToCorrectParent(letter, newContainer) {
   }
 }
 
+function toTimeString(min) {
+    if (min <= 60) {
+	return min + " min";
+    } else if (min < 120) {
+	return Math.floor(min / 60) + " hr " + (min % 60) + " min";
+    } else {
+	return Math.floor(min / 60) + " hrs " + (min % 60) + " min";
+    }
+}
+
 // build recipe details
 function addRecipeDetails(parent, recipe) {
   let ingredients = recipe.ingredients.split("|");
@@ -87,9 +97,7 @@ function addRecipeDetails(parent, recipe) {
       </div>
       <div class="directions-container">
         <h2>Directions:</h2>
-        <div class="time">
-          <i class="fa fa-clock-o" aria-hidden="true"></i> ${recipe.estimatedTime} min
-        </div>
+${recipe.estimatedTime ? `<div class="time"> <i class="fa fa-clock-o" aria-hidden="true"></i> ${toTimeString(recipe.estimatedTime)}</div>` : ""}
         <div class="directions">
           <ol>
             ${procedure.reduce((acc, curr) => acc + "<li>" + curr + "</li>", "")}
