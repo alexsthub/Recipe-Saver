@@ -17,8 +17,8 @@ fetch('./jsonData.json')
 function renderRecipes(recipes) {
   // Sort by title
   recipes.sort((a, b) => {
-    var textA = a.title.toUpperCase();
-    var textB = b.title.toUpperCase();
+    const textA = a.title.toUpperCase();
+    const textB = b.title.toUpperCase();
     return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
   });
   // Delete all children
@@ -26,7 +26,7 @@ function renderRecipes(recipes) {
   recipeContainer.empty();
 
   recipes.forEach((recipe) => {
-    var firstLetter = recipe.title.charAt(0).toUpperCase();
+    const firstLetter = recipe.title.charAt(0).toUpperCase();
     let letterContainer = $(`div#${firstLetter}.letter-container`);
     if (letterContainer.length > 0) {
       // Append recipe to the list
@@ -60,7 +60,7 @@ function addToCorrectParent(letter, newContainer) {
       newContainer.insertAfter(container);
     }
   } else {
-    for (var i = 0; i < allLetterContainers.length; i++) {
+    for (const i = 0; i < allLetterContainers.length; i++) {
 
       let current = allLetterContainers[i]
       let next = allLetterContainers[i + 1]
@@ -251,17 +251,17 @@ function renderModal() {
   let droppedFile;
   (function ($) {
     form.find('.input-file').each(function () {
-      var $input = $(this),
+      const $input = $(this),
         $label = $input.next('label'),
         labelVal = $label.html();
 
       $input.on('change', function () {
         if (this.files.length > 0) {
-          var fileName = '';
+          const fileName = '';
           droppedFile = this.files[0];
           fileName = droppedFile.name;
 
-          var span = $label.find('span');
+          const span = $label.find('span');
           if (endsWithAny(fileName, ['jpg', 'png', 'tif', 'svg'])) {
             span.html(fileName);
             span.removeClass('error-message');
@@ -289,7 +289,7 @@ function renderModal() {
     })
     .on('drop', function (e) {
       droppedFile = e.originalEvent.dataTransfer.files[0];
-      var fileName = droppedFile.name;
+      const fileName = droppedFile.name;
       let span = form.find('.input-clickable span');
       if (endsWithAny(fileName, ['jpg', 'png', 'tif', 'svg'])) {
         span.html(fileName);
@@ -371,7 +371,7 @@ function renderModal() {
   formElement.on('submit', (event) => {
     event.preventDefault();
     console.log(droppedFile);
-    var newRecipe = {
+    const newRecipe = {
       category: form.find('#category').val() != "" ? form.find('#category').val() : null,
       description: form.find('#description').val() != "" ? form.find('#description').val() : null,
       estimatedTime: form.find('#time').val() != "" ? form.find('#time').val() : null,
@@ -388,13 +388,13 @@ function renderModal() {
     let fr = new FileReader()
     fr.readAsDataURL(droppedFile);
 
-    var blob = new Blob([file]);
-    var objectUrl = window.URL.createObjectURL(blob);
+    const blob = new Blob([file]);
+    const objectUrl = window.URL.createObjectURL(blob);
     console.log(objectUrl);
     if (navigator.appVersion.toString().indexOf('.NET') > 0) {
       window.navigator.msSaveOrOpenBlob(blob, droppedFile.name);
     } else {
-      var link = $('<a></a>');
+      const link = $('<a></a>');
       link.attr("href", objectUrl);
       link.attr("download", droppedFile.name);
       console.log(link);
@@ -413,7 +413,7 @@ function renderModal() {
 
 function retrieveListItems(list) {
   let string = '';
-  var listItems = list.find('li');
+  const listItems = list.find('li');
   listItems.each((index, element) => {
     let step = $(element).find('p').text();
     string = string + step + ',';
@@ -423,7 +423,7 @@ function retrieveListItems(list) {
 
 // Function to add item to parent list
 function addIngredient(input, parent) {
-  var inputValue = input.val();
+  const inputValue = input.val();
   input.val('');
 
   // Create new <li> with text and remove button
@@ -434,7 +434,7 @@ function addIngredient(input, parent) {
     </li>`);
   let minusIcon = listItem.find('img');
   minusIcon.click((event) => {
-    var target = $(event.target);
+    const target = $(event.target);
     let parentDiv = target.parents('.list-item');
     parentDiv.remove();
   })
@@ -447,68 +447,6 @@ function endsWithAny(string, endings) {
     return string.endsWith(ending);
   })
 }
-
-
-// Visually handle file input. Modified code from source.
-/*
-  By Osvaldas Valutis, www.osvaldas.info
-  Available for use under the MIT License
-*/
-
-let droppedFile;;
-(function ($) {
-  $('.input-file').each(function () {
-    var $input = $(this),
-      $label = $input.next('label'),
-      labelVal = $label.html();
-
-    $input.on('change', function () {
-      if (this.files.length > 0) {
-        var fileName = '';
-        droppedFile = this.files[0];
-        fileName = droppedFile.name;
-
-        var span = $label.find('span');
-        if (endsWithAny(fileName, ['jpg', 'png', 'tif', 'svg'])) {
-          span.html(fileName);
-          span.removeClass('error-message');
-        } else {
-          span.html('Invalid File Type. Try again with an image.')
-          span.addClass('error-message');
-          droppedFile = null;
-        }
-      }
-    });
-  });
-})(jQuery, window, document);
-
-// Handle drag input
-var droppedFiles = false;
-let form = $('div.box');
-form.on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-  })
-  .on('dragover dragenter', function () {
-    form.addClass('is-dragover');
-  })
-  .on('dragleave dragend drop', function () {
-    form.removeClass('is-dragover');
-  })
-  .on('drop', function (e) {
-    droppedFile = e.originalEvent.dataTransfer.files[0];
-    var fileName = droppedFile.name;
-    let span = $('.input-clickable span');
-    if (endsWithAny(fileName, ['jpg', 'png', 'tif', 'svg'])) {
-      span.html(fileName);
-      span.removeClass('error-message');
-    } else {
-      span.html('Invalid File Type. Try again with an image.')
-      span.addClass('error-message');
-      droppedFile = null;
-    }
-
-  });
 
 // function searches for recipes given target string
 function searchRecipes(target) {
