@@ -225,9 +225,9 @@ function renderModal() {
             </div>
 
             <div class="input-container">
-              <p>Estimated Time (Optional)</p>
+              <p>Estimated Time in Minutes(Optional)</p>
               <div class="line"></div>
-              <input id="time" class="standard-input" placeholder="Recipe Estimated Time..." aria-label="Enter Recipe Estimated Time" type="text">
+              <input id="time" type="number" class="standard-input" placeholder="Recipe Estimated Time..." aria-label="Enter Recipe Estimated Time" type="text">
             </div>
 
             <div class="submit-container">
