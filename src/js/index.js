@@ -1,7 +1,7 @@
 'use strict';
 // Fetch data
 let recipes;
-fetch('./jsonData.json')
+fetch('./jsonData_small.json')
   .then((response) => {
     return response.json();
   })
@@ -106,7 +106,8 @@ function addRecipeToList(parent, recipe) {
   <div class="recipe-group">
     <div class="recipe-letter-container">
       <div class="recipe">
-        <img class="foodimage" alt="${recipe.imageName ? recipe.imageName : 'recipe saver logo'}" src="./recipeImages/${recipe.imageName ? recipe.imageName : 'default.jpg'}" />
+        <img class="foodimage" alt="${recipe.imageName ? recipe.imageName : 'recipe saver logo'}" src="${recipe.imageName ? 
+        recipe.imageName.startsWith('blob') ? recipe.imageName : "./recipeImages/" + recipe.imageName : "./recipeImages/default.jpg"}">
         <div class="recipe-info">
           <div class="title-container">
             <p class="recipe-title">${recipe.title}</p>
@@ -164,7 +165,7 @@ function renderModal() {
             <div class="input-container">
               <p>Recipe Name *</p>
               <div class="line"></div>
-              <input id="title" class="standard-input" placeholder="Recipe Title..." aria-label="Enter Recipe Name" type="text">
+              <input id="title" class="standard-input" placeholder="Recipe Title..." aria-label="Enter Recipe Name" type="text" required>
             </div>
 
             <div class="input-container">
@@ -354,55 +355,31 @@ function renderModal() {
     }
   })
 
-  // TODO: On enter for inputs is getting destroyed. Prevent Default on these and maybe try to implement tab behavior (change focus)
-  // let standardInputs = form.find('input.standard-input');
-  // standardInputs.forEach((input) => {
-  //   input.keypress((event) => {
-  //     if (event.which == 13) {
-  //       event.preventDefault();
-  //     }
-  //   })
-  // })
-
-  // TODO: Submit form
-  // TODO: Save image if exists
-  // TODO: Put required back in the title input
   let formElement = form.find('form');
   formElement.on('submit', (event) => {
     event.preventDefault();
-    console.log(droppedFile);
+
+    // Download file
+    const blob = new Blob([droppedFile]);
+    const objectUrl = window.URL.createObjectURL(blob);
+
     const newRecipe = {
       category: form.find('#category').val() != "" ? form.find('#category').val() : null,
       description: form.find('#description').val() != "" ? form.find('#description').val() : null,
       estimatedTime: form.find('#time').val() != "" ? form.find('#time').val() : null,
-      imageName: droppedFile ? droppedFile.name : null,
+      imageName: objectUrl && droppedFile ? objectUrl : null,
       ingredients: retrieveListItems(ingredientList),
       procedure: retrieveListItems(procedureList),
       subcategory: form.find('#subcategory').val() != "" ? form.find('#subcategory').val() : null,
       title: form.find('#title').val(),
       times: null,
-      isFavorite: isFavorite,
+      isFavorite: isFavorite
     }
+    recipes.push(newRecipe);
+    renderRecipes(recipes);
 
-    // Download file
-    let fr = new FileReader()
-    fr.readAsDataURL(droppedFile);
-
-    const blob = new Blob([file]);
-    const objectUrl = window.URL.createObjectURL(blob);
-    console.log(objectUrl);
-
-    const anchor = $('<a></a>');
-    anchor.attr({
-      href: objectUrl,
-      download: droppedFile.name
-    });
-    console.log(anchor);
-    anchor.appendTo($('body'));
-    anchor.click();
-    anchor.remove();
-
-    console.log(newRecipe);
+    // Close the modal
+    form.remove();
   })
 
 
