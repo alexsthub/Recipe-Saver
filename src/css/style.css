@@ -463,6 +463,12 @@ footer {
     padding: 1em;
 }
 
+.footer-image-container {
+    width: 100%;
+    background-image: url('../img/fruit_banner.png');
+    background-repeat: repeat-x;
+}
+
 .hidden {
     display: none;
     visibility: hidden;
