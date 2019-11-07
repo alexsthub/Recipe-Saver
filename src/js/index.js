@@ -13,7 +13,6 @@ fetch('./jsonData_small.json')
     renderRecipes(recipes);
   })
 
-
 function renderRecipes(recipes) {
   // Sort by title
   recipes.sort((a, b) => {
@@ -380,6 +379,7 @@ function renderModal() {
 
     // Close the modal
     form.remove();
+    $('body').removeClass('noscroll');
   })
 
 
