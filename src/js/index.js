@@ -60,8 +60,7 @@ function addToCorrectParent(letter, newContainer) {
       newContainer.insertAfter(container);
     }
   } else {
-    for (const i = 0; i < allLetterContainers.length; i++) {
-
+    for (var i = 0; i < allLetterContainers.length; i++) {
       let current = allLetterContainers[i]
       let next = allLetterContainers[i + 1]
       if (letter < current.id) {
@@ -165,7 +164,7 @@ function renderModal() {
             <div class="input-container">
               <p>Recipe Name *</p>
               <div class="line"></div>
-              <input id="title" class="standard-input" placeholder="Recipe Title..." aria-label="Enter Recipe Name" type="text" required>
+              <input id="title" class="standard-input" placeholder="Recipe Title..." aria-label="Enter Recipe Name" type="text">
             </div>
 
             <div class="input-container">
@@ -257,7 +256,7 @@ function renderModal() {
 
       $input.on('change', function () {
         if (this.files.length > 0) {
-          const fileName = '';
+          let fileName = '';
           droppedFile = this.files[0];
           fileName = droppedFile.name;
 
@@ -367,6 +366,7 @@ function renderModal() {
 
   // TODO: Submit form
   // TODO: Save image if exists
+  // TODO: Put required back in the title input
   let formElement = form.find('form');
   formElement.on('submit', (event) => {
     event.preventDefault();
@@ -391,17 +391,16 @@ function renderModal() {
     const blob = new Blob([file]);
     const objectUrl = window.URL.createObjectURL(blob);
     console.log(objectUrl);
-    if (navigator.appVersion.toString().indexOf('.NET') > 0) {
-      window.navigator.msSaveOrOpenBlob(blob, droppedFile.name);
-    } else {
-      const link = $('<a></a>');
-      link.attr("href", objectUrl);
-      link.attr("download", droppedFile.name);
-      console.log(link);
-      link.appendTo($('body'));
-      link.click();
-      link.remove();
-    }
+
+    const anchor = $('<a></a>');
+    anchor.attr({
+      href: objectUrl,
+      download: droppedFile.name
+    });
+    console.log(anchor);
+    anchor.appendTo($('body'));
+    anchor.click();
+    anchor.remove();
 
     console.log(newRecipe);
   })
