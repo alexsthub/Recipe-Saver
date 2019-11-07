@@ -392,7 +392,7 @@ function retrieveListItems(list) {
   const listItems = list.find('li');
   listItems.each((index, element) => {
     let step = $(element).find('p').text();
-    string = string + step + ',';
+    string = string + step + '|';
   })
   return string.slice(0, -1);
 }
