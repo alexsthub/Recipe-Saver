@@ -3,10 +3,18 @@ import React, { Component } from "react"; //import React Component
 class App extends Component {
   render() {
     return (
-      <div className="search-page">
-        <Logo/>
-
-        <div className="list-container"></div>
+      <div>
+        <Header />
+        <div className="search-page">
+          <Logo />
+          <div class="recipe-container">
+            <SearchBar />
+            <div className="list-container">
+              {/* Render the recipes */}
+            </div>
+            <FAB />
+          </div>
+        </div>
       </div>
     );
   }
