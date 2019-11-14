@@ -1,4 +1,5 @@
-import React, { Component } from "react"; //import React Component
+import React, { Component } from "react"; 
+import 'whatwg-fetch';
 
 class App extends Component {
   constructor(props) {
@@ -18,7 +19,9 @@ class App extends Component {
           <Logo />
           <div class="recipe-container">
             <SearchBar />
-            <div className="list-container">{/* Render the recipes */}</div>
+            <div className="list-container">
+              {/* Render the recipes */}
+            </div>
             <FAB />
           </div>
         </div>
@@ -52,7 +55,7 @@ class Recipe extends Component {
                 <img
                   class="favoriteIcon"
                   alt="favorite star icon"
-                  src="img/${recipe.isFavorite ? 'star-true' : 'star-false'}.png"
+                  src={`img/${recipe.isFavorite ? 'star-true' : 'star-false'}.png`}
                 />
               </div>
               <p class="recipe-description">{recipe.description ? recipe.description : "Add a description!"}</p>
