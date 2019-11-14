@@ -2,8 +2,8 @@ import React, { Component } from "react"; //import React Component
 
 class App extends Component {
   constructor(props) {
-    super(props)
-    this.state = {data: null}
+    super(props);
+    this.state = { data: null };
   }
 
   componentDidMount() {
@@ -18,13 +18,11 @@ class App extends Component {
           <Logo />
           <div class="recipe-container">
             <SearchBar />
-            <div className="list-container">
-              {/* Render the recipes */}
-            </div>
+            <div className="list-container">{/* Render the recipes */}</div>
             <FAB />
           </div>
         </div>
-        <Footer/>
+        <Footer />
       </div>
     );
   }
@@ -37,26 +35,73 @@ class Recipe extends Component {
       <div class="recipe-group">
         <div class="recipe-letter-container">
           <div class="recipe">
-            <img 
-              class="foodimage" 
-              alt={`${recipe.imageName ? recipe.imageName : 'recipe saver logo'}`}
-              src={`${recipe.imageName ? recipe.imageName.startsWith('blob') ? recipe.imageName : "./recipeImages/" + recipe.imageName : "./recipeImages/default.jpg"}`}/>
+            <img
+              class="foodimage"
+              alt={`${recipe.imageName ? recipe.imageName : "recipe saver logo"}`}
+              src={`${
+                recipe.imageName
+                  ? recipe.imageName.startsWith("blob")
+                    ? recipe.imageName
+                    : "./recipeImages/" + recipe.imageName
+                  : "./recipeImages/default.jpg"
+              }`}
+            />
             <div class="recipe-info">
               <div class="title-container">
                 <p class="recipe-title">${recipe.title}</p>
-                <img class="favoriteIcon" alt="favorite star icon" src="img/${recipe.isFavorite ? 'star-true' : 'star-false'}.png" />
+                <img
+                  class="favoriteIcon"
+                  alt="favorite star icon"
+                  src="img/${recipe.isFavorite ? 'star-true' : 'star-false'}.png"
+                />
               </div>
-              <p class="recipe-description">${recipe.description ? recipe.description : 'Add a description!'}</p>
-              <p>Category: ${recipe.category ? recipe.category : 'none'}</p>
-              <p>Subcategory: ${recipe.subcategory ? recipe.subcategory : 'none'}</p>
+              <p class="recipe-description">{recipe.description ? recipe.description : "Add a description!"}</p>
+              <p>Category: ${recipe.category ? recipe.category : "none"}</p>
+              <p>Subcategory: ${recipe.subcategory ? recipe.subcategory : "none"}</p>
             </div>
+          </div>
+        </div>
+        <RecipeDetails />
+      </div>
+    );
+  }
+}
+
+class RecipeDetails extends Component {
+  render() {
+    const recipe = this.props.recipe;
+    let ingredients = recipe.ingredients.split("|");
+    let procedure = recipe.procedure.split("|");
+    return (
+      <div class="recipe-details">
+        <div class="ingredients">
+          <h2>Ingredients:</h2>
+          <ul>
+            {ingredients.map((ingredient) => {
+              return <li>{ingredient}</li>
+            })}
+          </ul>
+        </div>
+        <div class="directions-container">
+          <h2>Directions:</h2>
+
+          {recipe.estimatedTime ? 
+          <div class="time"> 
+            <i class="fa fa-clock-o" aria-hidden="true"></i> ${toTimeString(recipe.estimatedTime)}
+          </div>: null}
+
+          <div class="directions">
+            <ol>
+              {procedure.map((step) => {
+                return <li>{step}</li>
+              })}
+            </ol>
           </div>
         </div>
       </div>
     );
   }
 }
-
 
 class Header extends Component {
   render() {
