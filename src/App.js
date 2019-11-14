@@ -1,6 +1,15 @@
 import React, { Component } from "react"; //import React Component
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {data: null}
+  }
+
+  componentDidMount() {
+    // Fetch data here
+  }
+
   render() {
     return (
       <div>
@@ -15,10 +24,39 @@ class App extends Component {
             <FAB />
           </div>
         </div>
+        <Footer/>
       </div>
     );
   }
 }
+
+class Recipe extends Component {
+  render() {
+    const recipe = this.props.recipe;
+    return (
+      <div class="recipe-group">
+        <div class="recipe-letter-container">
+          <div class="recipe">
+            <img 
+              class="foodimage" 
+              alt={`${recipe.imageName ? recipe.imageName : 'recipe saver logo'}`}
+              src={`${recipe.imageName ? recipe.imageName.startsWith('blob') ? recipe.imageName : "./recipeImages/" + recipe.imageName : "./recipeImages/default.jpg"}`}/>
+            <div class="recipe-info">
+              <div class="title-container">
+                <p class="recipe-title">${recipe.title}</p>
+                <img class="favoriteIcon" alt="favorite star icon" src="img/${recipe.isFavorite ? 'star-true' : 'star-false'}.png" />
+              </div>
+              <p class="recipe-description">${recipe.description ? recipe.description : 'Add a description!'}</p>
+              <p>Category: ${recipe.category ? recipe.category : 'none'}</p>
+              <p>Subcategory: ${recipe.subcategory ? recipe.subcategory : 'none'}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
 
 class Header extends Component {
   render() {
