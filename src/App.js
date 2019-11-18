@@ -31,10 +31,15 @@ class App extends Component {
   }
 }
 
-class LetterContainer extends Component {
+class Letter extends Component {
   render() {
     const letter = this.props.letter;
+    let recipes = this.props.recipes.map(r => {
+      <Recipe recipe={r} />
+    });
+
     return (
+
       <div id={letter} className='letter-container'>
         <p class='alphabet-letter'>{letter}.</p>
         { /* Render recipe groups */}
@@ -166,7 +171,7 @@ class Recipe extends Component {
             </div>
           </div>
         </div>
-        <RecipeDetails />
+        <RecipeDetails recipe={this.recipe} />
       </div>
     );
   }
