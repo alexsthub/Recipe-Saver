@@ -1,4 +1,4 @@
-import React, { Component } from "react"; 
+import React, { Component } from "react";
 import 'whatwg-fetch';
 
 class App extends Component {
@@ -17,10 +17,10 @@ class App extends Component {
         <Header />
         <div className="search-page">
           <Logo />
-          <div class="recipe-container">
+          <div className="recipe-container">
             <SearchBar />
             <div className="list-container">
-              {/* Render the recipes */}
+              {/* Render the recipes (letter containers) */}
             </div>
             <FAB />
           </div>
@@ -31,15 +31,117 @@ class App extends Component {
   }
 }
 
+class LetterContainer extends Component {
+  render() {
+    const letter = this.props.letter;
+    return (
+      <div id={letter} className='letter-container'>
+        <p class='alphabet-letter'>{letter}.</p>
+        { /* Render recipe groups */}
+      </div>
+    )
+  }
+}
+
+/* commented out for now: probably want to implemented form after everything else is sort of working
+class RecipeForm extends Component {
+  render() {
+    return (
+    <div className='form-elements-container'>
+      <span className='close'>&times;</span>
+      <div className='input-container horizontal center'>
+        <img className='favoriteIcon' alt='favorite star icon' src='img/star-false.png' />
+        <p id='favorite-text'>Click the Star to Mark a Favorite!</p>
+      </div>
+
+      <div className="input-container">
+        <p>Recipe Name *</p>
+        <div className="line"></div>
+        <input id="title" className="standard-input" placeholder="Recipe Title..." aria-label="Enter Recipe Name" type="text" required />
+      </div>
+
+      <div className="input-container">
+        <p>Upload an Image (Optional)</p>
+        <div className="line"></div>
+        <div className="box">
+          <div className="box-input">
+            <input type="file" name="file" id="file" className="input-file" />
+            <label for="file">
+              <div className="input-clickable">
+                <img className="box-image" src="./img/upload.png" />
+                <span><strong>Choose a file </strong>or drag it here.</span>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div className="input-container">
+        <p>Ingredients *</p>
+        <div class="line"></div>
+        <ul id="ingredient-list">{insert ingredients here}</ul>
+        <div className="list-input">
+          <img src="./img/shoppingCart.png" />
+          <input id="ingredient-input" placeholder="Enter an Ingredient..."
+            aria-label="Enter Recipe Ingredient" type="text" />
+          <p id="ingredient-add">Add</p>
+        </div>
+      </div>
+
+      <div className="input-container">
+        <p>Procedure *</p>
+        <div className="line"></div>
+        <ol id="procedure-list">{insert procedure here}</ol>
+        <div class="list-input">
+          <img src="./img/paperclip.png" />
+          <input id="procedure-input" placeholder="Enter a Step..." aria-label="Enter Steps" type="text" />
+          <p id="procedure-add">Add</p>
+        </div>
+      </div>
+
+      <div className="input-container">
+        <p>Recipe Description (Optional)</p>
+        <div className="line"></div>
+        <textarea id="description" placeholder="Recipe Description..." rows="5" className="recipe-description"></textarea>
+      </div>
+
+      <div className="input-container">
+        <p>Category (Optional)</p>
+        <div className="line"></div>
+        <input id="category" class="standard-input" placeholder="Recipe Category..." aria-label="Enter Recipe Category" type="text" />
+      </div>
+
+      <div className="input-container">
+        <p>Subcategory (Optional)</p>
+        <div class="line"></div>
+        <input id="subcategory" className="standard-input" placeholder="Recipe Subcategory..." aria-label="Enter Recipe Subcategory" type="text" />
+      </div>
+
+      <div className="input-container">
+        <p>Estimated Time in Minutes(Optional)</p>
+        <div className="line"></div>
+        <input id="time" type="number" className="standard-input" placeholder="Recipe Estimated Time..." aria-label="Enter Recipe Estimated Time" type="text" />
+      </div>
+
+      <div className="submit-container">
+        <button type="submit" className="btn btn-primary">Submit</button>
+      </div>
+
+    </div>
+    )
+  }
+}
+*/
+
 class Recipe extends Component {
   render() {
     const recipe = this.props.recipe;
     return (
-      <div class="recipe-group">
-        <div class="recipe-letter-container">
-          <div class="recipe">
+      <div className="recipe-group">
+        <div className="recipe-letter-container">
+          <div className="recipe">
             <img
-              class="foodimage"
+              className="foodimage"
               alt={`${recipe.imageName ? recipe.imageName : "recipe saver logo"}`}
               src={`${
                 recipe.imageName
@@ -47,18 +149,18 @@ class Recipe extends Component {
                     ? recipe.imageName
                     : "./recipeImages/" + recipe.imageName
                   : "./recipeImages/default.jpg"
-              }`}
+                }`}
             />
-            <div class="recipe-info">
-              <div class="title-container">
-                <p class="recipe-title">${recipe.title}</p>
+            <div className="recipe-info">
+              <div className="title-container">
+                <p className="recipe-title">${recipe.title}</p>
                 <img
-                  class="favoriteIcon"
+                  className="favoriteIcon"
                   alt="favorite star icon"
                   src={`img/${recipe.isFavorite ? 'star-true' : 'star-false'}.png`}
                 />
               </div>
-              <p class="recipe-description">{recipe.description ? recipe.description : "Add a description!"}</p>
+              <p className="recipe-description">{recipe.description ? recipe.description : "Add a description!"}</p>
               <p>Category: ${recipe.category ? recipe.category : "none"}</p>
               <p>Subcategory: ${recipe.subcategory ? recipe.subcategory : "none"}</p>
             </div>
@@ -76,8 +178,8 @@ class RecipeDetails extends Component {
     let ingredients = recipe.ingredients.split("|");
     let procedure = recipe.procedure.split("|");
     return (
-      <div class="recipe-details">
-        <div class="ingredients">
+      <div className="recipe-details">
+        <div className="ingredients">
           <h2>Ingredients:</h2>
           <ul>
             {ingredients.map((ingredient) => {
@@ -85,15 +187,15 @@ class RecipeDetails extends Component {
             })}
           </ul>
         </div>
-        <div class="directions-container">
+        <div className="directions-container">
           <h2>Directions:</h2>
 
-          {recipe.estimatedTime ? 
-          <div class="time"> 
-            <i class="fa fa-clock-o" aria-hidden="true"></i> ${toTimeString(recipe.estimatedTime)}
-          </div>: null}
+          {recipe.estimatedTime ?
+            <div className="time">
+              <i className="fa fa-clock-o" aria-hidden="true"></i> ${toTimeString(recipe.estimatedTime)}
+            </div> : null}
 
-          <div class="directions">
+          <div className="directions">
             <ol>
               {procedure.map((step) => {
                 return <li>{step}</li>
@@ -191,6 +293,10 @@ class Footer extends Component {
       </footer>
     );
   }
+}
+
+class LetterContainer extends Component {
+
 }
 
 export default App;
