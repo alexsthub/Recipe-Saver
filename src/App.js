@@ -142,7 +142,7 @@ class Recipe extends Component {
                 <p className="recipe-title">${recipe.title}</p>
                 <img className="favoriteIcon"
                   alt="favorite star icon"
-                  src={require(`img/${recipe.isFavorite ? "star-true" : "star-false"}.png`)}
+                  src={require(`./img/${recipe.isFavorite ? "star-true" : "star-false"}.png`)}
                   onClick={this.props.onFavoriteClick}
                 />
               </div>
