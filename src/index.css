@@ -138,7 +138,7 @@ form button.search-button:hover {
   background-color: lightgreen;
   padding: 1em;
   border: 1px solid black;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
   border-radius: 10px;
 }
@@ -150,7 +150,7 @@ form button.search-button:hover {
 }
 
 .recipe-letter-container:hover {
-  box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 12px 24px 0 rgba(0,0,0,0.2);
   transform: scale(1.02);
   cursor: pointer;
 }
@@ -208,10 +208,9 @@ p.recipe-title {
 }
 
 /* Form  */
-.noscroll {
+.noscroll { 
   overflow: hidden;
 }
-
 /* TODO: When the popup is clicked, put the noscroll class on the body. When popup is gone. Remove it   */
 
 .form-overlay {
@@ -274,7 +273,7 @@ p.recipe-title {
 .form-elements-container .submit-container {
   margin-top: 20px;
   margin-bottom: 20px;
-  display: flex;
+  display:flex;
   justify-content: center;
 }
 
@@ -289,8 +288,7 @@ p.recipe-title {
   font-weight: bold;
 }
 
-.close:hover,
-.close:focus {
+.close:hover, .close:focus {
   color: #000;
   text-decoration: none;
   cursor: pointer;
@@ -342,7 +340,7 @@ p.recipe-title {
 }
 
 .list-item img:hover {
-  cursor: pointer;
+  cursor:pointer;
   opacity: 0.5;
 }
 
@@ -361,15 +359,15 @@ p.recipe-title {
 
 /* Floating Action Button */
 .fab {
-  position: fixed;
-  width: 60px;
-  height: 60px;
-  bottom: 40px;
-  right: 100px;
-  background-color: #0C9;
-  color: #FFF;
-  border-radius: 50px;
-  text-align: center;
+  position:fixed;
+  width:60px;
+  height:60px;
+  bottom:40px;
+  right:100px;
+  background-color:#0C9;
+  color:#FFF;
+  border-radius:50px;
+  text-align:center;
   box-shadow: 2px 2px 3px #999;
 }
 
@@ -378,8 +376,8 @@ p.recipe-title {
   cursor: pointer;
 }
 
-.my-float {
-  margin-top: 22px;
+.my-float{
+  margin-top:22px;
 }
 
 .horizontal {
@@ -433,7 +431,7 @@ p.recipe-title {
 .box .input-clickable {
   cursor: pointer;
   display: flex;
-  flex-direction: column;
+  flex-direction:column;
   align-items: center;
 }
 
@@ -498,10 +496,10 @@ h2 {
 
 @media (max-width: 768px) {
   .recipe-details {
-    flex-direction: column;
+flex-direction: column;
   }
 
   .directions-container {
-    margin-left: 0;
+margin-left: 0;
   }
 }

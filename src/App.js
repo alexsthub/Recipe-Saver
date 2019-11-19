@@ -95,11 +95,10 @@ class App extends Component {
 
     // TODO: For each recipe, we need to create a recipe container.
     // In that container, it will have the recipe and the recipe details. Only show recipe details on click
-
+    
     return (
-      <div>
-        <Header />
-        <main>
+      function() {
+        return [<Header />, <main>
           <div className="search-page">
             <Logo />
             <div className="recipe-container">
@@ -110,9 +109,9 @@ class App extends Component {
               <FAB />
             </div>
           </div>
-        </main>
-        <Footer />
-      </div>
+        </main>,
+        <Footer />]
+      }()
     );
   }
 }
