@@ -61,7 +61,14 @@ const stuff = [
     title: "Pineapple-Topped New York Cheesecake",
     times: "08/23/2018, 16:15:39",
     isFavorite: false
- }];
+ }
+];
+
+function recipesToJXS(recipeList) {
+  return recipeList.map(recipe => {
+    return <Recipe recipe={recipe} />
+  })
+}
 
 class App extends Component {
   constructor(props) {
@@ -106,7 +113,9 @@ class App extends Component {
             <div className="recipe-container">
               <SearchBar />
               <div className="list-container">
-                {/* Render the recipes (letter containers) */}
+                {
+                  recipesToJXS(stuff)
+                }
               </div>
               <FAB />
             </div>
@@ -139,7 +148,7 @@ class Recipe extends Component {
             />
             <div className="recipe-info">
               <div className="title-container">
-                <p className="recipe-title">${recipe.title}</p>
+                <p className="recipe-title">{recipe.title}</p>
                 <img className="favoriteIcon"
                   alt="favorite star icon"
                   src={require(`./img/${recipe.isFavorite ? "star-true" : "star-false"}.png`)}
@@ -149,14 +158,14 @@ class Recipe extends Component {
               <p className="recipe-description">
                 {recipe.description ? recipe.description : "Add a description!"}
               </p>
-              <p>Category: ${recipe.category ? recipe.category : "none"}</p>
+              <p>Category: {recipe.category ? recipe.category : "none"}</p>
               <p>
-                Subcategory: ${recipe.subcategory ? recipe.subcategory : "none"}
+                Subcategory: {recipe.subcategory ? recipe.subcategory : "none"}
               </p>
             </div>
           </div>
         </div>
-        <RecipeDetails recipe={this.recipe} displayDetails={this.state.displayDetails}/>
+        
       </div>
     );
   }
