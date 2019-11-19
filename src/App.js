@@ -143,11 +143,18 @@ class Recipe extends Component {
     this.state = {displayDetails: false, isFavorite: props.recipe.isFavorite}
   }
 
+  toggleFavorite = () => {
+    this.setState((currentState) => {
+      console.log(!currentState.isFavorite)
+      return {isFavorite: !currentState.isFavorite}
+    })
+  }
+
   render() {
     const recipe = this.props.recipe;
     return (
       <div className='recipe-group'>
-        <div className='recipe-letter-container' onClick={() => this.setState({displayDetails: !this.state.displayDetails})}>
+        <div className='recipe-letter-container' onClick={this.state.displayDetails} >
           <div className='recipe'>
             <img
               className='foodimage'
@@ -160,16 +167,16 @@ class Recipe extends Component {
                 <p className='recipe-title'>{recipe.title}</p>
                 <img className='favoriteIcon'
                   alt='favorite star icon'
-                  src={require(`./img/${recipe.isFavorite ? 'star-true' : 'star-false'}.png`)}
-                  onClick={this.props.onFavoriteClick}
+                  src={this.isFavorite ? require('./img/star-true.png') : require('./img/star-false.png')}
+                  onClick={this.toggleFavorite}
                 />
               </div>
               <p className='recipe-description'>
                 {recipe.description ? recipe.description : 'Add a description!'}
               </p>
-              <p>Category: {recipe.category ? recipe.category : 'none'}</p>
+              <p>Category: {recipe.category ? recipe.category : 'N/A'}</p>
               <p>
-                Subcategory: {recipe.subcategory ? recipe.subcategory : 'none'}
+                Subcategory: {recipe.subcategory ? recipe.subcategory : 'N/A'}
               </p>
             </div>
           </div>
