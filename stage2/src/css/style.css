@@ -11,6 +11,15 @@ body {
     font-family: 'Montserrat', sans-serif;
 }
 
+div#root {
+    height: 100%;
+}
+
+.wrapperAll {
+    flex-direction: 'column';
+    height: 100%;
+}
+
 .search-page {
     display: block;
 }
