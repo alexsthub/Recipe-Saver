@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import 'whatwg-fetch';
+import "whatwg-fetch";
 
 class App extends Component {
   constructor(props) {
@@ -15,16 +15,18 @@ class App extends Component {
     return (
       <div>
         <Header />
-        <div className="search-page">
-          <Logo />
-          <div className="recipe-container">
-            <SearchBar />
-            <div className="list-container">
-              {/* Render the recipes (letter containers) */}
+        <main>
+          <div className="search-page">
+            <Logo />
+            <div className="recipe-container">
+              <SearchBar />
+              <div className="list-container">
+                {/* Render the recipes (letter containers) */}
+              </div>
+              <FAB />
             </div>
-            <FAB />
           </div>
-        </div>
+        </main>
         <Footer />
       </div>
     );
@@ -35,16 +37,15 @@ class Letter extends Component {
   render() {
     const letter = this.props.letter;
     let recipes = this.props.recipes.map(r => {
-      <Recipe recipe={r} />
+      return <Recipe recipe={r} />;
     });
 
     return (
-
-      <div id={letter} className='letter-container'>
-        <p class='alphabet-letter'>{letter}.</p>
-        { /* Render recipe groups */}
+      <div id={letter} className="letter-container">
+        <p class="alphabet-letter">{letter}.</p>
+        {/* Render recipe groups */}
       </div>
-    )
+    );
   }
 }
 
@@ -147,14 +148,16 @@ class Recipe extends Component {
           <div className="recipe">
             <img
               className="foodimage"
-              alt={`${recipe.imageName ? recipe.imageName : "recipe saver logo"}`}
+              alt={`${
+                recipe.imageName ? recipe.imageName : "recipe saver logo"
+              }`}
               src={`${
                 recipe.imageName
                   ? recipe.imageName.startsWith("blob")
                     ? recipe.imageName
                     : "./recipeImages/" + recipe.imageName
                   : "./recipeImages/default.jpg"
-                }`}
+              }`}
             />
             <div className="recipe-info">
               <div className="title-container">
@@ -162,12 +165,18 @@ class Recipe extends Component {
                 <img
                   className="favoriteIcon"
                   alt="favorite star icon"
-                  src={`img/${recipe.isFavorite ? 'star-true' : 'star-false'}.png`}
+                  src={`img/${
+                    recipe.isFavorite ? "star-true" : "star-false"
+                  }.png`}
                 />
               </div>
-              <p className="recipe-description">{recipe.description ? recipe.description : "Add a description!"}</p>
+              <p className="recipe-description">
+                {recipe.description ? recipe.description : "Add a description!"}
+              </p>
               <p>Category: ${recipe.category ? recipe.category : "none"}</p>
-              <p>Subcategory: ${recipe.subcategory ? recipe.subcategory : "none"}</p>
+              <p>
+                Subcategory: ${recipe.subcategory ? recipe.subcategory : "none"}
+              </p>
             </div>
           </div>
         </div>
@@ -178,6 +187,16 @@ class Recipe extends Component {
 }
 
 class RecipeDetails extends Component {
+  toTimeString(min) {
+    if (min <= 60) {
+      return min + " min";
+    } else if (min < 120) {
+      return Math.floor(min / 60) + " hr " + (min % 60) + " min";
+    } else {
+      return Math.floor(min / 60) + " hrs " + (min % 60) + " min";
+    }
+  }
+
   render() {
     const recipe = this.props.recipe;
     let ingredients = recipe.ingredients.split("|");
@@ -187,23 +206,25 @@ class RecipeDetails extends Component {
         <div className="ingredients">
           <h2>Ingredients:</h2>
           <ul>
-            {ingredients.map((ingredient) => {
-              return <li>{ingredient}</li>
+            {ingredients.map(ingredient => {
+              return <li>{ingredient}</li>;
             })}
           </ul>
         </div>
         <div className="directions-container">
           <h2>Directions:</h2>
 
-          {recipe.estimatedTime ?
+          {recipe.estimatedTime ? (
             <div className="time">
-              <i className="fa fa-clock-o" aria-hidden="true"></i> ${toTimeString(recipe.estimatedTime)}
-            </div> : null}
+              <i className="fa fa-clock-o" aria-hidden="true"></i> $
+              {this.toTimeString(recipe.estimatedTime)}
+            </div>
+          ) : null}
 
           <div className="directions">
             <ol>
-              {procedure.map((step) => {
-                return <li>{step}</li>
+              {procedure.map(step => {
+                return <li>{step}</li>;
               })}
             </ol>
           </div>
@@ -300,8 +321,6 @@ class Footer extends Component {
   }
 }
 
-class LetterContainer extends Component {
-
-}
+class LetterContainer extends Component {}
 
 export default App;
