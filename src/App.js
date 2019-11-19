@@ -67,7 +67,7 @@ const stuff = [
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {data: null, showAll: true, searchText: ''};
+    this.state = {masterData: null, currentData: null, showAll: true, searchText: ''};
   }
 
   componentDidMount() {
@@ -83,14 +83,14 @@ class App extends Component {
     //   console.log(data);
     //   this.setState({data: data.response});
     // })
-    this.setState({data: stuff});
+    this.setState({masterData: stuff, currentData: stuff});
   }
 
   recipesToJSX() {
     // console.log(this.state.data)
-    if (this.state.data != null) { // on init, data is null so do nothing
+    if (this.state.currentData != null) { // on init, data is null so do nothing
       // console.log('returned jsx recipes')
-      return this.state.data.map(recipe => {
+      return this.state.currentData.map(recipe => {
         return <Recipe recipe={recipe} />
       })
     } else {
@@ -99,8 +99,12 @@ class App extends Component {
     }
   }
 
+  performSearch = recipes => {
+    this.setState({currentData: recipes})
+  }
+
   render() {
-    let recipes = this.state.data;
+    let recipes = this.state.currentData;
     if (recipes) {
       recipes.sort((a, b) => {
         const textA = a.title.toUpperCase();
@@ -118,7 +122,7 @@ class App extends Component {
           <div className='search-page'>
             <Logo />
             <div className='recipe-container'>
-              <SearchBar />
+              <SearchBar masterData={this.state.masterData} parentCallback={this.performSearch} />
               <div className='list-container'>
                 {this.recipesToJSX()}
               </div>
@@ -242,6 +246,121 @@ class LetterContainer extends Component {
   }
 }
 
+class Header extends Component {
+  render() {
+    return (
+      <header>
+        <div className='topbar'>
+          <h1 className='title'>
+            <i className='fa fa-shopping-basket' aria-hidden='true'></i>
+          </h1>
+          <div className='nav'>
+            <p className='all selected'>All</p>
+            <p className='favorite'>Favorites</p>
+          </div>
+          <div className='user-container'>
+            <p>User123456</p>
+          </div>
+        </div>
+      </header>
+    );
+  }
+}
+
+class Logo extends Component {
+  render() {
+    return (
+      <div className='logo-container'>
+        <img className='logo' alt='logo' src={require('./img/logo.png')} />
+      </div>
+    );
+  }
+}
+
+class SearchBar extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = { value: '' }
+  }
+
+  handleChange = event => {
+    let newVal = event.target.value;
+    if (newVal == '') {
+      this.setState({ value: newVal })
+      this.props.parentCallback(this.props.masterData)
+    } else {
+      this.setState({ value: newVal });
+      this.handleChange = this.handleChange.bind(this)
+      this.handleSubmit = this.handleSubmit.bind(this)
+    }
+  }
+
+  handleSubmit = event => {
+    event.preventDefault()
+    this.props.parentCallback(this.searchRecipes(this.state.value))
+    console.log('submit handled: ' + this.state.value)
+  }
+
+  // function searches for recipes given target string
+  searchRecipes(target) {
+    return this.props.masterData.filter(x => x.title.toLowerCase().includes(target.toLowerCase()));
+  }
+
+  render() {
+    return (
+      <form className='search-bar'>
+        <input
+          className='search'
+          placeholder='Search for a recipe...'
+          aria-label='Search for items'
+          type='search'
+          value={this.state.value}
+          onChange={this.handleChange}
+          required
+        />
+        <button className='search-button' aria-label='search button' onClick={this.handleSubmit}>
+          <i className='fa fa-search-plus' />
+        </button>
+      </form>
+    );
+  }
+}
+
+class FAB extends Component {
+  render() {
+    return (
+      <div className='fab'>
+        <i className='fa fa-plus my-float'></i>
+      </div>
+    );
+  }
+}
+
+class Footer extends Component {
+  render() {
+    return (
+      <footer>
+        <div className='footer-text'>
+          <p>Recipe Saver Inc. 2019&copy;</p>
+          <p>Made by: Alex Tan and Jerry Lin</p>
+          <address>
+            <p>
+              For any questions or concerns, contact us at{' '}
+              <a href='mailto:alexst@uw.edu'>alexst@uw.edu</a>, or at{' '}
+              <a href='tel:360-123-4567'>(360) 123-4567</a>.
+            </p>
+          </address>
+        </div>
+        <div className='footer-image-container'>
+          <img className='footer-img' alt='fruits image' src={require('./img/fruit_banner.png')}/>
+        </div>
+      </footer>
+    );
+  }
+}
+
+
 /* commented out for now: probably want to implemented form after everything else is sort of working
 class RecipeForm extends Component {
   render() {
@@ -331,115 +450,5 @@ class RecipeForm extends Component {
   }
 }
 */
-
-class Header extends Component {
-  render() {
-    return (
-      <header>
-        <div className='topbar'>
-          <h1 className='title'>
-            <i className='fa fa-shopping-basket' aria-hidden='true'></i>
-          </h1>
-          <div className='nav'>
-            <p className='all selected'>All</p>
-            <p className='favorite'>Favorites</p>
-          </div>
-          <div className='user-container'>
-            <p>User123456</p>
-          </div>
-        </div>
-      </header>
-    );
-  }
-}
-
-class Logo extends Component {
-  render() {
-    return (
-      <div className='logo-container'>
-        <img className='logo' alt='logo' src={require('./img/logo.png')} />
-      </div>
-    );
-  }
-}
-
-// function searches for recipes given target string
-function searchRecipes(target) {
-  return stuff.filter(x => x.title.toLowerCase().includes(target.toLowerCase()));
-}
-
-class SearchBar extends Component {
-
-  constructor(props) {
-    super(props)
-    this.state = {value: ''}
-  }
-
-  handleChange = event => {
-    let newVal = event.target.value;
-    this.setState({value: newVal});
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-    console.log('change handled')
-  }
-
-  handleSubmit = event => {
-    event.preventDefault()
-    searchRecipes(this.state.value)
-    console.log('submit handled: ' + this.state.value)
-  }
-
-  render() {
-    return (
-      <form className='search-bar'>
-        <input
-          className='search'
-          placeholder='Search for a recipe...'
-          aria-label='Search for items'
-          type='search'
-          value={this.state.value}
-          onChange={this.handleChange}
-          required
-        />
-        <button className='search-button' aria-label='search button' onClick={this.handleSubmit}>
-          <i className='fa fa-search-plus' />
-        </button>
-      </form>
-    );
-  }
-}
-
-class FAB extends Component {
-  render() {
-    return (
-      <div className='fab'>
-        <i className='fa fa-plus my-float'></i>
-      </div>
-    );
-  }
-}
-
-class Footer extends Component {
-  render() {
-    return (
-      <footer>
-        <div className='footer-text'>
-          <p>Recipe Saver Inc. 2019&copy;</p>
-          <p>Made by: Alex Tan and Jerry Lin</p>
-          <address>
-            <p>
-              For any questions or concerns, contact us at{' '}
-              <a href='mailto:alexst@uw.edu'>alexst@uw.edu</a>, or at{' '}
-              <a href='tel:360-123-4567'>(360) 123-4567</a>.
-            </p>
-          </address>
-        </div>
-        <div className='footer-image-container'>
-          <img className='footer-img' alt='fruits image' src={require('./img/fruit_banner.png')}/>
-        </div>
-      </footer>
-    );
-  }
-}
 
 export default App;
