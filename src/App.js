@@ -86,19 +86,21 @@ class App extends Component {
   }
 
   render() {
-    // let recipes = this.state.data;
-    // recipes.sort((a, b) => {
-    //   const textA = a.title.toUpperCase();
-    //   const textB = b.title.toUpperCase();
-    //   return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-    // });
-
+    let recipes = this.state.data;
+    if (recipes) {
+      recipes.sort((a, b) => {
+        const textA = a.title.toUpperCase();
+        const textB = b.title.toUpperCase();
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+      });
+    }    
     // TODO: For each recipe, we need to create a recipe container.
     // In that container, it will have the recipe and the recipe details. Only show recipe details on click
     
     return (
       function() {
-        return [<Header />, <main>
+        return [<Header />,
+        <main>
           <div className="search-page">
             <Logo />
             <div className="recipe-container">
@@ -358,7 +360,7 @@ class Logo extends Component {
 class SearchBar extends Component {
   render() {
     return (
-      <form>
+      <form class="search-bar">
         <input
           className="search"
           placeholder="Search for a recipe..."
@@ -403,7 +405,7 @@ class Footer extends Component {
           <img
             className="footer-img"
             alt="fruits image"
-            src="img/fruit_banner.png"
+            src="./img/fruit_banner.png"
           />
         </div>
       </footer>
