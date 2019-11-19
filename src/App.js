@@ -66,7 +66,7 @@ const stuff = [
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { data: null };
+    this.state = {data: null, showAll: true, searchText: ''};
   }
 
   componentDidMount() {
@@ -118,6 +118,7 @@ class App extends Component {
   }
 }
 
+// TODO: Pass in onFavoriteClick method.
 class Recipe extends Component {
   constructor(props) {
     super(props);
@@ -128,30 +129,21 @@ class Recipe extends Component {
     const recipe = this.props.recipe;
     return (
       <div className="recipe-group">
-        <div className="recipe-letter-container" onPress={() => this.setState({displayDetails: !this.state.displayDetails})}>
+        <div className="recipe-letter-container" onClick={() => this.setState({displayDetails: !this.state.displayDetails})}>
           <div className="recipe">
             <img
               className="foodimage"
-              alt={`${
-                recipe.imageName ? recipe.imageName : "recipe saver logo"
-              }`}
-              src={`${
-                recipe.imageName
-                  ? recipe.imageName.startsWith("blob")
-                    ? recipe.imageName
-                    : "./recipeImages/" + recipe.imageName
-                  : "./recipeImages/default.jpg"
-              }`}
+              alt={`${recipe.imageName ? recipe.imageName : "recipe saver logo"}`}
+              src={require(`${recipe.imageName ? recipe.imageName.startsWith("blob") ? recipe.imageName
+                    : "./recipeImages/" + recipe.imageName: "./recipeImages/default.jpg"}`)}
             />
             <div className="recipe-info">
               <div className="title-container">
                 <p className="recipe-title">${recipe.title}</p>
-                <img
-                  className="favoriteIcon"
+                <img className="favoriteIcon"
                   alt="favorite star icon"
-                  src={`img/${
-                    recipe.isFavorite ? "star-true" : "star-false"
-                  }.png`}
+                  src={require(`img/${recipe.isFavorite ? "star-true" : "star-false"}.png`)}
+                  onClick={this.props.onFavoriteClick}
                 />
               </div>
               <p className="recipe-description">
@@ -243,7 +235,7 @@ class RecipeForm extends Component {
     <div className='form-elements-container'>
       <span className='close'>&times;</span>
       <div className='input-container horizontal center'>
-        <img className='favoriteIcon' alt='favorite star icon' src='img/star-false.png' />
+        <img className='favoriteIcon' alt='favorite star icon' src={require('img/star-false.png')} />
         <p id='favorite-text'>Click the Star to Mark a Favorite!</p>
       </div>
 
@@ -261,7 +253,7 @@ class RecipeForm extends Component {
             <input type="file" name="file" id="file" className="input-file" />
             <label for="file">
               <div className="input-clickable">
-                <img className="box-image" src="./img/upload.png" />
+                <img className="box-image" src={require("./img/upload.png")} />
                 <span><strong>Choose a file </strong>or drag it here.</span>
               </div>
             </label>
@@ -274,7 +266,7 @@ class RecipeForm extends Component {
         <div class="line"></div>
         <ul id="ingredient-list">{insert ingredients here}</ul>
         <div className="list-input">
-          <img src="./img/shoppingCart.png" />
+          <img src={require("./img/shoppingCart.png")} />
           <input id="ingredient-input" placeholder="Enter an Ingredient..."
             aria-label="Enter Recipe Ingredient" type="text" />
           <p id="ingredient-add">Add</p>
@@ -286,7 +278,7 @@ class RecipeForm extends Component {
         <div className="line"></div>
         <ol id="procedure-list">{insert procedure here}</ol>
         <div class="list-input">
-          <img src="./img/paperclip.png" />
+          <img src={require("./img/paperclip.png")} />
           <input id="procedure-input" placeholder="Enter a Step..." aria-label="Enter Steps" type="text" />
           <p id="procedure-add">Add</p>
         </div>
@@ -351,7 +343,7 @@ class Logo extends Component {
   render() {
     return (
       <div className="logo-container">
-        <img className="logo" alt="logo" src="img/logo.png" />
+        <img className="logo" alt="logo" src={require("./img/logo.png")} />
       </div>
     );
   }
@@ -402,11 +394,7 @@ class Footer extends Component {
           </address>
         </div>
         <div className="footer-image-container">
-          <img
-            className="footer-img"
-            alt="fruits image"
-            src="img/fruit_banner.png"
-          />
+          <img className="footer-img" alt="fruits image" src={require("./img/fruit_banner.png")}/>
         </div>
       </footer>
     );
