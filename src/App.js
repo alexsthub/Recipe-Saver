@@ -67,9 +67,10 @@ const stuff = [
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {data: [], showAll: true, searchText: ''};
+    this.state = {masterData: [], data:[], showAll: true, searchText: ''};
   }
 
+  // TODO: Change names to masterData and data
   componentDidMount() {
     // fetch('./jsonData_small.json')
     // .then((response) => {
@@ -83,7 +84,11 @@ class App extends Component {
     //   console.log(data);
     //   this.setState({data: data.response});
     // })
-    this.setState({data: stuff});
+    this.setState({masterData: stuff, data: stuff});
+  }
+
+  performSearch = recipes => {
+    this.setState({data: recipes})
   }
 
   render() {
@@ -112,10 +117,10 @@ class App extends Component {
             <div className='search-page'>
               <Logo />
               <div className='recipe-container'>
-                <SearchBar />
+                <SearchBar masterData={this.state.masterData} parentCallback={this.performSearch}/>
                 <div className='list-container'>
                   {sortedKeys.map((letter) => {
-                    const recipes = recipeDict[letter];
+                    const recipes = recipeDict[letter].sort();
                     return <LetterContainer key={letter} letter={letter} recipes={recipes}/>
                   })}
                 </div>
@@ -149,11 +154,18 @@ class Recipe extends Component {
     this.state = {displayDetails: false, isFavorite: props.recipe.isFavorite}
   }
 
+  toggleFavorite = () => {
+    this.setState((currentState) => {
+      console.log(!currentState.isFavorite)
+      return {isFavorite: !currentState.isFavorite}
+    })
+  }
+
   render() {
     const recipe = this.props.recipe;
     return (
       <div className='recipe-group'>
-        <div className='recipe-letter-container' onClick={() => this.setState({displayDetails: !this.state.displayDetails})}>
+        <div className='recipe-letter-container' onClick={this.state.displayDetails} >
           <div className='recipe'>
             <img
               className='foodimage'
@@ -166,8 +178,8 @@ class Recipe extends Component {
                 <p className='recipe-title'>{recipe.title}</p>
                 <img className='favoriteIcon'
                   alt='favorite star icon'
-                  src={require(`./img/${recipe.isFavorite ? 'star-true' : 'star-false'}.png`)}
-                  onClick={this.props.onFavoriteClick}
+                  src={this.isFavorite ? require('./img/star-true.png') : require('./img/star-false.png')}
+                  onClick={this.toggleFavorite}
                 />
               </div>
               <p className='recipe-description'>
@@ -178,7 +190,7 @@ class Recipe extends Component {
             </div>
           </div>
         </div>
-        
+        {/* <RecipeDetails/> */}
       </div>
     );
   }
@@ -231,6 +243,120 @@ class RecipeDetails extends Component {
         </div>
       );
     } else {return;} 
+  }
+}
+
+class Header extends Component {
+  render() {
+    return (
+      <header>
+        <div className='topbar'>
+          <h1 className='title'>
+            <i className='fa fa-shopping-basket' aria-hidden='true'></i>
+          </h1>
+          <div className='nav'>
+            <p className='all selected'>All</p>
+            <p className='favorite'>Favorites</p>
+          </div>
+          <div className='user-container'>
+            <p>User123456</p>
+          </div>
+        </div>
+      </header>
+    );
+  }
+}
+
+class Logo extends Component {
+  render() {
+    return (
+      <div className='logo-container'>
+        <img className='logo' alt='logo' src={require('./img/logo.png')} />
+      </div>
+    );
+  }
+}
+
+class SearchBar extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = { value: '' }
+  }
+
+  handleChange = event => {
+    let newVal = event.target.value;
+    if (newVal === '') {
+      this.setState({ value: newVal })
+      this.props.parentCallback(this.props.masterData)
+    } else {
+      this.setState({ value: newVal });
+      this.handleChange = this.handleChange.bind(this)
+      this.handleSubmit = this.handleSubmit.bind(this)
+    }
+  }
+
+  handleSubmit = event => {
+    event.preventDefault()
+    this.props.parentCallback(this.searchRecipes(this.state.value))
+    console.log('submit handled: ' + this.state.value)
+  }
+
+  // function searches for recipes given target string
+  searchRecipes(target) {
+    return this.props.masterData.filter(x => x.title.toLowerCase().includes(target.toLowerCase()));
+  }
+
+  render() {
+    return (
+      <form className='search-bar'>
+        <input
+          className='search'
+          placeholder='Search for a recipe...'
+          aria-label='Search for items'
+          type='search'
+          value={this.state.value}
+          onChange={this.handleChange}
+          required
+        />
+        <button className='search-button' aria-label='search button' onClick={this.handleSubmit}>
+          <i className='fa fa-search-plus' />
+        </button>
+      </form>
+    );
+  }
+}
+
+class FAB extends Component {
+  render() {
+    return (
+      <div className='fab'>
+        <i className='fa fa-plus my-float'></i>
+      </div>
+    );
+  }
+}
+
+class Footer extends Component {
+  render() {
+    return (
+      <footer>
+        <div className='footer-text'>
+          <p>Recipe Saver Inc. 2019&copy;</p>
+          <p>Made by: Alex Tan and Jerry Lin</p>
+          <address>
+            <p>
+              For any questions or concerns, contact us at{' '}
+              <a href='mailto:alexst@uw.edu'>alexst@uw.edu</a>, or at{' '}
+              <a href='tel:360-123-4567'>(360) 123-4567</a>.
+            </p>
+          </address>
+        </div>
+        <div className='footer-image-container'>
+          <img className='footer-img' alt='fruits' src={require('./img/fruit_banner.png')}/>
+        </div>
+      </footer>
+    );
   }
 }
 
@@ -323,115 +449,5 @@ class RecipeForm extends Component {
   }
 }
 */
-
-class Header extends Component {
-  render() {
-    return (
-      <header>
-        <div className='topbar'>
-          <h1 className='title'>
-            <i className='fa fa-shopping-basket' aria-hidden='true'></i>
-          </h1>
-          <div className='nav'>
-            <p className='all selected'>All</p>
-            <p className='favorite'>Favorites</p>
-          </div>
-          <div className='user-container'>
-            <p>User123456</p>
-          </div>
-        </div>
-      </header>
-    );
-  }
-}
-
-class Logo extends Component {
-  render() {
-    return (
-      <div className='logo-container'>
-        <img className='logo' alt='logo' src={require('./img/logo.png')} />
-      </div>
-    );
-  }
-}
-
-// function searches for recipes given target string
-function searchRecipes(target) {
-  return stuff.filter(x => x.title.toLowerCase().includes(target.toLowerCase()));
-}
-
-class SearchBar extends Component {
-
-  constructor(props) {
-    super(props)
-    this.state = {value: ''}
-  }
-
-  handleChange = event => {
-    let newVal = event.target.value;
-    this.setState({value: newVal});
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-    console.log('change handled')
-  }
-
-  handleSubmit = event => {
-    event.preventDefault()
-    searchRecipes(this.state.value)
-    console.log('submit handled: ' + this.state.value)
-  }
-
-  render() {
-    return (
-      <form className='search-bar'>
-        <input
-          className='search'
-          placeholder='Search for a recipe...'
-          aria-label='Search for items'
-          type='search'
-          value={this.state.value}
-          onChange={this.handleChange}
-          required
-        />
-        <button className='search-button' aria-label='search button' onClick={this.handleSubmit}>
-          <i className='fa fa-search-plus' />
-        </button>
-      </form>
-    );
-  }
-}
-
-class FAB extends Component {
-  render() {
-    return (
-      <div className='fab'>
-        <i className='fa fa-plus my-float'></i>
-      </div>
-    );
-  }
-}
-
-class Footer extends Component {
-  render() {
-    return (
-      <footer>
-        <div className='footer-text'>
-          <p>Recipe Saver Inc. 2019&copy;</p>
-          <p>Made by: Alex Tan and Jerry Lin</p>
-          <address>
-            <p>
-              For any questions or concerns, contact us at{' '}
-              <a href='mailto:alexst@uw.edu'>alexst@uw.edu</a>, or at{' '}
-              <a href='tel:360-123-4567'>(360) 123-4567</a>.
-            </p>
-          </address>
-        </div>
-        <div className='footer-image-container'>
-          <img className='footer-img' alt='fruits image' src={require('./img/fruit_banner.png')}/>
-        </div>
-      </footer>
-    );
-  }
-}
 
 export default App;
