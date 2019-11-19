@@ -286,7 +286,7 @@ class SearchBar extends Component {
 
   handleChange = event => {
     let newVal = event.target.value;
-    if (newVal == '') {
+    if (newVal === '') {
       this.setState({ value: newVal })
       this.props.parentCallback(this.props.masterData)
     } else {
@@ -353,7 +353,7 @@ class Footer extends Component {
           </address>
         </div>
         <div className='footer-image-container'>
-          <img className='footer-img' alt='fruits image' src={require('./img/fruit_banner.png')}/>
+          <img className='footer-img' alt='fruits' src={require('./img/fruit_banner.png')}/>
         </div>
       </footer>
     );
