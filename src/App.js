@@ -67,7 +67,7 @@ const stuff = [
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {data: null, showAll: true, searchText: ''};
+    this.state = {data: [], showAll: true, searchText: ''};
   }
 
   componentDidMount() {
@@ -86,48 +86,58 @@ class App extends Component {
     this.setState({data: stuff});
   }
 
-  recipesToJSX() {
-    // console.log(this.state.data)
-    if (this.state.data != null) { // on init, data is null so do nothing
-      // console.log('returned jsx recipes')
-      return this.state.data.map(recipe => {
-        return <Recipe recipe={recipe} />
-      })
-    } else {
-      // console.log('returned empty string')
-      return ''
-    }
-  }
-
   render() {
     let recipes = this.state.data;
+    let recipeDict = {};
+    // For each recipe put into object with first letter as key
     if (recipes) {
-      recipes.sort((a, b) => {
-        const textA = a.title.toUpperCase();
-        const textB = b.title.toUpperCase();
-        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-      });
-    }    
+      recipes.forEach((recipe) => {
+        const firstLetter = recipe.title.charAt(0).toUpperCase();
+        if (firstLetter in recipeDict) {
+          recipeDict[firstLetter].push(recipe);
+        } else {
+          recipeDict[firstLetter] = [recipe]
+        }
+      })
+    }
+    const sortedKeys = Object.keys(recipeDict).sort()
+    console.log(recipeDict);
+    console.log(sortedKeys);
     // TODO: For each recipe, we need to create a recipe container.
     // In that container, it will have the recipe and the recipe details. Only show recipe details on click
 
     return (
-      function() {
-        return [<Header />,
-        <main>
-          <div className='search-page'>
-            <Logo />
-            <div className='recipe-container'>
-              <SearchBar />
-              <div className='list-container'>
-                {this.recipesToJSX()}
+      [<Header />,
+          <main>
+            <div className='search-page'>
+              <Logo />
+              <div className='recipe-container'>
+                <SearchBar />
+                <div className='list-container'>
+                  {sortedKeys.map((letter) => {
+                    const recipes = recipeDict[letter];
+                    return <LetterContainer key={letter} letter={letter} recipes={recipes}/>
+                  })}
+                </div>
+                <FAB />
               </div>
-              <FAB />
             </div>
-          </div>
-        </main>,
-        <Footer />]
-      }.bind(this)()
+          </main>,
+          <Footer />
+        ]
+    );
+  }
+}
+
+class LetterContainer extends Component {
+  render() {
+    return (
+      <div id={this.props.letter} className='letter-container'>
+        <p class='alphabet-letter'>{this.props.letter}.</p>
+        {this.props.recipes.map((recipe) => {
+          return <Recipe key={recipe.title} recipe={recipe} />
+        })}
+      </div>
     );
   }
 }
@@ -164,9 +174,7 @@ class Recipe extends Component {
                 {recipe.description ? recipe.description : 'Add a description!'}
               </p>
               <p>Category: {recipe.category ? recipe.category : 'none'}</p>
-              <p>
-                Subcategory: {recipe.subcategory ? recipe.subcategory : 'none'}
-              </p>
+              <p>Subcategory: {recipe.subcategory ? recipe.subcategory : 'none'}</p>
             </div>
           </div>
         </div>
@@ -223,22 +231,6 @@ class RecipeDetails extends Component {
         </div>
       );
     } else {return;} 
-  }
-}
-
-class LetterContainer extends Component {
-  render() {
-    const letter = this.props.letter;
-    let recipes = this.props.recipes.map(r => {
-      return <Recipe recipe={r} />;
-    });
-
-    return (
-      <div id={letter} className='letter-container'>
-        <p class='alphabet-letter'>{letter}.</p>
-        {/* Render recipe groups */}
-      </div>
-    );
   }
 }
 
