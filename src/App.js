@@ -512,7 +512,12 @@ class Recipe extends Component {
                       ? require("./img/star-true.png")
                       : require("./img/star-false.png")
                   }
-                  onClick={this.toggleFavorite}
+                  onClick={
+                    event => {
+                      event.stopPropagation()
+                      this.toggleFavorite()
+                    }
+                  }
                 />
               </div>
               <p className="recipe-description">
