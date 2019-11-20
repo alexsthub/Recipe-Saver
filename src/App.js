@@ -130,7 +130,7 @@ class FormModal extends Component {
     }
   }
 
-  // TODO: Handle image drag and stop the background from scrolling.
+  // TODO: stop the background from scrolling.
   handleFormSubmit = (event) => {
     event.preventDefault();
 
@@ -305,6 +305,8 @@ class ImageInputContainer extends Component {
   }
 
   handleDragStart = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     this.setState({dragOn: true})
   }
 
@@ -312,12 +314,11 @@ class ImageInputContainer extends Component {
     this.setState({dragOn: false})
   }
 
-  handleDragDrop = (event) => {
+  handleDrop = (event) => {
     event.preventDefault();
     event.stopPropagation();
     this.handleDragEnd();
-    let file = event.originalEvent.dataTransfer.files[0];
-    console.log(file);
+    let file = event.dataTransfer.files[0];
     this.processFile(file);
   }
 
@@ -328,7 +329,7 @@ class ImageInputContainer extends Component {
         <div className="line"></div>
         <div className={!this.state.dragOn ? "box" : "box is-dragover"} draggable 
           onDragOver={this.handleDragStart} onDragEnter={this.handleDragStart} 
-          onDragLeave={this.handleDragEnd} onDragEnd={this.handleDragEnd} onDrop={this.handleDragDrop}>
+          onDragLeave={this.handleDragEnd} onDragEnd={this.handleDragEnd} onDrop={this.handleDrop}>
           <div className="box-input">
             <input onChange={this.handleFileChange} type="file" name="file" id="file" className="input-file" />
             <label htmlFor="file">
