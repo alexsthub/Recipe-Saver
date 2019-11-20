@@ -136,6 +136,7 @@ class FormModal extends Component {
       times: null,
       isFavorite: this.state.isFavorite
     }
+    console.log(newRecipe);
 
     this.props.handleNewRecipe(newRecipe);
     this.props.handleFormClose();
@@ -406,6 +407,8 @@ class InputContainer extends Component {
         {this.props.multiLine ? (
           <textarea
             id={this.props.id}
+            value={this.props.value}
+            onChange={this.props.onChange}
             className="recipe-description"
             placeholder={this.props.placeholder}
             rows={this.props.rows}
