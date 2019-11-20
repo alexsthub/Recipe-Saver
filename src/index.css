@@ -111,7 +111,7 @@ form button.search-button:hover {
   text-decoration: underline;
 }
 
-.topbar p:hover {
+.topbar .nav p:hover {
   text-decoration: underline;
   cursor: pointer;
 }
