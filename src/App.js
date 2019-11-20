@@ -4,7 +4,7 @@ import "whatwg-fetch";
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { masterData: [], data: [], renderModal: false };
+    this.state = { masterData: [], data: [], renderModal: false, favorites: false };
   }
 
   componentDidMount() {
@@ -23,6 +23,10 @@ class App extends Component {
   performSearch = recipes => {
     this.setState({ data: recipes });
   };
+
+  displayFavorites = (recipes, status) => {
+    this.setState({ data: recipes, favorites: status });
+  }
 
   handleFABPress = () => {
     this.setState({ renderModal: true });
@@ -53,7 +57,10 @@ class App extends Component {
     }
     const sortedKeys = Object.keys(recipeDict).sort();
     return [
-      <Header />,
+      <Header 
+        masterData={this.state.masterData}
+        parentCallback={this.displayFavorites}
+      />,
       <main>
         <div className="search-page">
           <Logo />
@@ -482,7 +489,7 @@ class Recipe extends Component {
                   className="favoriteIcon"
                   alt="favorite star icon"
                   src={
-                    this.isFavorite
+                    this.state.isFavorite
                       ? require("./img/star-true.png")
                       : require("./img/star-false.png")
                   }
@@ -558,6 +565,15 @@ class RecipeDetails extends Component {
 }
 
 class Header extends Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  filterFavorites = () => {
+    return this.props.masterData.filter(recipe => recipe.isFavorite)
+  }
+
   render() {
     return (
       <header>
@@ -566,8 +582,14 @@ class Header extends Component {
             <i className="fa fa-shopping-basket" aria-hidden="true"></i>
           </h1>
           <div className="nav">
-            <p className="all selected">All</p>
-            <p className="favorite">Favorites</p>
+            <p className="all selected" onClick={() => {
+              this.props.parentCallback(this.props.masterData, false)
+            }
+            }>All</p>
+            <p className="favorite" onClick={() => {
+              this.props.parentCallback(this.filterFavorites(), true)
+            }
+            }>Favorites</p>
           </div>
           <div className="user-container">
             <p>User123456</p>
