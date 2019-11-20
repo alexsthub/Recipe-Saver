@@ -36,10 +36,12 @@ class App extends Component {
   }
 
   handleFABPress = () => {
+    document.body.classList.add('noscroll');
     this.setState({ renderModal: true });
   };
 
   handleFormClose = () => {
+    document.body.classList.remove('noscroll');
     this.setState({ renderModal: false });
   };
 
@@ -62,44 +64,46 @@ class App extends Component {
       });
     }
     const sortedKeys = Object.keys(recipeDict).sort();
-    return [
-      <Header 
-        masterData={this.state.masterData}
-        parentCallback={this.displayFavorites}
-        favorite={this.state.favorites}
-      />,
-      <main>
-        <div className="search-page">
-          <Logo />
-          <div className="recipe-container">
-            <SearchBar
-              masterData={this.state.masterData}
-              parentCallback={this.performSearch}
-            />
-            <div className="list-container">
-              {sortedKeys.map(letter => {
-                const recipes = recipeDict[letter].sort();
-                return (
-                  <LetterContainer
-                    key={letter}
-                    letter={letter}
-                    recipes={recipes}
-                    parentCallback={this.updateRecipeFavorite}
-                  />
-                );
-              })}
+    return (
+      <div>
+        <Header 
+          masterData={this.state.masterData}
+          parentCallback={this.displayFavorites}
+          favorite={this.state.favorites}
+        />
+        <main>
+          <div className="search-page">
+            <Logo />
+            <div className="recipe-container">
+              <SearchBar
+                masterData={this.state.masterData}
+                parentCallback={this.performSearch}
+              />
+              <div className="list-container">
+                {sortedKeys.map(letter => {
+                  const recipes = recipeDict[letter].sort();
+                  return (
+                    <LetterContainer
+                      key={letter}
+                      letter={letter}
+                      recipes={recipes}
+                      parentCallback={this.updateRecipeFavorite}
+                    />
+                  );
+                })}
+              </div>
+              {this.state.renderModal ? (
+                <FormModal 
+                  handleFormClose={this.handleFormClose}
+                  handleNewRecipe={this.handleNewRecipe} />
+              ) : null}
+              <FAB handleFABPress={this.handleFABPress} />
             </div>
-            {this.state.renderModal ? (
-              <FormModal 
-                handleFormClose={this.handleFormClose}
-                handleNewRecipe={this.handleNewRecipe} />
-            ) : null}
-            <FAB handleFABPress={this.handleFABPress} />
           </div>
-        </div>
-      </main>,
-      <Footer />
-    ];
+        </main>
+        <Footer />
+      </div>
+    );
   }
 }
 

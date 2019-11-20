@@ -211,7 +211,6 @@ p.recipe-title {
 .noscroll { 
   overflow: hidden;
 }
-/* TODO: When the popup is clicked, put the noscroll class on the body. When popup is gone. Remove it   */
 
 .form-overlay {
   position: fixed;
