@@ -4,7 +4,7 @@ import "whatwg-fetch";
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { masterData: [], data: [], renderModal: false };
+    this.state = { masterData: [], data: [], renderModal: false, favorites: false };
   }
 
   componentDidMount() {
@@ -23,6 +23,17 @@ class App extends Component {
   performSearch = recipes => {
     this.setState({ data: recipes });
   };
+
+  displayFavorites = (recipes, status) => {
+    console.log(status)
+    this.setState({ data: recipes, favorites: status });
+  }
+
+  updateRecipeFavorite = (recipe, status) => {
+    let temp = this.state.masterData;
+    temp.filter(some => some.title === recipe.title)[0].isFavorite = status
+    this.setState({ masterData: temp })
+  }
 
   handleFABPress = () => {
     this.setState({ renderModal: true });
@@ -52,7 +63,11 @@ class App extends Component {
     }
     const sortedKeys = Object.keys(recipeDict).sort();
     return [
-      <Header />,
+      <Header 
+        masterData={this.state.masterData}
+        parentCallback={this.displayFavorites}
+        favorite={this.state.favorites}
+      />,
       <main>
         <div className="search-page">
           <Logo />
@@ -69,6 +84,7 @@ class App extends Component {
                     key={letter}
                     letter={letter}
                     recipes={recipes}
+                    parentCallback={this.updateRecipeFavorite}
                   />
                 );
               })}
@@ -460,7 +476,7 @@ class LetterContainer extends Component {
       <div id={this.props.letter} className="letter-container">
         <p className="alphabet-letter">{this.props.letter}.</p>
         {this.props.recipes.map(recipe => {
-          return <Recipe key={recipe.title} recipe={recipe} />;
+          return <Recipe key={recipe.title} recipe={recipe} parentCallback={this.props.parentCallback} />;
         })}
       </div>
     );
@@ -479,12 +495,22 @@ class Recipe extends Component {
       console.log(!currentState.isFavorite);
       return { isFavorite: !currentState.isFavorite };
     });
+    this.props.parentCallback(this.props.recipe, !this.state.isFavorite);
   };
+
+  handleClick = () => {
+    this.setState(currentState => {
+      console.log(!currentState.displayDetails)
+      return {displayDetails: !currentState.displayDetails}
+    })
+  }
 
   render() {
     const recipe = this.props.recipe;
     return (
-      <div className="recipe-group">
+      <div className="recipe-group" onClick={() => {
+        this.handleClick()
+      }}>
         <div className="recipe-letter-container">
           <div className="recipe">
             <img
@@ -503,11 +529,16 @@ class Recipe extends Component {
                   className="favoriteIcon"
                   alt="favorite star icon"
                   src={
-                    this.isFavorite
+                    this.state.isFavorite
                       ? require("./img/star-true.png")
                       : require("./img/star-false.png")
                   }
-                  onClick={this.toggleFavorite}
+                  onClick={
+                    event => {
+                      event.stopPropagation()
+                      this.toggleFavorite()
+                    }
+                  }
                 />
               </div>
               <p className="recipe-description">
@@ -520,7 +551,7 @@ class Recipe extends Component {
             </div>
           </div>
         </div>
-        {/* <RecipeDetails/> */}
+        <RecipeDetails recipe={recipe} displayDetails={this.state.displayDetails} />
       </div>
     );
   }
@@ -548,7 +579,7 @@ class RecipeDetails extends Component {
             <h2>Ingredients:</h2>
             <ul>
               {ingredients.map(ingredient => {
-                return <li>{ingredient}</li>;
+                return <li key={ingredient}>{ingredient}</li>;
               })}
             </ul>
           </div>
@@ -557,15 +588,15 @@ class RecipeDetails extends Component {
 
             {recipe.estimatedTime ? (
               <div className="time">
-                <i className="fa fa-clock-o" aria-hidden="true"></i> $
-                {this.toTimeString(recipe.estimatedTime)}
+                <i className="fa fa-clock-o" aria-hidden="true"></i> 
+                {' ' + this.toTimeString(recipe.estimatedTime)}
               </div>
             ) : null}
 
             <div className="directions">
               <ol>
                 {procedure.map(step => {
-                  return <li>{step}</li>;
+                  return <li key={step}>{step}</li>;
                 })}
               </ol>
             </div>
@@ -573,12 +604,17 @@ class RecipeDetails extends Component {
         </div>
       );
     } else {
-      return;
+      return null;
     }
   }
 }
 
 class Header extends Component {
+
+  filterFavorites = () => {
+    return this.props.masterData.filter(recipe => recipe.isFavorite)
+  }
+
   render() {
     return (
       <header>
@@ -587,8 +623,14 @@ class Header extends Component {
             <i className="fa fa-shopping-basket" aria-hidden="true"></i>
           </h1>
           <div className="nav">
-            <p className="all selected">All</p>
-            <p className="favorite">Favorites</p>
+            <p className={'all' + this.props.favorite ? '' : ' selected'}  onClick={() => {
+              this.props.parentCallback(this.props.masterData, false)
+            }
+            }>All</p>
+            <p className={'favorite' + this.props.favorite ? ' selected' : ''} onClick={() => {
+              this.props.parentCallback(this.filterFavorites(), true)
+            }
+            }>Favorites</p>
           </div>
           <div className="user-container">
             <p>User123456</p>
