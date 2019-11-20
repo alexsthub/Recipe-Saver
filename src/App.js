@@ -8,16 +8,16 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch('./jsonData_small.json')
-    .then((response) => {
-      return response.json();
-    })
-    .catch((error) => {
-      console.log(error.message);
-    })
-    .then((data) => {
-      this.setState({ masterData: data.response, data: data.response });
-    })
+    fetch("./jsonData_small.json")
+      .then(response => {
+        return response.json();
+      })
+      .catch(error => {
+        console.log(error.message);
+      })
+      .then(data => {
+        this.setState({ masterData: data.response, data: data.response });
+      });
   }
 
   performSearch = recipes => {
@@ -26,6 +26,10 @@ class App extends Component {
 
   handleFABPress = () => {
     this.setState({ renderModal: true });
+  };
+
+  handleFormClose = () => {
+    this.setState({ renderModal: false });
   };
 
   render() {
@@ -64,7 +68,9 @@ class App extends Component {
                 );
               })}
             </div>
-            {this.state.renderModal ? <FormModal /> : null}
+            {this.state.renderModal ? (
+              <FormModal handleFormClose={this.handleFormClose} />
+            ) : null}
             <FAB handleFABPress={this.handleFABPress} />
           </div>
         </div>
@@ -81,19 +87,101 @@ class FormModal extends Component {
   }
 
   // TODO: Handle onPress here
-  handleFavoritePress = () => {};
+  handleFavoritePress = () => {
+    this.setState({ isFavorite: !this.state.isFavorite });
+  };
 
   render() {
     return (
       <div className="form-overlay">
-        <form id="recipe-submit" action="" enctype="multipart/form-data">
-          <div class="form-container">
+        <form id="recipe-submit" action="" encType="multipart/form-data">
+          <div className="form-container">
             <div className="form-elements-container">
-              <span className="close">X</span>
+              <span onClick={this.props.handleFormClose} className="close">
+                X
+              </span>
+              <h1>Enter A New Recipe!</h1>
               <div className="input-container horizontal center">
-                <img onClick={this.handleFavoritePress} className="favoriteIcon" alt="favorite star icon" src={require("./img/star-false.png")}/>
+                <img
+                  onClick={this.handleFavoritePress}
+                  className="favoriteIcon"
+                  alt="favorite star icon"
+                  src={
+                    this.state.isFavorite
+                      ? require("./img/star-true.png")
+                      : require("./img/star-false.png")
+                  }
+                />
                 <p id="favorite-text">Click the Star to Mark a Favorite!</p>
               </div>
+
+              {/* TODO: Input Containers */}
+              <InputContainer
+                title={"Recipe Name"}
+                id={"title"}
+                placeholder={"Recipe Title..."}
+                aria-label={"Enter Recipe Name"}
+                type={"text"}
+                multiLine={false}
+                required
+              />
+
+              <ImageInputContainer/>
+
+              <ListInputContainer
+                title={"Ingredients"}
+                type={"ingredient"}
+                id={"procedure-input"}
+                placeholder={"Enter a step..."}
+                aria-label={"Enter Steps"}
+                required
+              />
+
+              {/* <ListInputContainer
+                title={"Procedure"}
+                type={"procedure"}
+                id={"ingredient-input"}
+                placeholder={"Enter an Ingredient..."}
+                aria-label={"Enter Recipe Ingredient"}
+              /> */}
+
+              <InputContainer
+                title={"Recipe Description"}
+                id={"description"}
+                placeholder={"Recipe Description..."}
+                aria-label={"Enter Recipe Description"}
+                multiLine={true}
+                rows={5}
+              />
+
+              <InputContainer
+                title={"Category"}
+                id={"category"}
+                placeholder={"Recipe Category..."}
+                aria-label={"Enter Recipe Category"}
+                type={"text"}
+              />
+
+              <InputContainer
+                title={"Subcategory"}
+                id={"subcategory"}
+                placeholder={"Recipe Subcategory..."}
+                aria-label={"Enter Recipe Subcategory"}
+                type={"text"}
+              />
+
+              <InputContainer
+                title={"Estimated Time in Minutes"}
+                id={"time"}
+                placeholder={"Recipe Estimated Time..."}
+                aria-label={"Enter Recipe Estimated Time"}
+                type={"number"}
+              />
+
+              <div className="submit-container">
+                <button type="submit" className="btn btn-primary">Submit</button>
+              </div>
+
             </div>
           </div>
         </form>
@@ -102,90 +190,138 @@ class FormModal extends Component {
   }
 }
 
-/* commented out for now: probably want to implemented form after everything else is sort of working
-class RecipeForm extends Component {
+class ImageInputContainer extends Component {
   render() {
     return (
-    <div className='form-elements-container'>
-
-      <div className='input-container'>
-        <p>Recipe Name *</p>
-        <div className='line'></div>
-        <input id='title' className='standard-input' placeholder='Recipe Title...' aria-label='Enter Recipe Name' type='text' required />
-      </div>
-
-      <div className='input-container'>
+      <div className="input-container">
         <p>Upload an Image (Optional)</p>
-        <div className='line'></div>
-        <div className='box'>
-          <div className='box-input'>
-            <input type='file' name='file' id='file' className='input-file' />
-            <label for='file'>
-              <div className='input-clickable'>
-                <img className='box-image' src={require('./img/upload.png')} />
-                <span><strong>Choose a file </strong>or drag it here.</span>
+        <div className="line"></div>
+        <div className="box">
+          <div className="box-input">
+            <input type="file" name="file" id="file" className="input-file" />
+            <label htmlFor="file">
+              <div className="input-clickable">
+                <img className="box-image" alt='upload' src={require("./img/upload.png")} />
+                <span>
+                  <strong>Choose a file </strong>or drag it here.
+                </span>
               </div>
             </label>
           </div>
         </div>
       </div>
-
-      <div className='input-container'>
-        <p>Ingredients *</p>
-        <div class='line'></div>
-        <ul id='ingredient-list'>{insert ingredients here}</ul>
-        <div className='list-input'>
-          <img src={require('./img/shoppingCart.png')} />
-          <input id='ingredient-input' placeholder='Enter an Ingredient...'
-            aria-label='Enter Recipe Ingredient' type='text' />
-          <p id='ingredient-add'>Add</p>
-        </div>
-      </div>
-
-      <div className='input-container'>
-        <p>Procedure *</p>
-        <div className='line'></div>
-        <ol id='procedure-list'>{insert procedure here}</ol>
-        <div class='list-input'>
-          <img src={require('./img/paperclip.png')} />
-          <input id='procedure-input' placeholder='Enter a Step...' aria-label='Enter Steps' type='text' />
-          <p id='procedure-add'>Add</p>
-        </div>
-      </div>
-
-      <div className='input-container'>
-        <p>Recipe Description (Optional)</p>
-        <div className='line'></div>
-        <textarea id='description' placeholder='Recipe Description...' rows='5' className='recipe-description'></textarea>
-      </div>
-
-      <div className='input-container'>
-        <p>Category (Optional)</p>
-        <div className='line'></div>
-        <input id='category' class='standard-input' placeholder='Recipe Category...' aria-label='Enter Recipe Category' type='text' />
-      </div>
-
-      <div className='input-container'>
-        <p>Subcategory (Optional)</p>
-        <div class='line'></div>
-        <input id='subcategory' className='standard-input' placeholder='Recipe Subcategory...' aria-label='Enter Recipe Subcategory' type='text' />
-      </div>
-
-      <div className='input-container'>
-        <p>Estimated Time in Minutes(Optional)</p>
-        <div className='line'></div>
-        <input id='time' type='number' className='standard-input' placeholder='Recipe Estimated Time...' aria-label='Enter Recipe Estimated Time' type='text' />
-      </div>
-
-      <div className='submit-container'>
-        <button type='submit' className='btn btn-primary'>Submit</button>
-      </div>
-
-    </div>
-    )
+    );
   }
 }
-*/
+
+class ListInputContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: '', data: ['ahh', 'ahh2']}
+  }
+
+  renderListItems = () => {
+    return (
+      this.state.data.map((option, i) => {
+        return <li key={i} className='list-item'>
+          <div className='list-item-contents'>
+            <p>{option}<img alt='delete item' src={require("./img/minus.png")}/></p>
+          </div>
+        </li>
+      })
+    );
+  }
+
+  renderList() {
+    if (this.props.type === "ingredient") {
+      return (
+        <ul>
+          {this.renderListItems()}
+        </ul>
+      );
+    } else {
+      return (
+        <ol>
+          {this.renderListItems()}
+        </ol>
+      );
+    }
+  }
+
+  submitInput = () => {
+    const newData = this.state.data.concat(this.state.value);
+    this.setState({value: '', data: newData});
+  }
+
+  handleChange = (event) => {
+    this.setState({value: event.target.value});
+  }
+
+  render() {
+    return (
+      <div className="input-container">
+        <p>
+          {this.props.required
+            ? this.props.title + " *"
+            : this.props.title + " (Optional)"}
+        </p>
+        <div className="line"></div>
+        {this.renderList()}
+        <div className="list-input">
+          <img
+            src={
+              this.props.type === "ingredient"
+                ? require("./img/shoppingCart.png")
+                : require("./img/paperclip.png")
+            }
+            alt={this.props.type === 'ingredient' ? 'shopping cart' : 'paperclip'}
+          />
+          <input
+            id={this.props.id}
+            placeholder={this.props.placeholder}
+            aria-label={this.props.ariaLabel}
+            type={this.props.type}
+            value={this.state.value} 
+            onChange={this.handleChange}
+          />
+          <p onClick={this.submitInput} id="ingredient-add">Add</p>
+        </div>
+      </div>
+    );
+  }
+}
+
+class InputContainer extends Component {
+  render() {
+    return (
+      <div className="input-container">
+        <p>
+          {this.props.required
+            ? this.props.title + " *"
+            : this.props.title + " (Optional)"}
+        </p>
+        <div className="line"></div>
+        {this.props.multiLine ? (
+          <textarea
+            id={this.props.id}
+            className="recipe-description"
+            placeholder={this.props.placeholder}
+            rows={this.props.rows}
+          />
+        ) : (
+          <input
+            id={this.props.id}
+            className="standard-input"
+            placeholder={this.props.placeholder}
+            aria-label={this.props.ariaLabel}
+            type={this.props.type}
+            {...this.props}
+          />
+        )}
+      </div>
+    );
+  }
+}
 
 class LetterContainer extends Component {
   render() {
