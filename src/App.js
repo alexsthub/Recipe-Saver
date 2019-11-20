@@ -32,6 +32,12 @@ class App extends Component {
     this.setState({ renderModal: false });
   };
 
+  handleNewRecipe = (newRecipe) => {
+    let newData = this.state.masterData.concat(newRecipe);
+    console.log(newData);
+    this.setState({masterData: newData, data: newData})
+  }
+
   render() {
     let recipes = this.state.data;
     let recipeDict = {};
@@ -69,7 +75,9 @@ class App extends Component {
               })}
             </div>
             {this.state.renderModal ? (
-              <FormModal handleFormClose={this.handleFormClose} />
+              <FormModal 
+                handleFormClose={this.handleFormClose}
+                handleNewRecipe={this.handleNewRecipe} />
             ) : null}
             <FAB handleFABPress={this.handleFABPress} />
           </div>
@@ -84,7 +92,7 @@ class FormModal extends Component {
   constructor(props) {
     super(props);
     this.state = { title: '', image: null, ingredientList: [], procedureList: [], 
-    description: '', category: '', subcategory: '', estimatedTime: null, isFavorite: false };
+    description: '', category: '', subcategory: '', estimatedTime: '', isFavorite: false };
   }
 
   handleFavoritePress = () => {
@@ -107,14 +115,20 @@ class FormModal extends Component {
     }
   }
 
-  // TODO: Handle image
-  handleFormSubmit = () => {
-    console.log('submit!')
+  // TODO: Handle image drag
+  handleFormSubmit = (event) => {
+    event.preventDefault();
+    let objectUrl;
+    if (this.state.image) {
+      const blob = new Blob([this.state.image]);
+      objectUrl = window.URL.createObjectURL(blob);
+    }
+
     const newRecipe = {
       category: this.state.category !== '' ? this.state.category: null,
       description: this.state.description !== '' ? this.state.description: null,
-      estimatedTime: this.state.estimatedTime ? this.state.estimatedTime: null,
-      imageName: 
+      estimatedTime: this.state.estimatedTime!== '' ? parseInt(this.state.estimatedTime): null,
+      imageName: this.state.image && objectUrl ? objectUrl : null,
       ingredients: this.state.ingredientList.join('|'),
       procedure: this.state.procedureList.join('|'),
       subcategory: this.state.subcategory !== '' ? this.state.subcategory: null,
@@ -122,6 +136,9 @@ class FormModal extends Component {
       times: null,
       isFavorite: this.state.isFavorite
     }
+
+    this.props.handleNewRecipe(newRecipe);
+    this.props.handleFormClose();
   }
 
   render() {
@@ -148,7 +165,6 @@ class FormModal extends Component {
                 <p id="favorite-text">Click the Star to Mark a Favorite!</p>
               </div>
 
-              {/* TODO: Input Containers */}
               <InputContainer
                 title={"Recipe Name"}
                 id={"title"}
@@ -161,7 +177,10 @@ class FormModal extends Component {
                 required
               />
 
-              <ImageInputContainer/>
+              <ImageInputContainer
+                title={'Upload an Image (Optional)'}
+                file={this.state.image}
+                onChange={(image) => this.setState({image: image})}/>
 
               <ListInputContainer
                 title={"Ingredients"}
@@ -184,6 +203,7 @@ class FormModal extends Component {
                 id={"ingredient-input"}
                 placeholder={"Enter an Ingredient..."}
                 aria-label={"Enter Recipe Ingredient"}
+                required
               />
 
               <InputContainer
@@ -240,6 +260,28 @@ class FormModal extends Component {
 }
 
 class ImageInputContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state={file: null, hasError: false}
+  }
+
+  handleFileChange = (event) => {
+    let file = event.target.files[0];
+    console.log(file);
+    if (this.endsWithAny(file.name, ['jpg', 'png', 'tif', 'svg'])) {
+      this.setState({hasError: false});
+      this.props.onChange(file);
+    } else {
+      this.setState({hasError: true});
+    }
+  }
+
+  endsWithAny(string, endings) {
+    return endings.some(function (ending) {
+      return string.endsWith(ending);
+    })
+  }
+
   render() {
     return (
       <div className="input-container">
@@ -247,12 +289,14 @@ class ImageInputContainer extends Component {
         <div className="line"></div>
         <div className="box">
           <div className="box-input">
-            <input type="file" name="file" id="file" className="input-file" />
+            <input onChange={this.handleFileChange} type="file" name="file" id="file" className="input-file" />
             <label htmlFor="file">
               <div className="input-clickable">
                 <img className="box-image" alt='upload' src={require("./img/upload.png")} />
                 <span>
-                  <strong>Choose a file </strong>or drag it here.
+                  {this.state.hasError ? 
+                  <p className='error-message'>Invalid File Type. Try again with an image.</p> : 
+                  this.props.file ? <p>{this.props.file.name}</p> : <p><strong>Choose a file </strong>or drag it here.</p>}
                 </span>
               </div>
             </label>
