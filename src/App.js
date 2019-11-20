@@ -28,6 +28,12 @@ class App extends Component {
     this.setState({ data: recipes, favorites: status });
   }
 
+  updateRecipeFavorite = (recipe, status) => {
+    let temp = this.state.masterData;
+    temp.filter(some => some.title === recipe.title)[0].isFavorite = status
+    this.setState({ masterData: temp })
+  }
+
   handleFABPress = () => {
     this.setState({ renderModal: true });
   };
@@ -77,6 +83,7 @@ class App extends Component {
                     key={letter}
                     letter={letter}
                     recipes={recipes}
+                    parentCallback={this.updateRecipeFavorite}
                   />
                 );
               })}
@@ -446,7 +453,7 @@ class LetterContainer extends Component {
       <div id={this.props.letter} className="letter-container">
         <p className="alphabet-letter">{this.props.letter}.</p>
         {this.props.recipes.map(recipe => {
-          return <Recipe key={recipe.title} recipe={recipe} />;
+          return <Recipe key={recipe.title} recipe={recipe} parentCallback={this.props.parentCallback} />;
         })}
       </div>
     );
@@ -465,6 +472,7 @@ class Recipe extends Component {
       console.log(!currentState.isFavorite);
       return { isFavorite: !currentState.isFavorite };
     });
+    this.props.parentCallback(this.props.recipe, !this.state.isFavorite);
   };
 
   render() {
