@@ -83,18 +83,50 @@ class App extends Component {
 class FormModal extends Component {
   constructor(props) {
     super(props);
-    this.state = { isFavorite: false };
+    this.state = { title: '', image: null, ingredientList: [], procedureList: [], 
+    description: '', category: '', subcategory: '', estimatedTime: null, isFavorite: false };
   }
 
-  // TODO: Handle onPress here
   handleFavoritePress = () => {
     this.setState({ isFavorite: !this.state.isFavorite });
   };
 
+  handleListSubmit = (newData, type) => {
+    if (type === 'ingredient') {
+      this.setState({ingredientList: newData})
+    } else {
+      this.setState({procedureList: newData})
+    }
+  }
+
+  handleDeleteRow = (option, type) => {
+    if (type === 'ingredient') {
+      this.setState({ingredientList: this.state.ingredientList.filter(el => el !== option)})
+    } else {
+      this.setState({procedureList: this.state.procedureList.filter(el => el !== option)})
+    }
+  }
+
+  handleFormSubmit = () => {
+    console.log('submit!')
+    // const newRecipe = {
+    //   category: ,
+    //   description: ,
+    //   estimatedTime: 
+    //   imageName: 
+    //   ingredients: 
+    //   procedure: 
+    //   subcategory: 
+    //   title: 
+    //   times: null,
+    //   isFavorite: this.state.isFavorite
+    // }
+  }
+
   render() {
     return (
       <div className="form-overlay">
-        <form id="recipe-submit" action="" encType="multipart/form-data">
+        <form onSubmit={this.handleFormSubmit} id="recipe-submit" action="" encType="multipart/form-data">
           <div className="form-container">
             <div className="form-elements-container">
               <span onClick={this.props.handleFormClose} className="close">
@@ -119,6 +151,8 @@ class FormModal extends Component {
               <InputContainer
                 title={"Recipe Name"}
                 id={"title"}
+                value={this.state.title}
+                onChange={(text) => this.setState({title: text})}
                 placeholder={"Recipe Title..."}
                 aria-label={"Enter Recipe Name"}
                 type={"text"}
@@ -131,23 +165,31 @@ class FormModal extends Component {
               <ListInputContainer
                 title={"Ingredients"}
                 type={"ingredient"}
+                data={this.state.ingredientList}
+                handleSubmit={this.handleListSubmit}
+                handleDeleteRow={this.handleDeleteRow}
                 id={"procedure-input"}
                 placeholder={"Enter a step..."}
                 aria-label={"Enter Steps"}
                 required
               />
 
-              {/* <ListInputContainer
+              <ListInputContainer
                 title={"Procedure"}
                 type={"procedure"}
+                data={this.state.procedureList}
+                handleSubmit={this.handleListSubmit}
+                handleDeleteRow={this.handleDeleteRow}
                 id={"ingredient-input"}
                 placeholder={"Enter an Ingredient..."}
                 aria-label={"Enter Recipe Ingredient"}
-              /> */}
+              />
 
               <InputContainer
                 title={"Recipe Description"}
                 id={"description"}
+                // value={this.state.description}
+                // onChange={}
                 placeholder={"Recipe Description..."}
                 aria-label={"Enter Recipe Description"}
                 multiLine={true}
@@ -157,29 +199,35 @@ class FormModal extends Component {
               <InputContainer
                 title={"Category"}
                 id={"category"}
+                // value={this.state.category}
+                // onChange={}
                 placeholder={"Recipe Category..."}
                 aria-label={"Enter Recipe Category"}
-                type={"text"}
+                type={'text'}
               />
 
               <InputContainer
                 title={"Subcategory"}
                 id={"subcategory"}
+                // value={this.state.subcategory}
+                // onChange={}
                 placeholder={"Recipe Subcategory..."}
                 aria-label={"Enter Recipe Subcategory"}
-                type={"text"}
+                type={'text'}
               />
 
               <InputContainer
                 title={"Estimated Time in Minutes"}
                 id={"time"}
+                // value={this.state.estimatedTime}
+                // onChange={}
                 placeholder={"Recipe Estimated Time..."}
                 aria-label={"Enter Recipe Estimated Time"}
-                type={"number"}
+                type={'numeric'}
               />
 
               <div className="submit-container">
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button onClick={this.handleFormSubmit} type="submit" className="btn btn-primary">Submit</button>
               </div>
 
             </div>
@@ -217,15 +265,15 @@ class ImageInputContainer extends Component {
 class ListInputContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {value: '', data: ['ahh', 'ahh2']}
+    this.state = {value: ''}
   }
 
   renderListItems = () => {
     return (
-      this.state.data.map((option, i) => {
+      this.props.data.map((option, i) => {
         return <li key={i} className='list-item'>
           <div className='list-item-contents'>
-            <p>{option}<img alt='delete item' src={require("./img/minus.png")}/></p>
+            <p>{option}<img onClick={() => this.props.handleDeleteRow(option, this.props.type)} alt='delete item' src={require("./img/minus.png")}/></p>
           </div>
         </li>
       })
@@ -249,12 +297,20 @@ class ListInputContainer extends Component {
   }
 
   submitInput = () => {
-    const newData = this.state.data.concat(this.state.value);
-    this.setState({value: '', data: newData});
+    const newData = this.props.data.concat(this.state.value);
+    this.setState({value: ''});
+    this.props.handleSubmit(newData, this.props.type);
   }
 
   handleChange = (event) => {
     this.setState({value: event.target.value});
+  }
+
+  keyPressed = (event) => {
+    if (event.key === "Enter") {
+      this.submitInput()
+      event.preventDefault();
+    }
   }
 
   render() {
@@ -283,6 +339,7 @@ class ListInputContainer extends Component {
             type={this.props.type}
             value={this.state.value} 
             onChange={this.handleChange}
+            onKeyPress={this.keyPressed}
           />
           <p onClick={this.submitInput} id="ingredient-add">Add</p>
         </div>
