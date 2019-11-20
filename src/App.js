@@ -107,20 +107,21 @@ class FormModal extends Component {
     }
   }
 
+  // TODO: Handle image
   handleFormSubmit = () => {
     console.log('submit!')
-    // const newRecipe = {
-    //   category: ,
-    //   description: ,
-    //   estimatedTime: 
-    //   imageName: 
-    //   ingredients: 
-    //   procedure: 
-    //   subcategory: 
-    //   title: 
-    //   times: null,
-    //   isFavorite: this.state.isFavorite
-    // }
+    const newRecipe = {
+      category: this.state.category !== '' ? this.state.category: null,
+      description: this.state.description !== '' ? this.state.description: null,
+      estimatedTime: this.state.estimatedTime ? this.state.estimatedTime: null,
+      imageName: 
+      ingredients: this.state.ingredientList.join('|'),
+      procedure: this.state.procedureList.join('|'),
+      subcategory: this.state.subcategory !== '' ? this.state.subcategory: null,
+      title: this.state.title !== '' ? this.state.title: null,
+      times: null,
+      isFavorite: this.state.isFavorite
+    }
   }
 
   render() {
@@ -152,7 +153,7 @@ class FormModal extends Component {
                 title={"Recipe Name"}
                 id={"title"}
                 value={this.state.title}
-                onChange={(text) => this.setState({title: text})}
+                onChange={(event) => this.setState({title: event.target.value})}
                 placeholder={"Recipe Title..."}
                 aria-label={"Enter Recipe Name"}
                 type={"text"}
@@ -188,8 +189,8 @@ class FormModal extends Component {
               <InputContainer
                 title={"Recipe Description"}
                 id={"description"}
-                // value={this.state.description}
-                // onChange={}
+                value={this.state.description}
+                onChange={(event) => this.setState({description: event.target.value})}
                 placeholder={"Recipe Description..."}
                 aria-label={"Enter Recipe Description"}
                 multiLine={true}
@@ -199,8 +200,8 @@ class FormModal extends Component {
               <InputContainer
                 title={"Category"}
                 id={"category"}
-                // value={this.state.category}
-                // onChange={}
+                value={this.state.category}
+                onChange={(event) => this.setState({category: event.target.value})}
                 placeholder={"Recipe Category..."}
                 aria-label={"Enter Recipe Category"}
                 type={'text'}
@@ -209,8 +210,8 @@ class FormModal extends Component {
               <InputContainer
                 title={"Subcategory"}
                 id={"subcategory"}
-                // value={this.state.subcategory}
-                // onChange={}
+                value={this.state.subcategory}
+                onChange={(event) => this.setState({subcategory: event.target.value})}
                 placeholder={"Recipe Subcategory..."}
                 aria-label={"Enter Recipe Subcategory"}
                 type={'text'}
@@ -219,11 +220,11 @@ class FormModal extends Component {
               <InputContainer
                 title={"Estimated Time in Minutes"}
                 id={"time"}
-                // value={this.state.estimatedTime}
-                // onChange={}
+                value={this.state.estimatedTime}
+                onChange={(event) => this.setState({estimatedTime: event.target.value})}
                 placeholder={"Recipe Estimated Time..."}
                 aria-label={"Enter Recipe Estimated Time"}
-                type={'numeric'}
+                type={'number'}
               />
 
               <div className="submit-container">
@@ -369,6 +370,8 @@ class InputContainer extends Component {
           <input
             id={this.props.id}
             className="standard-input"
+            value={this.props.value}
+            onChange={this.props.onChange}
             placeholder={this.props.placeholder}
             aria-label={this.props.ariaLabel}
             type={this.props.type}
