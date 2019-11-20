@@ -512,10 +512,8 @@ class Recipe extends Component {
   render() {
     const recipe = this.props.recipe;
     return (
-      <div className="recipe-group" onClick={() => {
-        this.handleClick()
-      }}>
-        <div className="recipe-letter-container">
+      <div className="recipe-group">
+        <div className="recipe-letter-container" onClick={() => {this.handleClick()}}>
           <div className="recipe">
             <img
               className="foodimage"
