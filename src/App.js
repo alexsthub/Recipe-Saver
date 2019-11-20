@@ -465,14 +465,10 @@ class Recipe extends Component {
               alt={`${
                 recipe.imageName ? recipe.imageName : "recipe saver logo"
               }`}
-              src={require(`${
-                recipe.imageName
-                  ? recipe.imageName.startsWith("blob")
-                    ? recipe.imageName
-                    : "./recipeImages/" + recipe.imageName
-                  : "./recipeImages/default.jpg"
-              }`)}
-            />
+              src={recipe.imageName && recipe.imageName.startsWith("blob") ? recipe.imageName : require(`${
+                  recipe.imageName ?  "./recipeImages/" + recipe.imageName :
+                  "./recipeImages/default.jpg"}`)}
+              />
             <div className="recipe-info">
               <div className="title-container">
                 <p className="recipe-title">{recipe.title}</p>
