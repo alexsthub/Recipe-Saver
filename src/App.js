@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "whatwg-fetch";
+import { Button } from 'reactstrap';
 
 class App extends Component {
   constructor(props) {
@@ -158,8 +159,6 @@ class FormModal extends Component {
       times: null,
       isFavorite: this.state.isFavorite
     }
-    console.log(newRecipe);
-
     this.props.handleNewRecipe(newRecipe);
     this.props.handleFormClose();
   }
@@ -271,7 +270,7 @@ class FormModal extends Component {
               />
 
               <div className="submit-container">
-                <button onClick={this.handleFormSubmit} type="submit" className="btn btn-primary">Submit</button>
+                <Button onClick={this.handleFormSubmit} color='primary'>Submit</Button>
               </div>
 
             </div>
