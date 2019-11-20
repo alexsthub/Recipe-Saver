@@ -115,9 +115,12 @@ class FormModal extends Component {
     }
   }
 
-  // TODO: Handle image drag
+  // TODO: Handle image drag and stop the background from scrolling.
   handleFormSubmit = (event) => {
     event.preventDefault();
+
+    if (this.state.title === '') {return;}
+
     let objectUrl;
     if (this.state.image) {
       const blob = new Blob([this.state.image]);
@@ -175,7 +178,7 @@ class FormModal extends Component {
                 aria-label={"Enter Recipe Name"}
                 type={"text"}
                 multiLine={false}
-                required
+                required={true}
               />
 
               <ImageInputContainer
@@ -192,7 +195,7 @@ class FormModal extends Component {
                 id={"procedure-input"}
                 placeholder={"Enter a step..."}
                 aria-label={"Enter Steps"}
-                required
+                required={true}
               />
 
               <ListInputContainer
@@ -204,7 +207,7 @@ class FormModal extends Component {
                 id={"ingredient-input"}
                 placeholder={"Enter an Ingredient..."}
                 aria-label={"Enter Recipe Ingredient"}
-                required
+                required={true}
               />
 
               <InputContainer
@@ -422,7 +425,7 @@ class InputContainer extends Component {
             placeholder={this.props.placeholder}
             aria-label={this.props.ariaLabel}
             type={this.props.type}
-            {...this.props}
+            required={this.props.required}
           />
         )}
       </div>
