@@ -34,7 +34,6 @@ class App extends Component {
 
   handleNewRecipe = (newRecipe) => {
     let newData = this.state.masterData.concat(newRecipe);
-    console.log(newData);
     this.setState({masterData: newData, data: newData})
   }
 
@@ -266,18 +265,7 @@ class FormModal extends Component {
 class ImageInputContainer extends Component {
   constructor(props) {
     super(props);
-    this.state={file: null, hasError: false}
-  }
-
-  handleFileChange = (event) => {
-    let file = event.target.files[0];
-    console.log(file);
-    if (this.endsWithAny(file.name, ['jpg', 'png', 'tif', 'svg'])) {
-      this.setState({hasError: false});
-      this.props.onChange(file);
-    } else {
-      this.setState({hasError: true});
-    }
+    this.state={file: null, hasError: false, dragOn: false}
   }
 
   endsWithAny(string, endings) {
@@ -286,12 +274,45 @@ class ImageInputContainer extends Component {
     })
   }
 
+  handleFileChange = (event) => {
+    let file = event.target.files[0];
+    this.processFile(file);
+  }
+
+  processFile = (file) => {
+    if (this.endsWithAny(file.name, ['jpg', 'png', 'tif', 'svg'])) {
+      this.setState({hasError: false});
+      this.props.onChange(file);
+    } else {
+      this.setState({hasError: true});
+    }
+  }
+
+  handleDragStart = (event) => {
+    this.setState({dragOn: true})
+  }
+
+  handleDragEnd = (event) => {
+    this.setState({dragOn: false})
+  }
+
+  handleDragDrop = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    this.handleDragEnd();
+    let file = event.originalEvent.dataTransfer.files[0];
+    console.log(file);
+    this.processFile(file);
+  }
+
   render() {
     return (
       <div className="input-container">
         <p>Upload an Image (Optional)</p>
         <div className="line"></div>
-        <div className="box">
+        <div className={!this.state.dragOn ? "box" : "box is-dragover"} draggable 
+          onDragOver={this.handleDragStart} onDragEnter={this.handleDragStart} 
+          onDragLeave={this.handleDragEnd} onDragEnd={this.handleDragEnd} onDrop={this.handleDragDrop}>
           <div className="box-input">
             <input onChange={this.handleFileChange} type="file" name="file" id="file" className="input-file" />
             <label htmlFor="file">
