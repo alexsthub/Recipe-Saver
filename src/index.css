@@ -489,6 +489,13 @@ h2 {
   width: 100%;
 }
 
+.no-results {
+  padding: .3em;
+  font-size: 48px;
+  align-self: center;
+  font-weight: 900;
+}
+
 .clicked {
   transform: scale(1.02);
 }

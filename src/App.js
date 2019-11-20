@@ -80,7 +80,10 @@ class App extends Component {
                 masterData={this.state.masterData}
                 parentCallback={this.performSearch}
               />
-              <div className="list-container">
+              {this.state.data.length === 0 ?
+                <div className="no-results">No search results</div>
+                :
+                <div className="list-container"> 
                 {sortedKeys.map(letter => {
                   const recipes = recipeDict[letter].sort();
                   return (
@@ -91,8 +94,9 @@ class App extends Component {
                       parentCallback={this.updateRecipeFavorite}
                     />
                   );
-                })}
+                })} 
               </div>
+              }
               {this.state.renderModal ? (
                 <FormModal 
                   handleFormClose={this.handleFormClose}
