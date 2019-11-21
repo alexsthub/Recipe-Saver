@@ -1,3 +1,6 @@
+Recipe Saver will allow you to enter and save any recipes that come to mind so you can have your personal cookbook in one place! <br/>
+Made by Alex Tan and Jerry Lin
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
