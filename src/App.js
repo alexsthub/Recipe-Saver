@@ -173,7 +173,7 @@ class FormModal extends Component {
         <form onSubmit={this.handleFormSubmit} id="recipe-submit" action="" encType="multipart/form-data">
           <div className="form-container">
             <div className="form-elements-container">
-              <span onClick={this.props.handleFormClose} className="close">
+              <span onClick={this.props.handleFormClose} className="close" role="button">
                 X
               </span>
               <h1>Enter A New Recipe!</h1>
@@ -367,7 +367,7 @@ class ListInputContainer extends Component {
       this.props.data.map((option, i) => {
         return <li key={i} className='list-item'>
           <div className='list-item-contents'>
-            <p>{option}<img onClick={() => this.props.handleDeleteRow(option, this.props.type)} alt='delete item' src={require("./img/minus.png")}/></p>
+            <p>{option}<img role='button' onClick={() => this.props.handleDeleteRow(option, this.props.type)} alt='delete item' src={require("./img/minus.png")}/></p>
           </div>
         </li>
       })
@@ -435,7 +435,7 @@ class ListInputContainer extends Component {
             onChange={this.handleChange}
             onKeyPress={this.keyPressed}
           />
-          <p onClick={this.submitInput} id="ingredient-add">Add</p>
+          <p role='button' onClick={this.submitInput} id="ingredient-add">Add</p>
         </div>
       </div>
     );
@@ -517,7 +517,7 @@ class Recipe extends Component {
     const recipe = this.props.recipe;
     return (
       <div className="recipe-group">
-        <div className="recipe-letter-container" onClick={() => {this.handleClick()}}>
+        <div className="recipe-letter-container" role="button" onClick={() => {this.handleClick()}}>
           <div className="recipe">
             <img
               className="foodimage"
@@ -534,6 +534,7 @@ class Recipe extends Component {
                 <img
                   className="favoriteIcon"
                   alt="favorite star icon"
+                  role='button'
                   src={
                     this.state.isFavorite
                       ? require("./img/star-true.png")
@@ -629,11 +630,11 @@ class Header extends Component {
             <i className="fa fa-shopping-basket" aria-hidden="true"></i>
           </h1>
           <div className="nav">
-            <p className={'all' + this.props.favorite ? '' : ' selected'}  onClick={() => {
+            <p className={'all' + this.props.favorite ? '' : ' selected'}  role='button' onClick={() => {
               this.props.parentCallback(this.props.masterData, false)
             }
             }>All</p>
-            <p className={'favorite' + this.props.favorite ? ' selected' : ''} onClick={() => {
+            <p className={'favorite' + this.props.favorite ? ' selected' : ''} role='button' onClick={() => {
               this.props.parentCallback(this.filterFavorites(), true)
             }
             }>Favorites</p>
@@ -715,7 +716,7 @@ class SearchBar extends Component {
 class FAB extends Component {
   render() {
     return (
-      <div onClick={this.props.handleFABPress} className="fab">
+      <div onClick={this.props.handleFABPress} className="fab" role='button'>
         <i className="fa fa-plus my-float"></i>
       </div>
     );
