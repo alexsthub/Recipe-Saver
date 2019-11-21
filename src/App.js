@@ -29,10 +29,17 @@ class App extends Component {
     this.setState({ data: recipes, favorites: status });
   }
 
-  updateRecipeFavorite = (recipe, status) => {
+  filterFavorites = recipes => {
+    return recipes.filter(recipe => recipe.isFavorite)
+  }
+
+  updateRecipeFavorite = (recipe, status, allRecipes) => {
     let temp = this.state.masterData;
     temp.filter(some => some.title === recipe.title)[0].isFavorite = status
     this.setState({ masterData: temp })
+    if (this.state.favorites) {
+      this.displayFavorites(this.filterFavorites(allRecipes), true)
+    }
   }
 
   handleFABPress = () => {
@@ -91,6 +98,7 @@ class App extends Component {
                       letter={letter}
                       recipes={recipes}
                       parentCallback={this.updateRecipeFavorite}
+                      masterData={this.state.masterData}
                     />
                   );
                 })} 
@@ -316,7 +324,7 @@ class ImageInputContainer extends Component {
     this.setState({dragOn: true})
   }
 
-  handleDragEnd = (event) => {
+  handleDragEnd = () => {
     this.setState({dragOn: false})
   }
 
@@ -483,7 +491,7 @@ class LetterContainer extends Component {
       <div id={this.props.letter} className="letter-container">
         <p className="alphabet-letter">{this.props.letter}.</p>
         {this.props.recipes.map(recipe => {
-          return <Recipe key={recipe.title} recipe={recipe} parentCallback={this.props.parentCallback} />;
+          return <Recipe key={recipe.title} recipe={recipe} parentCallback={this.props.parentCallback} masterData = {this.props.masterData} />;
         })}
       </div>
     );
@@ -502,7 +510,7 @@ class Recipe extends Component {
       console.log(!currentState.isFavorite);
       return { isFavorite: !currentState.isFavorite };
     });
-    this.props.parentCallback(this.props.recipe, !this.state.isFavorite);
+    this.props.parentCallback(this.props.recipe, !this.state.isFavorite, this.props.masterData);
   };
 
   handleClick = () => {
