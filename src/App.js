@@ -26,7 +26,6 @@ class App extends Component {
   };
 
   displayFavorites = (recipes, status) => {
-    console.log(status)
     this.setState({ data: recipes, favorites: status });
   }
 
@@ -630,14 +629,12 @@ class Header extends Component {
             <i className="fa fa-shopping-basket" aria-hidden="true"></i>
           </h1>
           <div className="nav">
-            <p className={'all' + this.props.favorite ? '' : ' selected'}  role='button' onClick={() => {
+            <p className={this.props.favorite ? '' : 'selected'}  role='button' onClick={() => {
               this.props.parentCallback(this.props.masterData, false)
-            }
-            }>All</p>
-            <p className={'favorite' + this.props.favorite ? ' selected' : ''} role='button' onClick={() => {
+            }}>All</p>
+            <p className={this.props.favorite ? 'selected' : ''} role='button' onClick={() => {
               this.props.parentCallback(this.filterFavorites(), true)
-            }
-            }>Favorites</p>
+            }}>Favorites</p>
           </div>
           <div className="user-container">
             <p>User123456</p>
