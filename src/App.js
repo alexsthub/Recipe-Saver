@@ -3,8 +3,8 @@ import "whatwg-fetch";
 import { Button } from "reactstrap";
 import firebase from "firebase/app";
 
-// TODO: Make a loading sign.
-// TODO: On the user click. have a drop down that will allow you to sign out!
+// TODO: Loading sign is not working on refresh?
+// TODO: On the user click. have a drop down that will allow you to sign out! Works but is shitty! Listener is not going away.
 class App extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +15,7 @@ class App extends Component {
       favorites: false,
       user: null,
       errorMessage: null,
-      loading: false
+      loading: true
     };
   }
 
@@ -47,11 +47,10 @@ class App extends Component {
 
   // Firebase Auth: Sign In
   handleSignIn = (email, password) => {
-    console.log('made it')
     this.setState({errorMessage:null});
     firebase.auth().signInWithEmailAndPassword(email, password)
     .catch((error) => {
-      this.setState({errorMessage: error.message})
+      this.setState({errorMessage: error.message, loading: false})
     })
   }
 
@@ -125,64 +124,72 @@ class App extends Component {
         handleSignUp={this.handleSignUp}
       />
     } else {
-      let recipes = this.state.data;
-      let recipeDict = {};
-      if (recipes) {
-        recipes.forEach(recipe => {
-          const firstLetter = recipe.title.charAt(0).toUpperCase();
-          if (firstLetter in recipeDict) {
-            recipeDict[firstLetter].push(recipe);
-          } else {
-            recipeDict[firstLetter] = [recipe];
-          }
-        });
-      }
-      const sortedKeys = Object.keys(recipeDict).sort();
-      body = 
-        <div>
-          <Header
-            masterData={this.state.masterData}
-            parentCallback={this.displayFavorites}
-            favorite={this.state.favorites}
-            user={this.state.user}
-          />
-          <main>
-            <div className="search-page">
-              <Logo />
-              <div className="recipe-container">
-                <SearchBar
-                  masterData={this.state.masterData}
-                  parentCallback={this.performSearch}
-                />
-                {this.state.data.length === 0 ?
-                  <div className="no-results">No search results</div>
-                  :
-                  <div className="list-container">
-                  {sortedKeys.map(letter => {
-                    const recipes = recipeDict[letter].sort();
-                    return (
-                      <LetterContainer
-                        key={letter}
-                        letter={letter}
-                        recipes={recipes}
-                        parentCallback={this.updateRecipeFavorite}
-                        masterData={this.state.masterData}
-                      />
-                    );
-                  })}
+      if (this.state.loading) {
+        body = 
+          <div className="text-center">
+            <i className="fa fa-spinner fa-spin fa-3x" aria-label="Connecting..."></i>
+          </div>;
+      } else {
+        let recipes = this.state.data;
+        let recipeDict = {};
+        if (recipes) {
+          recipes.forEach(recipe => {
+            const firstLetter = recipe.title.charAt(0).toUpperCase();
+            if (firstLetter in recipeDict) {
+              recipeDict[firstLetter].push(recipe);
+            } else {
+              recipeDict[firstLetter] = [recipe];
+            }
+          });
+        }
+        const sortedKeys = Object.keys(recipeDict).sort();
+        body = 
+          <div>
+            <Header
+              masterData={this.state.masterData}
+              parentCallback={this.displayFavorites}
+              favorite={this.state.favorites}
+              user={this.state.user}
+              handleSignOut={this.handleSignOut}
+            />
+            <main>
+              <div className="search-page">
+                <Logo />
+                <div className="recipe-container">
+                  <SearchBar
+                    masterData={this.state.masterData}
+                    parentCallback={this.performSearch}
+                  />
+                  {this.state.data.length === 0 ?
+                    <div className="no-results">No search results</div>
+                    :
+                    <div className="list-container">
+                    {sortedKeys.map(letter => {
+                      const recipes = recipeDict[letter].sort();
+                      return (
+                        <LetterContainer
+                          key={letter}
+                          letter={letter}
+                          recipes={recipes}
+                          parentCallback={this.updateRecipeFavorite}
+                          masterData={this.state.masterData}
+                        />
+                      );
+                    })}
+                  </div>
+                  }
+                  {this.state.renderModal ? (
+                    <FormModal
+                      handleFormClose={this.handleFormClose}
+                      handleNewRecipe={this.handleNewRecipe} />
+                  ) : null}
+                  <FAB handleFABPress={this.handleFABPress} />
                 </div>
-                }
-                {this.state.renderModal ? (
-                  <FormModal
-                    handleFormClose={this.handleFormClose}
-                    handleNewRecipe={this.handleNewRecipe} />
-                ) : null}
-                <FAB handleFABPress={this.handleFABPress} />
               </div>
-            </div>
-          </main>
-          <Footer />
-        </div>
+            </main>
+            <Footer />
+          </div>
+      }
     }
     return ( 
       body
@@ -909,10 +916,48 @@ class Header extends Component {
             </p>
           </div>
           <div className="user-container">
-            <p>{this.props.user.displayName}</p>
+            <DropDownText 
+              mainText={this.props.user.displayName}
+              handleSignOut={this.props.handleSignOut}/>
           </div>
         </div>
       </header>
+    );
+  }
+}
+
+class DropDownText extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {displayMenu: false};
+  }
+
+  showMenu = (event) => {
+    event.preventDefault();
+    this.setState({ displayMenu: true }, () => {
+      document.addEventListener('click', this.closeMenu);
+    });
+  }
+
+  closeMenu = (event) => {
+    if (!this.dropdownMenu.contains(event.target)) {
+      this.setState({ displayMenu: false }, () => {
+        document.removeEventListener('click', this.displayMenu);
+      });
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <p onClick={this.showMenu}>{this.props.mainText}</p>
+        {this.state.displayMenu ? 
+        <div className="menu" ref={(element) => {this.dropdownMenu = element;}}>
+          <div onClick={this.props.handleSignOut}>
+            <p>Sign Out</p>
+          </div>
+        </div> : null}
+      </div>
     );
   }
 }

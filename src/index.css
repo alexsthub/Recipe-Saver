@@ -510,6 +510,19 @@ h2 {
   }
 }
 
+.menu div {
+  background-color: white;
+  border: 1px solid black;
+  position: absolute;
+  right: 0;
+}
+
+.menu p {
+  font-size: 18px;
+  z-index: 10;
+  color: black;
+}
+
 /* Login Screen */
 .login-container {
   display: flex;
