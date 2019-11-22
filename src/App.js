@@ -3,7 +3,8 @@ import "whatwg-fetch";
 import { Button } from "reactstrap";
 import firebase from "firebase/app";
 
-// TODO: Make sign in form
+// TODO: Make a loading sign.
+// TODO: On the user click. have a drop down that will allow you to sign out!
 class App extends Component {
   constructor(props) {
     super(props);
@@ -11,7 +12,10 @@ class App extends Component {
       masterData: [],
       data: [],
       renderModal: false,
-      favorites: false
+      favorites: false,
+      user: null,
+      errorMessage: null,
+      loading: false
     };
   }
 
@@ -26,6 +30,53 @@ class App extends Component {
       .then(data => {
         this.setState({ masterData: data.response, data: data.response });
       });
+
+    this.authUnRegFunc = firebase.auth().onAuthStateChanged((currentUser) => {
+      if (currentUser) {
+        this.setState({user: currentUser, loading: false})
+      } else {
+        this.setState({user: null})
+      }
+    })
+  }
+
+  // Firebase Auth
+  componentWillUnmount() {
+    this.authUnRegFunc()
+  }
+
+  // Firebase Auth: Sign In
+  handleSignIn = (email, password) => {
+    console.log('made it')
+    this.setState({errorMessage:null});
+    firebase.auth().signInWithEmailAndPassword(email, password)
+    .catch((error) => {
+      this.setState({errorMessage: error.message})
+    })
+  }
+
+  // Firebase Auth: Sign Up
+  handleSignUp = (email, password, username) => {
+    this.setState({errorMessage:null});
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then((userCredentials) => {
+      let user = userCredentials.user
+      return user.updateProfile({
+        displayName: username,
+      })
+    })
+    .catch((error) => {
+      this.setState({errorMessage: error.message})
+    })
+  }
+
+  // Firebase Auth: Sign Out
+  handleSignOut = () => {
+    this.setState({errorMessage:null}); 
+    firebase.auth().signOut()
+    .catch((error) => {
+      this.setState({errorMessage: error.message})
+    })
   }
 
   performSearch = recipes => {
@@ -65,91 +116,84 @@ class App extends Component {
   };
 
   render() {
-    return <FrontPage />;
+    let body;
+    if (!this.state.user) {
+      body = 
+      <FrontPage 
+        errorMessage={this.state.errorMessage}
+        handleSignIn={this.handleSignIn}
+        handleSignUp={this.handleSignUp}
+      />
+    } else {
+      let recipes = this.state.data;
+      let recipeDict = {};
+      if (recipes) {
+        recipes.forEach(recipe => {
+          const firstLetter = recipe.title.charAt(0).toUpperCase();
+          if (firstLetter in recipeDict) {
+            recipeDict[firstLetter].push(recipe);
+          } else {
+            recipeDict[firstLetter] = [recipe];
+          }
+        });
+      }
+      const sortedKeys = Object.keys(recipeDict).sort();
+      body = 
+        <div>
+          <Header
+            masterData={this.state.masterData}
+            parentCallback={this.displayFavorites}
+            favorite={this.state.favorites}
+            user={this.state.user}
+          />
+          <main>
+            <div className="search-page">
+              <Logo />
+              <div className="recipe-container">
+                <SearchBar
+                  masterData={this.state.masterData}
+                  parentCallback={this.performSearch}
+                />
+                {this.state.data.length === 0 ?
+                  <div className="no-results">No search results</div>
+                  :
+                  <div className="list-container">
+                  {sortedKeys.map(letter => {
+                    const recipes = recipeDict[letter].sort();
+                    return (
+                      <LetterContainer
+                        key={letter}
+                        letter={letter}
+                        recipes={recipes}
+                        parentCallback={this.updateRecipeFavorite}
+                        masterData={this.state.masterData}
+                      />
+                    );
+                  })}
+                </div>
+                }
+                {this.state.renderModal ? (
+                  <FormModal
+                    handleFormClose={this.handleFormClose}
+                    handleNewRecipe={this.handleNewRecipe} />
+                ) : null}
+                <FAB handleFABPress={this.handleFABPress} />
+              </div>
+            </div>
+          </main>
+          <Footer />
+        </div>
+    }
+    return ( 
+      body
+    );
   }
-
-  // render() {
-  //   let recipes = this.state.data;
-  //   let recipeDict = {};
-  //   if (recipes) {
-  //     recipes.forEach(recipe => {
-  //       const firstLetter = recipe.title.charAt(0).toUpperCase();
-  //       if (firstLetter in recipeDict) {
-  //         recipeDict[firstLetter].push(recipe);
-  //       } else {
-  //         recipeDict[firstLetter] = [recipe];
-  //       }
-  //     });
-  //   }
-  //   const sortedKeys = Object.keys(recipeDict).sort();
-  //   return (
-  //     <div>
-  //       <Header
-  //         masterData={this.state.masterData}
-  //         parentCallback={this.displayFavorites}
-  //         favorite={this.state.favorites}
-  //       />
-  //       <main>
-  //         <div className="search-page">
-  //           <Logo />
-  //           <div className="recipe-container">
-  //             <SearchBar
-  //               masterData={this.state.masterData}
-  //               parentCallback={this.performSearch}
-  //             />
-  //             {this.state.data.length === 0 ?
-  //               <div className="no-results">No search results</div>
-  //               :
-  //               <div className="list-container">
-  //               {sortedKeys.map(letter => {
-  //                 const recipes = recipeDict[letter].sort();
-  //                 return (
-  //                   <LetterContainer
-  //                     key={letter}
-  //                     letter={letter}
-  //                     recipes={recipes}
-  //                     parentCallback={this.updateRecipeFavorite}
-  //                     masterData={this.state.masterData}
-  //                   />
-  //                 );
-  //               })}
-  //             </div>
-  //             }
-  //             {this.state.renderModal ? (
-  //               <FormModal
-  //                 handleFormClose={this.handleFormClose}
-  //                 handleNewRecipe={this.handleNewRecipe} />
-  //             ) : null}
-  //             <FAB handleFABPress={this.handleFABPress} />
-  //           </div>
-  //         </div>
-  //       </main>
-  //       <Footer />
-  //     </div>
-  //   );
-  // }
 }
 
-
-// TODO: When we get a successful user. Move on to main screen?
 class FrontPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { email: "", password: "", username: "", user: null, showSignUp: false, errorMessage: null, loading: false};
-  }
-
-  componentDidMount() {
-    this.authUnRegFunc = firebase.auth().onAuthStateChanged((currentUser) => {
-      if (currentUser) {
-        this.setState({user: currentUser, loading: false})
-      } else {
-        this.setState({user: null})
-      }
-    })
-  }
-
-  componentWillUnmount() {
-    this.authUnRegFunc()
+    this.state = { email: "", password: "", username: "", showSignUp: false};
   }
 
   handleSignUpIn = (event) => {
@@ -157,36 +201,25 @@ class FrontPage extends Component {
     this.setState({showSignUp: !this.state.showSignUp});
   };
 
-  handleSignIn = () => {
-    this.setState({errorMessage:null});
-    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-    .catch((error) => {
-      this.setState({errorMessage: error.message})
-    })
+  handleSignIn = (event) => {
+    event.preventDefault();
+    this.props.handleSignIn(this.state.email, this.state.password);
   }
 
-  handleSignUp = () => {
-    this.setState({errorMessage:null});
-    firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-    .then((userCredentials) => {
-      let user = userCredentials.user
-      return user.updateProfile({
-        displayName: this.state.username,
-      })
-    })
-    .catch((error) => {
-      this.setState({errorMessage: error.message})
-    })
+  handleSignUp = (event) => {
+    event.preventDefault();
+    this.props.handleSignUp(this.state.email, this.state.password, this.state.username);
   }
 
   render() {
     return (
       <div className="login-container">
 
-        <div class="bg-image"></div>
+        <div className="bg-image"></div>
         <div className="login-element-wrapper">
           <Logo/>
-          {this.state.errorMessage ? <div><p class="error-text">{"*" + this.state.errorMessage}</p></div> : null}
+          {this.props.errorMessage ? <div><p className="error-text">{"*" + this.props.errorMessage}</p></div> : null}
+          <form>
           <AuthInput
             type="email"
             title={"Email:"}
@@ -223,6 +256,7 @@ class FrontPage extends Component {
               <a href="#" onClick={this.handleSignUpIn}>Go Back To Sign In.</a>
             </div>
           }
+          </form>
         </div>
       </div>
     );
@@ -288,7 +322,6 @@ class FormModal extends Component {
     }
   };
 
-  // TODO: stop the background from scrolling.
   handleFormSubmit = event => {
     event.preventDefault();
 
@@ -876,7 +909,7 @@ class Header extends Component {
             </p>
           </div>
           <div className="user-container">
-            <p>User123456</p>
+            <p>{this.props.user.displayName}</p>
           </div>
         </div>
       </header>
