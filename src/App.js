@@ -5,7 +5,7 @@ import firebase from "firebase/app";
 
 // TODO: On sign up the user is not shown on the top right corner
 // TODO: Loading sign is not working on refresh?
-// TODO: On the user click. have a drop down that will allow you to sign out! Works but is shitty! Listener is not going away.
+// TODO: Event listeners work but its still not removing.
 class App extends Component {
   constructor(props) {
     super(props);
@@ -757,7 +757,6 @@ class LetterContainer extends Component {
   }
 }
 
-// TODO: Pass in onFavoriteClick method.
 class Recipe extends Component {
   constructor(props) {
     super(props);
@@ -766,7 +765,6 @@ class Recipe extends Component {
 
   toggleFavorite = () => {
     this.setState(currentState => {
-      console.log(!currentState.isFavorite);
       return { isFavorite: !currentState.isFavorite };
     });
     this.props.parentCallback(
@@ -778,7 +776,6 @@ class Recipe extends Component {
 
   handleClick = () => {
     this.setState(currentState => {
-      console.log(!currentState.displayDetails);
       return { displayDetails: !currentState.displayDetails };
     });
   };
@@ -905,6 +902,7 @@ class Header extends Component {
   };
 
   render() {
+    console.log(this.props.user);
     return (
       <header>
         <div className="topbar">
@@ -933,7 +931,7 @@ class Header extends Component {
           </div>
           <div className="user-container">
             <DropDownText 
-              mainText={this.props.user.displayName}
+              user={this.props.user}
               handleSignOut={this.props.handleSignOut}/>
           </div>
         </div>
@@ -956,18 +954,25 @@ class DropDownText extends Component {
   }
 
   closeMenu = (event) => {
-    console.log('click click click');
-    if (!this.dropdownMenu.contains(event.target)) {
+    console.log(event);
+    if (this.dropdownMenu && !this.dropdownMenu.contains(event.target)) {
       this.setState({ displayMenu: false }, () => {
-        document.removeEventListener('click', this.displayMenu);
+        document.removeEventListener('click', this.closeMenu);
       });
     }
   }
 
+  // TODO: Works for email but null for displayname?
   render() {
+    console.log('In Menu')
+    console.log(this.props.user)
+    console.log(this.props.user.displayName);
+    console.log(this.props.user.email);
+    const username = this.props.user.displayName;
+    console.log(username);
     return (
       <div>
-        <p onClick={this.showMenu}>{this.props.mainText}</p>
+        <p onClick={this.showMenu}>{this.props.user.displayName}</p>
         {this.state.displayMenu ? 
         <div className="menu" ref={(element) => {this.dropdownMenu = element;}}>
           <div onClick={this.props.handleSignOut}>
@@ -1010,7 +1015,6 @@ class SearchBar extends Component {
   handleSubmit = event => {
     event.preventDefault();
     this.props.parentCallback(this.searchRecipes(this.state.value));
-    console.log("submit handled: " + this.state.value);
   };
 
   // function searches for recipes given target string
