@@ -611,3 +611,12 @@ h2 {
   font-size: 24px;
 }
 
+.hyperlink-text {
+  color: #007bff;
+}
+
+.hyperlink-text:hover {
+  text-decoration: underline;
+  opacity: 0.5;
+}
+

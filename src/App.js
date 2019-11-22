@@ -3,6 +3,7 @@ import "whatwg-fetch";
 import { Button } from "reactstrap";
 import firebase from "firebase/app";
 
+// TODO: On sign up the user is not shown on the top right corner
 // TODO: Loading sign is not working on refresh?
 // TODO: On the user click. have a drop down that will allow you to sign out! Works but is shitty! Listener is not going away.
 class App extends Component {
@@ -208,6 +209,16 @@ class FrontPage extends Component {
     this.setState({showSignUp: !this.state.showSignUp});
   };
 
+  handleInputKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      if (event.target.type === 'password' && !this.state.showSignUp) {
+        this.handleSignIn(event);
+      } else if (event.target.type === 'text' && this.state.showSignUp) {
+        this.handleSignUp(event);
+      }
+    }
+  }
+
   handleSignIn = (event) => {
     event.preventDefault();
     this.props.handleSignIn(this.state.email, this.state.password);
@@ -239,7 +250,9 @@ class FrontPage extends Component {
             type="password"
             title={"Password:"}
             placeholder={'Enter your password...'}
+            autoComplete="on"
             value={this.state.password}
+            onKeyPress={this.handleInputKeyPress}
             onChange={event => this.setState({ password: event.target.value })}
           />
 
@@ -250,17 +263,18 @@ class FrontPage extends Component {
             placeholder={'Enter your username...'}
             value={this.state.username}
             onChange={event => this.setState({ username: event.target.value })}
+            onKeyPress={this.handleInputKeyPress}
             /> : null
           }
 
           {!this.state.showSignUp ? 
             <div className="login-button-container">
               <Button onClick={this.handleSignIn} color="primary">Sign In</Button>
-              <a href="#" onClick={this.handleSignUpIn}>Don't Have An Account? Sign Up Here!</a>
+              <p className="hyperlink-text" onClick={this.handleSignUpIn}>Don't Have An Account? Sign Up Here!</p>
             </div> : 
             <div className="login-button-container">
               <Button onClick={this.handleSignUp} color="primary">Sign Up</Button>
-              <a href="#" onClick={this.handleSignUpIn}>Go Back To Sign In.</a>
+              <p className="hyperlink-text" onClick={this.handleSignUpIn}>Go Back To Sign In.</p>
             </div>
           }
           </form>
@@ -282,6 +296,8 @@ class AuthInput extends Component {
             value={this.props.text}
             placeholder={this.props.placeholder}
             onChange={this.props.onChange}
+            onKeyPress={this.props.onKeyPress}
+            {...this.props}
           />
         </div>
       </div>
@@ -940,6 +956,7 @@ class DropDownText extends Component {
   }
 
   closeMenu = (event) => {
+    console.log('click click click');
     if (!this.dropdownMenu.contains(event.target)) {
       this.setState({ displayMenu: false }, () => {
         document.removeEventListener('click', this.displayMenu);
