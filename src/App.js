@@ -3,8 +3,7 @@ import "whatwg-fetch";
 import { Button } from "reactstrap";
 import firebase from "firebase/app";
 
-// TODO: On sign up the user is not shown on the top right corner
-// TODO: Loading sign is not working on refresh?
+// TODO: On sign up the user is not shown on the top right corner. Works for email but null for displayname?
 // TODO: Event listeners work but its still not removing.
 class App extends Component {
   constructor(props) {
@@ -36,7 +35,7 @@ class App extends Component {
       if (currentUser) {
         this.setState({user: currentUser, loading: false})
       } else {
-        this.setState({user: null})
+        this.setState({user: null, loading: false})
       }
     })
   }
@@ -57,7 +56,7 @@ class App extends Component {
 
   // Firebase Auth: Sign Up
   handleSignUp = (email, password, username) => {
-    this.setState({errorMessage:null});
+    this.setState({errorMessage:null, loading: true});
     firebase.auth().createUserWithEmailAndPassword(email, password)
     .then((userCredentials) => {
       let user = userCredentials.user
@@ -117,6 +116,14 @@ class App extends Component {
 
   render() {
     let body;
+    if (this.state.loading) {
+      return (
+        <div className="text-center">
+          <i className="fa fa-spinner fa-spin fa-3x" aria-label="Connecting..."></i>
+        </div>
+      );
+    }
+
     if (!this.state.user) {
       body = 
       <FrontPage 
@@ -125,72 +132,65 @@ class App extends Component {
         handleSignUp={this.handleSignUp}
       />
     } else {
-      if (this.state.loading) {
-        body = 
-          <div className="text-center">
-            <i className="fa fa-spinner fa-spin fa-3x" aria-label="Connecting..."></i>
-          </div>;
-      } else {
-        let recipes = this.state.data;
-        let recipeDict = {};
-        if (recipes) {
-          recipes.forEach(recipe => {
-            const firstLetter = recipe.title.charAt(0).toUpperCase();
-            if (firstLetter in recipeDict) {
-              recipeDict[firstLetter].push(recipe);
-            } else {
-              recipeDict[firstLetter] = [recipe];
-            }
-          });
-        }
-        const sortedKeys = Object.keys(recipeDict).sort();
-        body = 
-          <div>
-            <Header
-              masterData={this.state.masterData}
-              parentCallback={this.displayFavorites}
-              favorite={this.state.favorites}
-              user={this.state.user}
-              handleSignOut={this.handleSignOut}
-            />
-            <main>
-              <div className="search-page">
-                <Logo />
-                <div className="recipe-container">
-                  <SearchBar
-                    masterData={this.state.masterData}
-                    parentCallback={this.performSearch}
-                  />
-                  {this.state.data.length === 0 ?
-                    <div className="no-results">No search results</div>
-                    :
-                    <div className="list-container">
-                    {sortedKeys.map(letter => {
-                      const recipes = recipeDict[letter].sort();
-                      return (
-                        <LetterContainer
-                          key={letter}
-                          letter={letter}
-                          recipes={recipes}
-                          parentCallback={this.updateRecipeFavorite}
-                          masterData={this.state.masterData}
-                        />
-                      );
-                    })}
-                  </div>
-                  }
-                  {this.state.renderModal ? (
-                    <FormModal
-                      handleFormClose={this.handleFormClose}
-                      handleNewRecipe={this.handleNewRecipe} />
-                  ) : null}
-                  <FAB handleFABPress={this.handleFABPress} />
-                </div>
-              </div>
-            </main>
-            <Footer />
-          </div>
+      let recipes = this.state.data;
+      let recipeDict = {};
+      if (recipes) {
+        recipes.forEach(recipe => {
+          const firstLetter = recipe.title.charAt(0).toUpperCase();
+          if (firstLetter in recipeDict) {
+            recipeDict[firstLetter].push(recipe);
+          } else {
+            recipeDict[firstLetter] = [recipe];
+          }
+        });
       }
+      const sortedKeys = Object.keys(recipeDict).sort();
+      body = 
+        <div>
+          <Header
+            masterData={this.state.masterData}
+            parentCallback={this.displayFavorites}
+            favorite={this.state.favorites}
+            user={this.state.user}
+            handleSignOut={this.handleSignOut}
+          />
+          <main>
+            <div className="search-page">
+              <Logo />
+              <div className="recipe-container">
+                <SearchBar
+                  masterData={this.state.masterData}
+                  parentCallback={this.performSearch}
+                />
+                {this.state.data.length === 0 ?
+                  <div className="no-results">No search results</div>
+                  :
+                  <div className="list-container">
+                  {sortedKeys.map(letter => {
+                    const recipes = recipeDict[letter].sort();
+                    return (
+                      <LetterContainer
+                        key={letter}
+                        letter={letter}
+                        recipes={recipes}
+                        parentCallback={this.updateRecipeFavorite}
+                        masterData={this.state.masterData}
+                      />
+                    );
+                  })}
+                </div>
+                }
+                {this.state.renderModal ? (
+                  <FormModal
+                    handleFormClose={this.handleFormClose}
+                    handleNewRecipe={this.handleNewRecipe} />
+                ) : null}
+                <FAB handleFABPress={this.handleFABPress} />
+              </div>
+            </div>
+          </main>
+          <Footer />
+        </div>
     }
     return ( 
       body
@@ -962,7 +962,6 @@ class DropDownText extends Component {
     }
   }
 
-  // TODO: Works for email but null for displayname?
   render() {
     console.log('In Menu')
     console.log(this.props.user)
