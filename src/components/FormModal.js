@@ -42,6 +42,7 @@ export default class FormModal extends Component {
     }
   };
 
+  // TODO: Handle image persistence
   handleFormSubmit = event => {
     event.preventDefault();
 
@@ -49,32 +50,27 @@ export default class FormModal extends Component {
       return;
     }
 
-    let objectUrl;
-    if (this.state.image) {
-      const blob = new Blob([this.state.image]);
-      objectUrl = window.URL.createObjectURL(blob);
-    }
+    let reader = new FileReader();
+    reader.readAsDataURL(this.state.image);
+    reader.onload = () => {
+      const base64Image = reader.result;
 
-    const newRecipe = {
-      category: this.state.category !== "" ? this.state.category : null,
-      description:
-        this.state.description !== "" ? this.state.description : null,
-      estimatedTime:
-        this.state.estimatedTime !== ""
-          ? parseInt(this.state.estimatedTime)
-          : null,
-      imageName: this.state.image && objectUrl ? objectUrl : null,
-      ingredients: this.state.ingredientList.join("|"),
-      procedure: this.state.procedureList.join("|"),
-      subcategory:
-        this.state.subcategory !== "" ? this.state.subcategory : null,
-      title: this.state.title !== "" ? this.state.title : null,
-      times: null,
-      isFavorite: this.state.isFavorite
-    };
-    let recipeRef = firebase.database().ref(this.props.user.uid);
-    recipeRef.push(newRecipe);
-    this.props.handleFormClose();
+      const newRecipe = {
+        category: this.state.category !== "" ? this.state.category : null,
+        description: this.state.description !== "" ? this.state.description : null,
+        estimatedTime: this.state.estimatedTime !== "" ? parseInt(this.state.estimatedTime) : null,
+        imageName: this.state.image && base64Image ? base64Image : null,
+        ingredients: this.state.ingredientList.join("|"),
+        procedure: this.state.procedureList.join("|"),
+        subcategory: this.state.subcategory !== "" ? this.state.subcategory : null,
+        title: this.state.title !== "" ? this.state.title : null,
+        times: null,
+        isFavorite: this.state.isFavorite
+      };
+      let recipeRef = firebase.database().ref(this.props.user.uid);
+      recipeRef.push(newRecipe);
+      this.props.handleFormClose();
+    } 
   };
 
   render() {

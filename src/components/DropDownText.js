@@ -24,7 +24,6 @@ export default class DropDownText extends Component {
   }
 
   render() {
-    const username = this.props.user.displayName;
     return (
       <div>
         <p onClick={this.showMenu}>{this.props.user.displayName}</p>

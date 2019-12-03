@@ -265,7 +265,7 @@ class Recipe extends Component {
                 recipe.imageName ? recipe.imageName : "recipe saver logo"
               }`}
               src={
-                recipe.imageName && recipe.imageName.startsWith("blob")
+                recipe.imageName && recipe.imageName.startsWith("data")
                   ? recipe.imageName
                   : require(`${
                       recipe.imageName
