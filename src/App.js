@@ -9,6 +9,7 @@ import FormModal from './components/FormModal';
 import FAB from './components/FAB';
 import Footer from './components/Footer';
 
+// TODO: Username isn't showing on sign up (Not a huge deal)
 class App extends Component {
   constructor(props) {
     super(props);
@@ -30,12 +31,16 @@ class App extends Component {
         this.recipeRef = firebase.database().ref(currentUser.uid);
         this.recipeRef.on('value', (snapshot) => {
           const recipeObj = snapshot.val();
-          let recipes = [];
-          Object.keys(recipeObj).forEach((key) => {
-            const obj = recipeObj[key];
-            recipes.push(obj);
-          })
-          this.setState({user: currentUser, loading: false, masterData: recipes, data: recipes})
+          if (recipeObj) {
+            let recipes = [];
+            Object.keys(recipeObj).forEach((key) => {
+              const obj = recipeObj[key];
+              recipes.push(obj);
+            })
+            this.setState({user: currentUser, loading: false, masterData: recipes, data: recipes});
+          } else {
+            this.setState({user: currentUser, loading: false, masterData: [], data: []});
+          }
         })
       } else {
         this.setState({user: null, loading: false})

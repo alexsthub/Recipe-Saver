@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import DropDownText from './DropDownText';
 
-// TODO: Username isn't showing on sign up
 export default class Header extends Component {
   filterFavorites = () => {
     return this.props.masterData.filter(recipe => recipe.isFavorite);

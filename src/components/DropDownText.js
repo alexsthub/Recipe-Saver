@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-// TODO: Remove event listener
 export default class DropDownText extends Component {
   constructor(props) {
     super(props);
