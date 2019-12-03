@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+// TODO: Remove event listener
 export default class DropDownText extends Component {
   constructor(props) {
     super(props);
@@ -14,6 +15,7 @@ export default class DropDownText extends Component {
   }
 
   closeMenu = (event) => {
+    console.log('closing');
     if (this.dropdownMenu && !this.dropdownMenu.contains(event.target)) {
       this.setState({ displayMenu: false }, () => {
         document.removeEventListener('click', this.closeMenu);

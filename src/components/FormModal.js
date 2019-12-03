@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Button } from "reactstrap";
+import firebase from "firebase/app";
 
 export default class FormModal extends Component {
   constructor(props) {
@@ -71,7 +72,8 @@ export default class FormModal extends Component {
       times: null,
       isFavorite: this.state.isFavorite
     };
-    this.props.handleNewRecipe(newRecipe);
+    let recipeRef = firebase.database().ref(this.props.user.uid);
+    recipeRef.push(newRecipe);
     this.props.handleFormClose();
   };
 

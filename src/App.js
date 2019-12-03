@@ -26,20 +26,18 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch("./jsonData_small.json")
-      .then(response => {
-        return response.json();
-      })
-      .catch(error => {
-        console.log(error.message);
-      })
-      .then(data => {
-        this.setState({ masterData: data.response, data: data.response });
-      });
-
     this.authUnRegFunc = firebase.auth().onAuthStateChanged((currentUser) => {
       if (currentUser) {
-        this.setState({user: currentUser, loading: false})
+        this.recipeRef = firebase.database().ref(currentUser.uid);
+        this.recipeRef.on('value', (snapshot) => {
+          const recipeObj = snapshot.val();
+          let recipes = [];
+          Object.keys(recipeObj).forEach((key) => {
+            const obj = recipeObj[key];
+            recipes.push(obj);
+          })
+          this.setState({user: currentUser, loading: false, masterData: recipes, data: recipes})
+        })
       } else {
         this.setState({user: null, loading: false})
       }
@@ -140,7 +138,7 @@ class App extends Component {
     } else {
       let recipes = this.state.data;
       let recipeDict = {};
-      if (recipes) {
+      if (recipes.length > 0) {
         recipes.forEach(recipe => {
           const firstLetter = recipe.title.charAt(0).toUpperCase();
           if (firstLetter in recipeDict) {
@@ -189,7 +187,8 @@ class App extends Component {
                 {this.state.renderModal ? (
                   <FormModal
                     handleFormClose={this.handleFormClose}
-                    handleNewRecipe={this.handleNewRecipe} />
+                    handleNewRecipe={this.handleNewRecipe}
+                    user={this.state.user} />
                 ) : null}
                 <FAB handleFABPress={this.handleFABPress} />
               </div>
