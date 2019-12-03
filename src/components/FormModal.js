@@ -42,7 +42,6 @@ export default class FormModal extends Component {
     }
   };
 
-  // TODO: Handle image persistence
   handleFormSubmit = event => {
     event.preventDefault();
 

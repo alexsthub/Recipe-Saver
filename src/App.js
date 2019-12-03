@@ -9,8 +9,6 @@ import FormModal from './components/FormModal';
 import FAB from './components/FAB';
 import Footer from './components/Footer';
 
-// TODO: On sign up the user is not shown on the top right corner. Works for email but null for displayname?
-// TODO: Event listeners work but its still not removing.
 class App extends Component {
   constructor(props) {
     super(props);
@@ -25,6 +23,7 @@ class App extends Component {
     };
   }
 
+  // Check for user and load data
   componentDidMount() {
     this.authUnRegFunc = firebase.auth().onAuthStateChanged((currentUser) => {
       if (currentUser) {
