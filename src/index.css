@@ -460,6 +460,7 @@ p.recipe-title {
 
 footer {
   padding: 1em;
+  overflow: hidden;
 }
 
 .footer-image-container {
