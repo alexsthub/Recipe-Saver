@@ -229,6 +229,7 @@ class Recipe extends Component {
     this.state = { displayDetails: false, isFavorite: props.recipe.isFavorite };
   }
 
+  // TODO: When you fix this, at the end make sure to update the DB.
   toggleFavorite = () => {
     this.setState(currentState => {
       return { isFavorite: !currentState.isFavorite };
