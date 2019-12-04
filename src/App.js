@@ -154,6 +154,18 @@ class App extends Component {
         });
       }
       const sortedKeys = Object.keys(recipeDict).sort();
+      const letterContainers = sortedKeys.map(letter => {
+        const recipes = recipeDict[letter].sort();
+        return (
+          <LetterContainer
+            key={letter}
+            letter={letter}
+            recipes={recipes}
+            parentCallback={this.updateRecipeFavorite}
+            masterData={this.state.masterData}
+          />
+        );
+      })
       body = 
         <div>
           <Header
@@ -175,19 +187,8 @@ class App extends Component {
                   <div className="no-results">No search results</div>
                   :
                   <div className="list-container">
-                  {sortedKeys.map(letter => {
-                    const recipes = recipeDict[letter].sort();
-                    return (
-                      <LetterContainer
-                        key={letter}
-                        letter={letter}
-                        recipes={recipes}
-                        parentCallback={this.updateRecipeFavorite}
-                        masterData={this.state.masterData}
-                      />
-                    );
-                  })}
-                </div>
+                    {letterContainers}
+                  </div>
                 }
                 {this.state.renderModal ? (
                   <FormModal
@@ -210,19 +211,20 @@ class App extends Component {
 
 class LetterContainer extends Component {
   render() {
+    const recipes = this.props.recipes.map(recipe => {
+      return (
+        <Recipe
+          key={recipe.title}
+          recipe={recipe}
+          parentCallback={this.props.parentCallback}
+          isFavorite={this.props.masterData.filter(x => recipe.title === x.title)[0].isFavorite}
+        />
+      );
+    })
     return (
       <div id={this.props.letter} className="letter-container">
         <p className="alphabet-letter">{this.props.letter}.</p>
-        {this.props.recipes.map(recipe => {
-          return (
-            <Recipe
-              key={recipe.title}
-              recipe={recipe}
-              parentCallback={this.props.parentCallback}
-              isFavorite={this.props.masterData.filter(x => recipe.title === x.title)[0].isFavorite}
-            />
-          );
-        })}
+        {recipes}
       </div>
     );
   }
