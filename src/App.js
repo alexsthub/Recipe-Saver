@@ -36,6 +36,7 @@ class App extends Component {
             let recipes = [];
             Object.keys(recipeObj).forEach((key) => {
               const obj = recipeObj[key];
+              obj.id = key;
               recipes.push(obj);
             })
             this.setState({user: currentUser, loading: false, masterData: recipes, data: recipes});
@@ -101,6 +102,10 @@ class App extends Component {
 
   updateRecipeFavorite = (recipe, status) => {
     let temp = this.state.masterData;
+
+    let recipeRef = firebase.database().ref(this.state.user.uid + '/' + recipe.id + '/isFavorite');
+    recipeRef.set(!recipe.isFavorite);
+
     temp.filter(some => some.title === recipe.title)[0].isFavorite = status;
     this.setState({ masterData: temp });
     if (this.state.favorites) {
@@ -235,18 +240,6 @@ class Recipe extends Component {
     super(props);
     this.state = { displayDetails: false };
   }
-
-  // TODO: When you fix this, at the end make sure to update the DB.
-  /*
-  toggleFavorite = () => {
-    this.setState(currentState => {
-      return { isFavorite: !currentState.isFavorite };
-    });
-    this.props.parentCallback(
-      this.props.recipe,
-      !this.state.isFavorite,
-    );
-  };*/
 
   handleClick = () => {
     this.setState(currentState => {
