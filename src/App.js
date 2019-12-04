@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "whatwg-fetch";
 import firebase from "firebase/app";
+import FontAwesome from 'react-fontawesome';
 
 import Logo from './components/Logo';
 import FrontPage from './components/FrontPage';
@@ -127,7 +128,7 @@ class App extends Component {
     if (this.state.loading) {
       return (
         <div className="text-center">
-          <i className="fa fa-spinner fa-spin fa-3x" aria-label="Connecting..."></i>
+          <FontAwesome name="spinner" size="3x" spin />
         </div>
       );
     }
@@ -346,7 +347,7 @@ class RecipeDetails extends Component {
 
             {recipe.estimatedTime ? (
               <div className="time">
-                <i className="fa fa-clock-o" aria-hidden="true"></i>
+                <FontAwesome name="clock-o" />
                 {" " + this.toTimeString(recipe.estimatedTime)}
               </div>
             ) : null}
@@ -414,7 +415,7 @@ class SearchBar extends Component {
           aria-label="search button"
           onClick={this.handleSubmit}
         >
-          <i className="fa fa-search-plus" />
+          <FontAwesome name="search-plus" />
         </button>
       </form>
     );

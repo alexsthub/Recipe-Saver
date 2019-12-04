@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import DropDownText from './DropDownText';
+import FontAwesome from 'react-fontawesome';
 
 export default class Header extends Component {
   filterFavorites = () => {
@@ -11,7 +12,7 @@ export default class Header extends Component {
       <header>
         <div className="topbar">
           <h1 className="title">
-            <i className="fa fa-shopping-basket" aria-hidden="true"></i>
+          <FontAwesome name="shopping-basket" />
           </h1>
           <div className="nav">
             <p
