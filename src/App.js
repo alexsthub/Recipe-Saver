@@ -164,7 +164,7 @@ class App extends Component {
           />
           <main>
             <div className="search-page">
-              <Logo />
+              <Logo img={require('./img/logo.png')} />
               <div className="recipe-container">
                 <SearchBar
                   masterData={this.state.masterData}

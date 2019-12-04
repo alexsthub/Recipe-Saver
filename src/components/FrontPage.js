@@ -39,7 +39,7 @@ export default class FrontPage extends Component {
       <div className="login-container">
         <div className="bg-image"></div>
         <div className="login-element-wrapper">
-          <Logo />
+          <Logo img={require('./img/logo_white.png')} />
           {this.props.errorMessage ? <div><p className="error-text">{"*" + this.props.errorMessage}</p></div> : null}
           <form>
           <AuthInput
