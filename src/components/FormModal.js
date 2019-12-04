@@ -50,7 +50,7 @@ export default class FormModal extends Component {
     }
 
     let reader = new FileReader();
-    reader.readAsDataURL(this.state.image);
+    reader.readAsDataURL(this.state.image ? this.state.image : new Blob(["../recipeImages/default.jpg"], {type: 'image/jpg'}));
     reader.onload = () => {
       const base64Image = reader.result;
 
