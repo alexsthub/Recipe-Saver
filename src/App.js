@@ -219,7 +219,6 @@ class LetterContainer extends Component {
               key={recipe.title}
               recipe={recipe}
               parentCallback={this.props.parentCallback}
-              masterData={this.props.masterData}
             />
           );
         })}
@@ -242,7 +241,6 @@ class Recipe extends Component {
     this.props.parentCallback(
       this.props.recipe,
       !this.state.isFavorite,
-      this.props.masterData
     );
   };
 
