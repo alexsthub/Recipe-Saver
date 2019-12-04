@@ -99,12 +99,12 @@ class App extends Component {
     return recipes.filter(recipe => recipe.isFavorite);
   };
 
-  updateRecipeFavorite = (recipe, status, allRecipes) => {
+  updateRecipeFavorite = (recipe, status) => {
     let temp = this.state.masterData;
     temp.filter(some => some.title === recipe.title)[0].isFavorite = status;
     this.setState({ masterData: temp });
     if (this.state.favorites) {
-      this.displayFavorites(this.filterFavorites(allRecipes), true);
+      this.displayFavorites(this.filterFavorites(this.state.masterData), true);
     }
   };
 
@@ -219,6 +219,7 @@ class LetterContainer extends Component {
               key={recipe.title}
               recipe={recipe}
               parentCallback={this.props.parentCallback}
+              isFavorite={this.props.masterData.filter(x => recipe.title === x.title)[0].isFavorite}
             />
           );
         })}
@@ -230,10 +231,11 @@ class LetterContainer extends Component {
 class Recipe extends Component {
   constructor(props) {
     super(props);
-    this.state = { displayDetails: false, isFavorite: props.recipe.isFavorite };
+    this.state = { displayDetails: false };
   }
 
   // TODO: When you fix this, at the end make sure to update the DB.
+  /*
   toggleFavorite = () => {
     this.setState(currentState => {
       return { isFavorite: !currentState.isFavorite };
@@ -242,7 +244,7 @@ class Recipe extends Component {
       this.props.recipe,
       !this.state.isFavorite,
     );
-  };
+  };*/
 
   handleClick = () => {
     this.setState(currentState => {
@@ -285,13 +287,13 @@ class Recipe extends Component {
                   alt="favorite star icon"
                   role="button"
                   src={
-                    this.state.isFavorite
+                    this.props.isFavorite
                       ? require("./img/star-true.png")
                       : require("./img/star-false.png")
                   }
                   onClick={event => {
                     event.stopPropagation();
-                    this.toggleFavorite();
+                    this.props.parentCallback(recipe, !this.props.isFavorite); //updateMasterDataFavorite
                   }}
                 />
               </div>
