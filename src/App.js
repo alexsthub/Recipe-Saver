@@ -374,19 +374,17 @@ class SearchBar extends Component {
     this.state = { value: "" };
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     let newVal = event.target.value;
     if (newVal === "") {
       this.setState({ value: newVal });
       this.props.parentCallback(this.props.masterData);
     } else {
       this.setState({ value: newVal });
-      this.handleChange = this.handleChange.bind(this);
-      this.handleSubmit = this.handleSubmit.bind(this);
     }
   };
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
     this.props.parentCallback(this.searchRecipes(this.state.value));
   };
