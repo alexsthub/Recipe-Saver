@@ -137,6 +137,25 @@ class App extends Component {
     })
   }
 
+  renderAboutPage = () => {
+    return <div>
+        <Header
+          masterData={this.state.masterData}
+          parentCallback={this.displayFavorites}
+          favorite={this.state.favorites}
+          about={this.state.about}
+          user={this.state.user}
+          handleSignOut={this.handleSignOut}
+          handleAbout={this.handleAbout}
+        />
+        <div>
+          <p>
+            this is the about page
+          </p>
+        </div>
+      </div>
+  }
+
   renderMainPage = () => {
     let recipes = this.state.data;
     let recipeDict = {};
@@ -222,9 +241,16 @@ class App extends Component {
           /> }
         </Route>
         <Route exact path='/home' >
-          {this.state.user ? 
-          this.renderMainPage() :
-          <Redirect to='/' /> }
+          {this.state.user && this.state.about ? 
+          this.renderAboutPage() :
+          (this.state.user ? 
+            this.renderMainPage() :
+          <Redirect to='/' />) }
+        </Route>
+        <Route path='/about' >
+          {this.state.about && this.state.user ?
+           this.renderAboutPage() :
+           <Redirect to='/' /> }
         </Route>
         <Redirect to='/' />
       </Switch>
