@@ -16,7 +16,7 @@ export default class Header extends Component {
           </h1>
           <div className="nav">
             <p
-              className={this.props.favorite ? "" : "selected"}
+              className={this.props.favorite || this.props.about ? "" : "selected"}
               role="button"
               onClick={() => {
                 this.props.parentCallback(this.props.masterData, false);
@@ -32,6 +32,15 @@ export default class Header extends Component {
               }}
             >
               Favorites
+            </p>
+            <p
+              className={this.props.about ? "selected" : ""}
+              role="button"
+              onClick={() => {
+                this.props.handleAbout();          
+              }}
+            >
+              About
             </p>
           </div>
           <div className="user-container">

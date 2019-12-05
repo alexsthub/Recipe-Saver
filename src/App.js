@@ -22,7 +22,8 @@ class App extends Component {
       favorites: false,
       user: null,
       errorMessage: null,
-      loading: true
+      loading: true,
+      about: false
     };
   }
 
@@ -94,7 +95,7 @@ class App extends Component {
   };
 
   displayFavorites = (recipes, status) => {
-    this.setState({ data: recipes, favorites: status });
+    this.setState({ data: recipes, favorites: status, about: false });
   };
 
   filterFavorites = recipes => {
@@ -129,6 +130,13 @@ class App extends Component {
     this.setState({ masterData: newData, data: newData });
   };
 
+  handleAbout = () => {
+    this.setState(currentState => {
+      let stateChanges = {about: !currentState.about, favorites: false}
+      return stateChanges
+    })
+  }
+
   renderMainPage = () => {
     let recipes = this.state.data;
     let recipeDict = {};
@@ -148,8 +156,10 @@ class App extends Component {
           masterData={this.state.masterData}
           parentCallback={this.displayFavorites}
           favorite={this.state.favorites}
+          about={this.state.about}
           user={this.state.user}
           handleSignOut={this.handleSignOut}
+          handleAbout={this.handleAbout}
         />
         <main>
           <div className="search-page">
