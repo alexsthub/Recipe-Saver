@@ -300,11 +300,8 @@ class Recipe extends Component {
           <div className="recipe">
             <img
               className="foodimage"
-              alt={`${
-                recipe.imageName ? recipe.imageName : "recipe saver logo"
-              }`}
-              src={
-                recipe.imageName && recipe.imageName.startsWith("data")
+              alt={`${recipe.title ? recipe.title : "recipe saver logo"}`}
+              src={recipe.imageName && recipe.imageName.startsWith("data")
                   ? recipe.imageName
                   : require(`${
                       recipe.imageName
