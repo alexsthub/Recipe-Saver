@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "whatwg-fetch";
 import firebase from "firebase/app";
 import FontAwesome from 'react-fontawesome';
+import { Redirect, Switch, Route } from 'react-router-dom';
 
 import Logo from './components/Logo';
 import FrontPage from './components/FrontPage';
@@ -21,7 +22,8 @@ class App extends Component {
       favorites: false,
       user: null,
       errorMessage: null,
-      loading: true
+      loading: true,
+      about: false
     };
   }
 
@@ -93,7 +95,7 @@ class App extends Component {
   };
 
   displayFavorites = (recipes, status) => {
-    this.setState({ data: recipes, favorites: status });
+    this.setState({ data: recipes, favorites: status, about: false });
   };
 
   filterFavorites = recipes => {
@@ -123,8 +125,78 @@ class App extends Component {
     this.setState({ renderModal: false });
   };
 
+  handleAbout = () => {
+    this.setState(currentState => {
+      let stateChanges = {about: !currentState.about, favorites: false}
+      return stateChanges
+    })
+  }
+
+  renderMainPage = () => {
+    let recipes = this.state.data;
+    let recipeDict = {};
+    if (recipes.length > 0) {
+      recipes.forEach(recipe => {
+        const firstLetter = recipe.title.charAt(0).toUpperCase();
+        if (firstLetter in recipeDict) {
+          recipeDict[firstLetter].push(recipe);
+        } else {
+          recipeDict[firstLetter] = [recipe];
+        }
+      });
+    }
+    const sortedKeys = Object.keys(recipeDict).sort();
+      return <div>
+        <Header
+          masterData={this.state.masterData}
+          parentCallback={this.displayFavorites}
+          favorite={this.state.favorites}
+          about={this.state.about}
+          user={this.state.user}
+          handleSignOut={this.handleSignOut}
+          handleAbout={this.handleAbout}
+        />
+        <main>
+          <div className="search-page">
+            <Logo img={require('./img/logo.png')} />
+            <div className="recipe-container">
+              <SearchBar
+                masterData={this.state.masterData}
+                parentCallback={this.performSearch}
+              />
+              {this.state.data.length === 0 ?
+                <div className="no-results">No search results</div>
+                :
+                <div className="list-container">
+                {sortedKeys.map(letter => {
+                  const recipes = recipeDict[letter].sort();
+                  return (
+                    <LetterContainer
+                      key={letter}
+                      letter={letter}
+                      recipes={recipes}
+                      parentCallback={this.updateRecipeFavorite}
+                      masterData={this.state.masterData}
+                    />
+                  );
+                })}
+              </div>
+              }
+              {this.state.renderModal ? (
+                <FormModal
+                  handleFormClose={this.handleFormClose}
+                  handleNewRecipe={this.handleNewRecipe}
+                  user={this.state.user} />
+              ) : null}
+              <FAB handleFABPress={this.handleFABPress} />
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+  }
+
   render() {
-    let body;
     if (this.state.loading) {
       return (
         <div className="text-center">
@@ -133,77 +205,24 @@ class App extends Component {
       );
     }
 
-    if (!this.state.user) {
-      body = 
-      <FrontPage 
-        errorMessage={this.state.errorMessage}
-        handleSignIn={this.handleSignIn}
-        handleSignUp={this.handleSignUp}
-      />
-    } else {
-      let recipes = this.state.data;
-      let recipeDict = {};
-      if (recipes.length > 0) {
-        recipes.forEach(recipe => {
-          const firstLetter = recipe.title.charAt(0).toUpperCase();
-          if (firstLetter in recipeDict) {
-            recipeDict[firstLetter].push(recipe);
-          } else {
-            recipeDict[firstLetter] = [recipe];
-          }
-        });
-      }
-      const sortedKeys = Object.keys(recipeDict).sort();
-      const letterContainers = sortedKeys.map(letter => {
-        const recipes = recipeDict[letter].sort();
-        return (
-          <LetterContainer
-            key={letter}
-            letter={letter}
-            recipes={recipes}
-            parentCallback={this.updateRecipeFavorite}
-            masterData={this.state.masterData}
-          />
-        );
-      })
-      body = 
-        <div>
-          <Header
-            masterData={this.state.masterData}
-            parentCallback={this.displayFavorites}
-            favorite={this.state.favorites}
-            user={this.state.user}
-            handleSignOut={this.handleSignOut}
-          />
-          <main>
-            <div className="search-page">
-              <Logo img={require('./img/logo.png')} />
-              <div className="recipe-container">
-                <SearchBar
-                  masterData={this.state.masterData}
-                  parentCallback={this.performSearch}
-                />
-                {this.state.data.length === 0 ?
-                  <div className="no-results">No search results</div>
-                  :
-                  <div className="list-container">
-                    {letterContainers}
-                  </div>
-                }
-                {this.state.renderModal ? (
-                  <FormModal
-                    handleFormClose={this.handleFormClose}
-                    user={this.state.user} />
-                ) : null}
-                <FAB handleFABPress={this.handleFABPress} />
-              </div>
-            </div>
-          </main>
-          <Footer />
-        </div>
-    }
     return ( 
-      body
+      <Switch>
+        <Route exact path='/' >
+          {this.state.user ? 
+          <Redirect to='/home' /> :
+          <FrontPage 
+            errorMessage={this.state.errorMessage}
+            handleSignIn={this.handleSignIn}
+            handleSignUp={this.handleSignUp}
+          /> }
+        </Route>
+        <Route exact path='/home' >
+          {this.state.user ? 
+          this.renderMainPage() :
+          <Redirect to='/' /> }
+        </Route>
+        <Redirect to='/' />
+      </Switch>
     );
   }
 }
