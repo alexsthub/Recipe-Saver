@@ -199,7 +199,7 @@ class App extends Component {
         </div>
       );
     }
-    
+
     return ( 
       <Switch>
         <Route exact path='/' >
@@ -216,6 +216,7 @@ class App extends Component {
           this.renderMainPage() :
           <Redirect to='/' /> }
         </Route>
+        <Redirect to='/' />
       </Switch>
     );
   }
