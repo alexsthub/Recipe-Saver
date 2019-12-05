@@ -185,6 +185,7 @@ class App extends Component {
                 <FormModal
                   handleFormClose={this.handleFormClose}
                   handleNewRecipe={this.handleNewRecipe}
+                  handleLoad={() => this.setState({loading: true})}
                   user={this.state.user} />
               ) : null}
               <FAB handleFABPress={this.handleFABPress} />

@@ -75,6 +75,7 @@ export default class FormModal extends Component {
         times: null,
         isFavorite: this.state.isFavorite
       };
+      this.props.handleLoad();
       let recipeRef = firebase.database().ref(this.props.user.uid);
       recipeRef.push(newRecipe);
       this.props.handleFormClose();
