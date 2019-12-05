@@ -237,7 +237,7 @@ class App extends Component {
         </Route>
         <Route exact path='/home' >
           {this.state.user && this.state.about ? 
-          this.renderAboutPage() :
+          <Redirect to='/about' /> :
           (this.state.user ? 
             this.renderMainPage() :
           <Redirect to='/' />) }
