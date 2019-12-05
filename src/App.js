@@ -37,6 +37,7 @@ class App extends Component {
             let recipes = [];
             Object.keys(recipeObj).forEach((key) => {
               const obj = recipeObj[key];
+              obj.id = key;
               recipes.push(obj);
             })
             this.setState({user: currentUser, loading: false, masterData: recipes, data: recipes});
@@ -102,6 +103,10 @@ class App extends Component {
 
   updateRecipeFavorite = (recipe, status) => {
     let temp = this.state.masterData;
+
+    let recipeRef = firebase.database().ref(this.state.user.uid + '/' + recipe.id + '/isFavorite');
+    recipeRef.set(!recipe.isFavorite);
+
     temp.filter(some => some.title === recipe.title)[0].isFavorite = status;
     this.setState({ masterData: temp });
     if (this.state.favorites) {
@@ -194,16 +199,8 @@ class App extends Component {
         </div>
       );
     }
-
-    /*
-    if (!this.state.user) {
-      return <Redirect to='/' />
-    } else if (this.state.user) {
-      return <Redirect to='/home' />
-    }*/
-
+    
     return ( 
-      // body
       <Switch>
         <Route exact path='/' >
           {this.state.user ? 
@@ -226,19 +223,20 @@ class App extends Component {
 
 class LetterContainer extends Component {
   render() {
+    const recipes = this.props.recipes.map(recipe => {
+      return (
+        <Recipe
+          key={recipe.title}
+          recipe={recipe}
+          parentCallback={this.props.parentCallback}
+          isFavorite={this.props.masterData.filter(x => recipe.title === x.title)[0].isFavorite}
+        />
+      );
+    })
     return (
       <div id={this.props.letter} className="letter-container">
         <p className="alphabet-letter">{this.props.letter}.</p>
-        {this.props.recipes.map(recipe => {
-          return (
-            <Recipe
-              key={recipe.title}
-              recipe={recipe}
-              parentCallback={this.props.parentCallback}
-              isFavorite={this.props.masterData.filter(x => recipe.title === x.title)[0].isFavorite}
-            />
-          );
-        })}
+        {recipes}
       </div>
     );
   }
@@ -249,18 +247,6 @@ class Recipe extends Component {
     super(props);
     this.state = { displayDetails: false };
   }
-
-  // TODO: When you fix this, at the end make sure to update the DB.
-  /*
-  toggleFavorite = () => {
-    this.setState(currentState => {
-      return { isFavorite: !currentState.isFavorite };
-    });
-    this.props.parentCallback(
-      this.props.recipe,
-      !this.state.isFavorite,
-    );
-  };*/
 
   handleClick = () => {
     this.setState(currentState => {
@@ -390,19 +376,17 @@ class SearchBar extends Component {
     this.state = { value: "" };
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     let newVal = event.target.value;
     if (newVal === "") {
       this.setState({ value: newVal });
       this.props.parentCallback(this.props.masterData);
     } else {
       this.setState({ value: newVal });
-      this.handleChange = this.handleChange.bind(this);
-      this.handleSubmit = this.handleSubmit.bind(this);
     }
   };
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
     this.props.parentCallback(this.searchRecipes(this.state.value));
   };
