@@ -50,7 +50,7 @@ class App extends Component {
     })
   }
 
-  // Firebase Auth
+  // Firebase Auth: Remove listener when component is unmounted
   componentWillUnmount() {
     this.authUnRegFunc()
   }
@@ -100,32 +100,27 @@ class App extends Component {
     return recipes.filter(recipe => recipe.isFavorite);
   };
 
+  // When a recipe is favorited, change the value in the database.
   updateRecipeFavorite = (recipe, status) => {
-    let temp = this.state.masterData;
-
     let recipeRef = firebase.database().ref(this.state.user.uid + '/' + recipe.id + '/isFavorite');
     recipeRef.set(!recipe.isFavorite);
 
-    temp.filter(some => some.title === recipe.title)[0].isFavorite = status;
-    this.setState({ masterData: temp });
+    this.state.masterData.filter(some => some.title === recipe.title)[0].isFavorite = status;
     if (this.state.favorites) {
       this.displayFavorites(this.filterFavorites(this.state.masterData), true);
     }
   };
 
+  // Open modal
   handleFABPress = () => {
     document.body.classList.add("noscroll");
     this.setState({ renderModal: true });
   };
 
+  // Close modal
   handleFormClose = () => {
     document.body.classList.remove("noscroll");
     this.setState({ renderModal: false });
-  };
-
-  handleNewRecipe = newRecipe => {
-    let newData = this.state.masterData.concat(newRecipe);
-    this.setState({ masterData: newData, data: newData });
   };
 
   render() {
@@ -198,7 +193,6 @@ class App extends Component {
                 {this.state.renderModal ? (
                   <FormModal
                     handleFormClose={this.handleFormClose}
-                    handleNewRecipe={this.handleNewRecipe}
                     user={this.state.user} />
                 ) : null}
                 <FAB handleFABPress={this.handleFABPress} />
