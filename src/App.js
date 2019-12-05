@@ -142,10 +142,16 @@ class App extends Component {
           handleSignOut={this.handleSignOut}
           handleAbout={this.handleAbout}
         />
-        <div>
-          <p>
-            this is the about page
-          </p>
+        <div className='about'>
+          <h1>RECIPE SAVER</h1>
+          <p>Recipe Saver will allow you to enter and save any recipes that come to mind so you can have your personal cookbook in one place!</p>
+          <p>Add recipes by clicking the <strong>+</strong> icon in the bottom right corner.</p>
+          <p>View all recipes by clicking <strong>All</strong> in the header.</p>
+          <p>Favorite and unfavorite recipes by clicking the <em>star</em> icon.</p>
+          <p>View favorited recipes by clicking <strong>Favorites</strong> in the header.</p>
+          <p>View this page by clicing <strong>About</strong> in the header.</p>
+          <p><strong>Made by Alex Tan and Jerry Lin</strong></p>
+          <p>This project was bootstrapped with <a href="https://github.com/facebook/create-react-app">Create React App</a>.</p>
         </div>
       </div>
   }

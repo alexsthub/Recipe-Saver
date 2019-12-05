@@ -11,6 +11,10 @@ body {
   font-family: 'Montserrat', sans-serif;
 }
 
+.about {
+  margin-left: 30px;
+}
+
 .search-page {
   display: block;
 }
