@@ -11,7 +11,6 @@ import FormModal from './components/FormModal';
 import FAB from './components/FAB';
 import Footer from './components/Footer';
 
-// TODO: Username isn't showing on sign up (Not a huge deal)
 class App extends Component {
   constructor(props) {
     super(props);
