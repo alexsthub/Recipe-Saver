@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+// Custom text input
 export default class AuthInput extends Component {
   render() {
     return (

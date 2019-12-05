@@ -6,6 +6,7 @@ export default class DropDownText extends Component {
     this.state = {displayMenu: false};
   }
 
+  // On click, show menu and create event listener on document. Clicking anywhere else will close the menu
   showMenu = (event) => {
     event.preventDefault();
     this.setState({ displayMenu: true }, () => {
@@ -13,8 +14,8 @@ export default class DropDownText extends Component {
     });
   }
 
+  // Close the menu and remove event listener
   closeMenu = (event) => {
-    console.log('closing');
     if (this.dropdownMenu && !this.dropdownMenu.contains(event.target)) {
       this.setState({ displayMenu: false }, () => {
         document.removeEventListener('click', this.closeMenu);

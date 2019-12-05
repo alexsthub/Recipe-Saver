@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import firebase from "firebase/app";
 
+// Class to render the modal to input a new recipe
 export default class FormModal extends Component {
   constructor(props) {
     super(props);
@@ -18,10 +19,12 @@ export default class FormModal extends Component {
     };
   }
 
+  // Handle if new recipe is favorite or not
   handleFavoritePress = () => {
     this.setState({ isFavorite: !this.state.isFavorite });
   };
 
+  // For ingredient and procedure, handle input submit
   handleListSubmit = (newData, type) => {
     if (type === "ingredient") {
       this.setState({ ingredientList: newData });
@@ -30,6 +33,7 @@ export default class FormModal extends Component {
     }
   };
 
+  // For ingredient and procedure, handle list item removal
   handleDeleteRow = (option, type) => {
     if (type === "ingredient") {
       this.setState({
@@ -42,6 +46,7 @@ export default class FormModal extends Component {
     }
   };
 
+  // When submitting the form, change the image to base 64 and push a new recipe object to firebase
   handleFormSubmit = event => {
     event.preventDefault();
 
@@ -70,6 +75,7 @@ export default class FormModal extends Component {
         times: null,
         isFavorite: this.state.isFavorite
       };
+      this.props.handleLoad();
       let recipeRef = firebase.database().ref(this.props.user.uid);
       recipeRef.push(newRecipe);
       this.props.handleFormClose();
@@ -211,12 +217,14 @@ export default class FormModal extends Component {
   }
 }
 
+// Handle image input by clicking to input an image or dragover
 class ImageInputContainer extends Component {
   constructor(props) {
     super(props);
     this.state = { file: null, hasError: false, dragOn: false };
   }
 
+  // Returns True if a string ends with one of the endings provided, otherwise False
   endsWithAny(string, endings) {
     return endings.some(function(ending) {
       return string.endsWith(ending);
@@ -228,6 +236,7 @@ class ImageInputContainer extends Component {
     this.processFile(file);
   };
 
+  // If input file is an image, process file
   processFile = file => {
     if (this.endsWithAny(file.name, ["jpg", "png", "tif", "svg"])) {
       this.setState({ hasError: false });
@@ -306,12 +315,14 @@ class ImageInputContainer extends Component {
   }
 }
 
+// Containers to handle list input
 class ListInputContainer extends Component {
   constructor(props) {
     super(props);
     this.state = { value: "" };
   }
 
+  // Returns list items
   renderListItems = () => {
     return this.props.data.map((option, i) => {
       return (
@@ -398,6 +409,7 @@ class ListInputContainer extends Component {
   }
 }
 
+// Container for input text
 class InputContainer extends Component {
   render() {
     return (
